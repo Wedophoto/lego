@@ -5560,6 +5560,7 @@
   <script>
 // Конфигурация
 const ITEMS_PER_PAGE = 24;
+const BASE_PATH = window.location.hostname.includes('github.io') ? '/lego' : '';
 let currentPage = 1;
 let filteredModels = [];
 let allModels = [];
@@ -5709,10 +5710,10 @@ function renderModels() {
                 <i class="fas fa-play"></i> Видео
             </a>` : '';
         
-        const pdfPath = model.pdf && model.pdf.name ? `../instructions/${model.pdf.name}` : '#';
+        const pdfPath = model.pdf && model.pdf.name ? "${BASE_PATH}/instructions/${model.pdf.name}" : '#';
         
         card.innerHTML = `
-            <img src="${model.imageUrl || ''}" alt="${model.title || 'Модель'}" class="model-image" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 150\'><rect fill=\'%23f0f0f0\' width=\'200\' height=\'150\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23999\' font-size=\'14\'>Нет фото</text></svg>'">
+            <img src="${BASE_PATH}${model.imageUrl || ''}" alt="${model.title || 'Модель'}" class="model-image" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 150\'><rect fill=\'%23f0f0f0\' width=\'200\' height=\'150\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23999\' font-size=\'14\'>Нет фото</text></svg>'">
             ${categoryBadge}
             <h3 class="model-title">${model.title || 'Без названия'}</h3>
             <div class="model-actions">
