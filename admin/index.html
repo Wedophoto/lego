@@ -317,6 +317,7 @@
                 const storedSections = localStorage.getItem('site_sections');
                 if (storedSections) {
                     state.sections = JSON.parse(storedSections);
+                    await SectionParser.parse();
                     console.log('📂 Разделы загружены из памяти');
                 } else {
                     // Если в памяти пусто - запускаем парсер
