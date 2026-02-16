@@ -1,0 +1,943 @@
+﻿<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Новые инструкции</title>
+    <link rel="stylesheet" type="text/css" href="../css/st.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="icon" href="../favicon.ico" type="image/x-icon">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            font-family: 'Roboto', sans-serif;
+            color: #333;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(0, 0, 0, 0.08);
+        }
+
+        #logo {
+            display: block;
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            background-image: url('https://z-cdn-media.chatglm.cn/files/ed419818-a62a-4644-82bb-f45de170a9c5.png?auth_key=1865820104-f6479c3904494ebb9b5a8de8d25be5f8-0-ccd233942ed4f23e23ad24c6029c3e0d');
+            background-size: cover;
+            background-position: center;
+        }
+
+        h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 2.8rem;
+            color: #2C3E50;
+            margin-bottom: 10px;
+            letter-spacing: 0.5px;
+        }
+
+        .telegram-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+            text-decoration: none;
+            font-size: 1.2rem;
+            font-weight: 500;
+            padding: 10px 20px;
+            background: #0088cc;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            margin-bottom: 30px;
+        }
+
+        .telegram-link:hover {
+            background: #0077b3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.2);
+        }
+
+        .telegram-link i {
+            font-size: 1.3rem;
+        }
+
+        .models-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+
+        .model-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .model-card:hover {
+            transform: translateY(-10px);
+            border-color: #4ECDC4;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .model-card:hover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #4ECDC4, #FF6B6B);
+        }
+
+        .model-image {
+            width: 100%;
+            height: 180px;
+            object-fit: contain;
+            margin-bottom: 20px;
+            border-radius: 12px;
+            background: #f8f9fa;
+            padding: 10px;
+        }
+
+        .model-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: #2C3E50;
+            margin-bottom: 15px;
+            line-height: 1.4;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
+        }
+
+        .model-title.two-words {
+            font-size: 1.2rem;
+        }
+
+        .model-details {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
+
+        .video-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: #0088cc;
+            color: white;
+            text-decoration: none;
+            border-radius: 25px;
+            font-weight: 500;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 136, 204, 0.2);
+        }
+
+        .video-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 18px rgba(0, 136, 204, 0.3);
+            background: #0077b3;
+        }
+
+        .video-btn i {
+            font-size: 0.9rem;
+        }
+
+        .instruction-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            width: 100%;
+            padding: 12px;
+            text-align: center;
+            background: #4ECDC4;
+            color: white;
+            text-decoration: none;
+            border-radius: 12px;
+            margin-top: auto;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(78, 205, 196, 0.3);
+        }
+
+        .instruction-btn:hover {
+            background: #3db9b0;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(78, 205, 196, 0.4);
+        }
+
+        .instruction-btn i {
+            font-size: 1rem;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            color: #4ECDC4;
+            text-decoration: none;
+            font-size: 1.1rem;
+            padding: 12px 25px;
+            background: rgba(78, 205, 196, 0.1);
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(78, 205, 196, 0.2);
+        }
+
+        .back-link:hover {
+            background: rgba(78, 205, 196, 0.2);
+            transform: translateX(-5px);
+            box-shadow: 0 4px 12px rgba(78, 205, 196, 0.2);
+        }
+
+        .back-link i {
+            font-size: 1rem;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(0, 0, 0, 0.08);
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        @media (max-width: 1200px) {
+            .models-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 900px) {
+            .models-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 600px) {
+            .models-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            h1 {
+                font-size: 1.8rem;
+            }
+            
+            body {
+                padding: 10px;
+            }
+            
+            .container {
+                padding: 15px;
+            }
+        }
+    </style>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106848012', 'ym');
+
+    ym(106848012, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/106848012" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+</head>
+<body>
+    <div class="container">
+        <header>
+            <a href="../index.html" id="logo"></a>
+            <h1>Новые инструкции</h1>
+            <a href="https://t.me/wedophoto" target="_blank" class="telegram-link">
+                <i class="fab fa-telegram-plane"></i>
+                @wedophoto
+            </a>
+        </header>
+
+        <div class="models-grid">          
+           
+            
+            
+            <!-- Ветроэлектростанция -->
+            <div class="model-card">
+                <img src="../instructions/images/578.jpg" alt="Ветроэлектростанция" class="model-image">
+                <h3 class="model-title two-words">Ветроэлектростанция</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/vetroelektrostantsiya-578.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Внедорожник -->
+            <div class="model-card">
+                <img src="../instructions/images/538.jpg" alt="Внедорожник" class="model-image">
+                <h3 class="model-title">Внедорожник</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/vnedorozhnik-538.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Грузовая платформа -->
+            <div class="model-card">
+                <img src="../instructions/images/555.jpg" alt="Грузовая платформа" class="model-image">
+                <h3 class="model-title two-words">Грузовая платформа</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/gruzovaya-platforma-555.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Заяц -->
+            <div class="model-card">
+                <img src="../instructions/images/540.jpg" alt="Заяц" class="model-image">
+                <h3 class="model-title">Заяц</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/zayats-540.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Землемерка -->
+            <div class="model-card">
+                <img src="../instructions/images/584.jpg" alt="Землемерка" class="model-image">
+                <h3 class="model-title">Землемерка</h3>
+                <div class="model-details">
+                    <a href="https://rutube.ru/shorts/fb306844d9b08da4c879ebbdd5aef970/" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/zemlemerka-584.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Илистый прыгун -->
+            <div class="model-card">
+                <img src="../instructions/images/541.jpg" alt="Илистый прыгун" class="model-image">
+                <h3 class="model-title two-words">Илистый прыгун</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/ilistyi-prygun-541.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Исследовательский спутник -->
+            <div class="model-card">
+                <img src="../instructions/images/561.jpg" alt="Исследовательский спутник" class="model-image">
+                <h3 class="model-title two-words">Исследовательский спутник</h3>
+                <div class="model-details">
+                    <a href="https://rutube.ru/shorts/5b2d2b6c9557cd260522ae4511cbc51f/" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/issledovatelskiy-sputnik-561.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Карусель -->
+            <div class="model-card">
+                <img src="../instructions/images/532.jpg" alt="Карусель" class="model-image">
+                <h3 class="model-title">Карусель</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/karusel-532.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Карусель "Ветерок" -->
+            <div class="model-card">
+                <img src="../instructions/images/550.jpg" alt="Карусель "Ветерок"" class="model-image">
+                <h3 class="model-title two-words">Карусель "Ветерок"</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/karusel-veterok-550.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Катамаран-исследователь -->
+            <div class="model-card">
+                <img src="../instructions/images/577.jpg" alt="Катамаран-исследователь" class="model-image">
+                <h3 class="model-title two-words">Катамаран-исследователь</h3>
+                <div class="model-details">
+                    <a href="https://rutube.ru/shorts/cb37b5d68b74d32cefc82747013e7407/" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/katamaran-issledovatel-577.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Конвертоплан -->
+            <div class="model-card">
+                <img src="../instructions/images/531.jpg" alt="Конвертоплан" class="model-image">
+                <h3 class="model-title">Конвертоплан</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/konvertoplan-531.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Кораблик на волнах -->
+            <div class="model-card">
+                <img src="../instructions/images/543.jpg" alt="Кораблик на волнах" class="model-image">
+                <h3 class="model-title two-words">Кораблик на волнах</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/korablik-na-volnah-543.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Корабль -->
+            <div class="model-card">
+                <img src="../instructions/images/544.jpg" alt="Корабль" class="model-image">
+                <h3 class="model-title">Корабль</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/korabl-544.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Космический лифт -->
+            <div class="model-card">
+                <img src="../instructions/images/559.jpg" alt="Космический лифт" class="model-image">
+                <h3 class="model-title two-words">Космический лифт</h3>
+                <div class="model-details">
+                    <a href="https://rutube.ru/shorts/00acc7ce55dc4e5721c7b948c3c36302/" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/kosmicheskiy-lift-559.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Космодром -->
+            <div class="model-card">
+                <img src="../instructions/images/582.jpg" alt="Космодром" class="model-image">
+                <h3 class="model-title">Космодром</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/kosmodrom-582.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Кот -->
+            <div class="model-card">
+                <img src="../instructions/images/545.jpg" alt="Кот" class="model-image">
+                <h3 class="model-title">Кот</h3>
+                <div class="model-details">
+                    <a href="https://rutube.ru/shorts/21937b0e191617587dda7a52f474c738/" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/kot-545.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Кот на велосипеде -->
+            <div class="model-card">
+                <img src="../instructions/images/536.jpg" alt="Кот на велосипеде" class="model-image">
+                <h3 class="model-title two-words">Кот на велосипеде</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/kot-na-velosipede-536.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Лягушонок -->
+            <div class="model-card">
+                <img src="../instructions/images/547.jpg" alt="Лягушонок" class="model-image">
+                <h3 class="model-title">Лягушонок</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/lyagushonok-547.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Машинка с двумя скоростями -->
+            <div class="model-card">
+                <img src="../instructions/images/586.jpg" alt="Машинка с двумя скоростями" class="model-image">
+                <h3 class="model-title two-words">Машинка с двумя скоростями</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/mashinka-s-dvumya-skorostyami-586.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Межзвёздный корабль -->
+            <div class="model-card">
+                <img src="../instructions/images/560.jpg" alt="Межзвёздный корабль" class="model-image">
+                <h3 class="model-title two-words">Межзвёздный корабль</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/mezhzvezdnyi-korabl-560.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Модель солнечной системы -->
+            <div class="model-card">
+                <img src="../instructions/images/581.jpg" alt="Модель солнечной системы" class="model-image">
+                <h3 class="model-title two-words">Модель солнечной системы</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/model-solnechnoi-sistemy-581.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Мотороллер -->
+            <div class="model-card">
+                <img src="../instructions/images/548.jpg" alt="Мотороллер" class="model-image">
+                <h3 class="model-title">Мотороллер</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/motoroller-548.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Муха -->
+            <div class="model-card">
+                <img src="../instructions/images/549.jpg" alt="Муха" class="model-image">
+                <h3 class="model-title">Муха</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/muha-549.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Робот на тележке -->
+            <div class="model-card">
+                <img src="../instructions/images/535.jpg" alt="Робот на тележке" class="model-image">
+                <h3 class="model-title two-words">Робот на тележке</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/robot-na-telezhke-535.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Робот пришельцев -->
+            <div class="model-card">
+                <img src="../instructions/images/567.jpg" alt="Робот пришельцев" class="model-image">
+                <h3 class="model-title two-words">Робот пришельцев</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/robot-prisheltsev-567.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Робот-защитник -->
+            <div class="model-card">
+                <img src="../instructions/images/568.jpg" alt="Робот-защитник" class="model-image">
+                <h3 class="model-title two-words">Робот-защитник</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/robot-zaschitnik-568.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Робот-искатель -->
+            <div class="model-card">
+                <img src="../instructions/images/564.jpg" alt="Робот-искатель" class="model-image">
+                <h3 class="model-title two-words">Робот-искатель</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/robot-iskatel-564.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Робот-лаборант -->
+            <div class="model-card">
+                <img src="../instructions/images/558.jpg" alt="Робот-лаборант" class="model-image">
+                <h3 class="model-title two-words">Робот-лаборант</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/robot-laborant-558.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Робот-охранник -->
+            <div class="model-card">
+                <img src="../instructions/images/569.jpg" alt="Робот-охранник" class="model-image">
+                <h3 class="model-title two-words">Робот-охранник</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/robot-ohrannik-569.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Самолёт -->
+            <div class="model-card">
+                <img src="../instructions/images/551.jpg" alt="Самолёт" class="model-image">
+                <h3 class="model-title">Самолёт</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/samolet-551.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Скоростной поезд -->
+            <div class="model-card">
+                <img src="../instructions/images/579.jpg" alt="Скоростной поезд" class="model-image">
+                <h3 class="model-title two-words">Скоростной поезд</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/skorostnoi-poezd-579.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Сноубордист -->
+            <div class="model-card">
+                <img src="../instructions/images/552.jpg" alt="Сноубордист" class="model-image">
+                <h3 class="model-title">Сноубордист</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/snoubordist-552.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Телескоп Хаббл -->
+            <div class="model-card">
+                <img src="../instructions/images/557.jpg" alt="Телескоп Хаббл" class="model-image">
+                <h3 class="model-title two-words">Телескоп Хаббл</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/teleskop-habbl-557.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Турнир роботов -->
+            <div class="model-card">
+                <img src="../instructions/images/570.jpg" alt="Турнир роботов" class="model-image">
+                <h3 class="model-title two-words">Турнир роботов</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/turnir-robotov-570.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Хакерский прибор -->
+            <div class="model-card">
+                <img src="../instructions/images/566.jpg" alt="Хакерский прибор" class="model-image">
+                <h3 class="model-title two-words">Хакерский прибор</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/hakerskiy-pribor-566.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Хаммер -->
+            <div class="model-card">
+                <img src="../instructions/images/575.jpg" alt="Хаммер" class="model-image">
+                <h3 class="model-title">Хаммер</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/hammer-575.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Харвестер -->
+            <div class="model-card">
+                <img src="../instructions/images/580.jpg" alt="Харвестер" class="model-image">
+                <h3 class="model-title">Харвестер</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/harvester-580.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Шагающий робот -->
+            <div class="model-card">
+                <img src="../instructions/images/533.jpg" alt="Шагающий робот" class="model-image">
+                <h3 class="model-title two-words">Шагающий робот</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/shagauschiy-robot-533.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Шагающий робот -->
+            <div class="model-card">
+                <img src="../instructions/images/556.jpg" alt="Шагающий робот" class="model-image">
+                <h3 class="model-title two-words">Шагающий робот</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/shagauschiy-robot-556.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+
+            <!-- Шагающий робот -->
+            <div class="model-card">
+                <img src="../instructions/images/585.jpg" alt="Шагающий робот" class="model-image">
+                <h3 class="model-title two-words">Шагающий робот</h3>
+                <div class="model-details">
+                    <a href="#" target="_blank" class="video-btn">
+                        <i class="fas fa-play"></i> Видео
+                    </a>
+                </div>
+                <a href="../instructions/shagauschiy-robot-585.pdf" target="_blank" class="instruction-btn">
+                    <i class="fas fa-file-pdf"></i> Открыть инструкцию
+                </a>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin: 40px 0;">
+            <a href="../index.html" class="back-link">
+                <i class="fas fa-arrow-left"></i> Вернуться в каталог
+            </a>
+        </div>
+
+        <div class="footer">
+            <p>Все новые инструкции</p>
+        </div>
+    </div>
+<script>
+        const SCRIPT_URL =
+  "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLgfUKbCxVhrXXxsT_IL1e44ur-yhlqrMslVRKq7Plm_2kTZCuNzbCAK6swVjo6wST-Rp8H1q_6iIr_iMTdBYDmoMM0QIV97ExRbrYJJA3ALyj3ySeDeKoZkgdpzLtSEdJjuIuWhta_lxzMelmLdumkIF4G4SS-MuG-k-v6sdRZChdwlq0okg9jdnJ47Ubw9kSCGqgR-Gzit1OzQR95ZX2prxPTCrZ6md0dM0bwueUvf2j5hc9Ct5hvA7HVOMUxv0yQBCDg-E5QRYTk9fY2OWEywT34jDw&lib=MbdC-l4jD6k0pdxUCM6Bsp1NLROFN8Rze"; // ← замените
+let fileMap = JSON.parse(localStorage.getItem("drivePdfMap") || "{}");
+
+// === ФУНКЦИЯ: ЗАГРУЗИТЬ СПИСОК ФАЙЛОВ И СОХРАНИТЬ В localStorage ===
+async function fetchAndSaveFileMap() {
+  try {
+    const res = await fetch(SCRIPT_URL);
+    if (!res.ok) throw new Error("Network error");
+    const data = await res.json();
+    localStorage.setItem("drivePdfMap", JSON.stringify(data));
+    fileMap = data; // обновляем глобальную переменную
+    console.log("Список PDF-файлов успешно загружен и сохранён в localStorage");
+  } catch (err) {
+    console.error("Не удалось загрузить список файлов:", err);
+  }
+}
+
+// === ФУНКЦИЯ: ОБРАБОТКА КЛИКА ПО PDF-ССЫЛКЕ ===
+function handlePdfClick(e) {
+  const link = e.target.closest('a[href$=".pdf"]');
+  if (!link) return;
+
+  e.preventDefault();
+  const filename = link.href.split("/").pop();
+
+  if (fileMap[filename]) {
+    // Открываем в просмотрщике Google Drive
+    window.open(
+      `https://drive.google.com/file/d/${fileMap[filename]}/view`,
+      "_blank",
+    );
+  } else {
+    // Файл не найден → принудительно обновляем список один раз
+    fetchAndSaveFileMap().then(() => {
+      if (fileMap[filename]) {
+        window.open(
+          `https://drive.google.com/file/d/${fileMap[filename]}/view`,
+          "_blank",
+        );
+      } else {
+        alert(`Файл "${filename}" не найден ни в кэше, ни на Google Диске.`);
+      }
+    });
+  }
+}
+
+// === ИНИЦИАЛИЗАЦИЯ ПРИ ЗАГРУЗКЕ ===
+document.addEventListener("DOMContentLoaded", () => {
+  // Назначаем обработчик кликов
+  document.addEventListener("click", handlePdfClick);
+
+  // Если localStorage пуст — сразу загружаем список файлов
+  if (Object.keys(fileMap).length === 0) {
+    console.log(
+      "localStorage пуст. Запускаем фоновую загрузку списка файлов...",
+    );
+    fetchAndSaveFileMap();
+  }
+});
+
+    </script>
+</body>
+
+</html>
