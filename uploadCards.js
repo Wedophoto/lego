@@ -117,9 +117,9 @@ function addFooterContent() {
     footerDiv.innerHTML = "";
 
     // Создаем и добавляем параграф
-    const paragraph = document.createElement("p");
-    paragraph.textContent = "Все модели автомобилей и мотоциклов";
-    footerDiv.appendChild(paragraph);
+    // const paragraph = document.createElement("p");
+    // paragraph.textContent = "Все модели автомобилей и мотоциклов";
+    // footerDiv.appendChild(paragraph);
 
     // Создаем ссылку
     const link = document.createElement("a");
