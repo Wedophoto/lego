@@ -5560,7 +5560,9 @@
   <script>
 // Конфигурация
 const ITEMS_PER_PAGE = 24;
+// Определение базового пути для GitHub Pages
 const BASE_PATH = window.location.hostname.includes('github.io') ? '/lego' : '';
+console.log('BASE_PATH:', BASE_PATH); // Для отладки
 let currentPage = 1;
 let filteredModels = [];
 let allModels = [];
@@ -5666,6 +5668,7 @@ function showCategories() {
 }
 
 // 5. Отрисовка карточек (с пагинацией)
+// 5. Отрисовка карточек (с пагинацией)
 function renderModels() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
@@ -5689,17 +5692,14 @@ function renderModels() {
         const card = document.createElement('div');
         card.className = 'model-card';
         
-        // ✅ Получаем информацию о категории
-        const categoryInfo = categoryMap[model.section] || { name: 'Категория', color: '#E0F7FA' };
-        const categoryHref = model.section ? `/teams/${model.section}.htm` : '#';
+        // ✅ ИСПРАВЛЕНИЕ ПУТЕЙ - убираем ../ и добавляем BASE_PATH
+        const imageUrl = model.imageUrl 
+            ? BASE_PATH + model.imageUrl.replace(/^\.\.\//, '') 
+            : '';
         
-        // ✅ Метка категории с уникальным цветом
-        const categoryBadge = model.section ? `
-            <a href="${categoryHref}" class="model-category" title="Перейти в категорию" 
-               style="background-color: ${categoryInfo.color}; border: 1px solid ${categoryInfo.color}80;">
-                <i class="fas fa-folder-open"></i> ${categoryInfo.name}
-            </a>
-        ` : '';
+        const pdfPath = model.pdf && model.pdf.name 
+            ? BASE_PATH + '/instructions/' + model.pdf.name 
+            : '#';
         
         // ✅ Проверка кнопки видео (только если есть реальная ссылка)
         const videoUrl = model.videoUrl ? model.videoUrl.trim() : '';
@@ -5710,10 +5710,20 @@ function renderModels() {
                 <i class="fas fa-play"></i> Видео
             </a>` : '';
         
-        const pdfPath = model.pdf && model.pdf.name ? "${BASE_PATH}/instructions/${model.pdf.name}" : '#';
+        // ✅ Получаем информацию о категории
+        const categoryInfo = categoryMap[model.section] || { name: 'Категория', color: '#E0F7FA' };
+        const categoryHref = model.section ? BASE_PATH + '/teams/' + model.section + '.htm' : '#';
+        
+        // ✅ Метка категории с уникальным цветом
+        const categoryBadge = model.section ? `
+            <a href="${categoryHref}" class="model-category" title="Перейти в категорию" 
+               style="background-color: ${categoryInfo.color}; border: 1px solid ${categoryInfo.color}80;">
+                <i class="fas fa-folder-open"></i> ${categoryInfo.name}
+            </a>
+        ` : '';
         
         card.innerHTML = `
-            <img src="${BASE_PATH}${model.imageUrl || ''}" alt="${model.title || 'Модель'}" class="model-image" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 150\'><rect fill=\'%23f0f0f0\' width=\'200\' height=\'150\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23999\' font-size=\'14\'>Нет фото</text></svg>'">
+            <img src="${imageUrl}" alt="${model.title || 'Модель'}" class="model-image" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 150\'><rect fill=\'%23f0f0f0\' width=\'200\' height=\'150\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23999\' font-size=\'14\'>Нет фото</text></svg>'">
             ${categoryBadge}
             <h3 class="model-title">${model.title || 'Без названия'}</h3>
             <div class="model-actions">
