@@ -58,3 +58,47 @@ document.addEventListener("DOMContentLoaded", () => {
     fetchAndSaveFileMap();
   }
 });
+
+(function updateSectionsCache() {
+  console.log("🔄 Обновление кэша разделов...");
+
+  // Ищем все карточки категорий на странице
+  const categoryCards = document.querySelectorAll(".category-card");
+
+  if (categoryCards.length === 0) {
+    console.warn("Категории на странице не найдены.");
+    return;
+  }
+
+  const sections = [];
+
+  categoryCards.forEach((card) => {
+    const linkEl = card; // Сам элемент 'a' является ссылкой
+    const nameEl = card.querySelector(".category-name");
+
+    if (linkEl && nameEl) {
+      const href = linkEl.getAttribute("href");
+      // Извлекаем ID: берем часть после последнего слеша и убираем .htm
+      let id = href;
+      if (id.includes("/")) {
+        id = id.substring(id.lastIndexOf("/") + 1);
+      }
+      if (id.endsWith(".htm")) {
+        id = id.replace(".htm", "");
+      }
+
+      sections.push({
+        id: id,
+        name: nameEl.innerText.trim(),
+      });
+    }
+  });
+
+  if (sections.length > 0) {
+    // Перезаписываем LocalStorage при каждом открытии
+    localStorage.setItem("site_sections", JSON.stringify(sections));
+    console.log(`✅ Кэш обновлен. Категорий записано: ${sections.length}`);
+  } else {
+    console.warn("Не удалось извлечь категории.");
+  }
+})();

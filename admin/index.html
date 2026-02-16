@@ -311,22 +311,33 @@
         };
         // --- ОСНОВНАЯ ЛОГИКА ---
         const App = {
-                                    init: async () => {
-                // 1. Сначала показываем то, что есть (для скорости)
+                             init: async () => {
+                // Вспомогательная функция для фильтрации (удаляем лишние категории)
+                const filterSections = (list) => {
+                    const excludeIds = ['random-cards', 'novye-instruktsii-new'];
+                    return list.filter(s => !excludeIds.includes(s.id));
+                };
+
+                // 1. Сначала берем из кэша
                 const cachedSections = localStorage.getItem('site_sections');
                 if (cachedSections) {
-                    state.sections = JSON.parse(cachedSections);
+                    // Фильтруем при загрузке из кэша
+                    state.sections = filterSections(JSON.parse(cachedSections));
                     UI.renderSidebar();
                 }
 
-                // 2. Гарантированно обновляем данные с сайта
-                console.log('🔄 Запуск актуализации списка разделов...');
+                // 2. Обновляем с сайта
+                console.log('🔄 Обновление списка разделов с сайта...');
                 try {
                     await SectionParser.parse(); 
-                    // SectionParser внутри сам обновляет state.sections и localStorage
-                    console.log('✅ Актуализация завершена.');
                     
-                    // Перерисовываем меню с обновленными данными
+                    // Фильтруем после обновления с сайта
+                    state.sections = filterSections(state.sections);
+                    
+                    // Обновляем кэш уже с отфильтрованным списком, чтобы не фильтровать каждый раз
+                    localStorage.setItem('site_sections', JSON.stringify(state.sections));
+                    
+                    console.log('✅ Разделы обновлены и отфильтрованы.');
                     UI.renderSidebar();
                 } catch (e) {
                     console.error('Ошибка при обновлении разделов:', e);
@@ -339,7 +350,7 @@
 
                 state.currentSection = state.sections[0].id;
 
-                // 3. Загружаем карточки
+                // 3. Загружаем данные
                 await Promise.all([App.loadCards(), App.loadPdfList()]);
                 UI.renderCards(state.currentSection);
             },
