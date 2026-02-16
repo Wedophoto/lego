@@ -7,7 +7,8 @@
   <link rel="stylesheet" type="text/css" href="css/st.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500&family=Baloo+2:wght@400;500;600&family=Bubblegum+Sans&family=Kalam:wght@400;700&family=Comic+Neue:wght@400;700&family=Luckiest+Guy&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="icon" href="../favicon.ico" type="image/x-icon">
+  <link rel="icon" href="favicon.ico" type="image/x-icon">
   <style>
     * {
       margin: 0;
@@ -4265,10 +4266,18 @@
       <h2 class="section-title">Выберите тематику</h2>
       
       <div class="categories-grid">
-        <div class="category-card lucky-card" id="luckyCard">
+        <!-- <div class="category-card lucky-card" id="luckyCard">
           <div class="category-name">🎲 На удачу</div>
           <div class="category-count">Случайная тематика</div>
-        </div>
+        </div> -->
+
+        <a href="teams/random-cards.htm" class="category-card lucky-card" id="cars-card">
+          <div class="category-name">На удачу</div>
+          <div class="category-count">Случайная тематика</div>
+          <!-- <div class="car-wheel">
+            <div class="car-wheel-inner"></div>
+          </div> -->
+        </a>
         
         <a href="teams/avtomobili-mototsikly-2.htm" class="category-card" id="cars-card">
           <div class="category-name">Автомобили, мотоциклы</div>
@@ -4594,7 +4603,7 @@
           </div>
         </a>
         
-        <a href="teams/novye-instruktsii-New.htm" class="category-card">
+        <a href="teams/novye-instruktsii-new.htm" class="category-card">
           <div class="category-name">Новые инструкции</div>
           <div class="category-count">Самые свежие модели</div>
         </a>
@@ -4753,6 +4762,10 @@
           <i class="fab fa-telegram-plane"></i> Связаться с тренером
         </a>
       </div>
+      <a href="https://t.me/kornilovsergey" target="_blank" rel="noopener noreferrer" class="creation-link">
+        Создание сайтов и телеграм ботов под ключ
+        <span class="arrow">↗</span>
+    </a>
       
       <!-- Кнопка переключения новогодних украшений -->
       <div class="christmas-toggle off" id="christmasToggle">
@@ -4929,7 +4942,7 @@
       }, 500);
     }
     
-    function updateClock() {
+    function updateClock() {      
       const now = new Date();
       const hours = String(now.getHours()).padStart(2, '0');
       const minutes = String(now.getMinutes()).padStart(2, '0');
@@ -5492,7 +5505,7 @@
       initBirthdayModal();
       
       initRobot();
-      initLuckyCard();
+      // initLuckyCard();
       initCarsCard();
       initNewYearCard();
       initMilitaryCard();
@@ -5519,7 +5532,7 @@
       initRoboticsWords(); // Инициализация слов "робототехника"
       
       // Инициализация часов
-      updateClock();
+      // updateClock();
       setInterval(updateClock, 1000);
     });
   </script>
