@@ -242,7 +242,7 @@
     @keyframes gradientShift { 0% { background-position: 0% 50%; } 50% { background-position: 100% 50%; } 100% { background-position: 0% 50%; } }
     .header::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 4px; background: linear-gradient(90deg, #001f3f, #0074D9, #39CCCC, #7FDBFF); animation: borderGlow 3s ease-in-out infinite; }
     @keyframes borderGlow { 0%, 100% { opacity: 0.6; transform: scaleY(1); } 50% { opacity: 1; transform: scaleY(1.2); } }
-    #logo { display: block; width: 60px; height: 60px; margin: 0 auto 15px; background: url('https://z-cdn-media.chatglm.cn/files/7894cef7-a5a9-4675-9476-489987bc53b7.png?auth_key=1865810457-c4576ce48b764f6a94f3614b2dc65efd-0-9eb6ef338f25b0033ce0054d50bc3430') center/cover no-repeat; border-radius: 50%; text-decoration: none; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 0, 0, 0.2); transition: all 0.4s ease; position: relative; overflow: hidden; flex-shrink: 0; border: 2px solid rgba(255, 255, 255, 0.7); z-index: 15; }
+    #logo { display: block; width: 60px; height: 60px; margin: 0 auto 15px; background: url('instructions/images/logo.webp') center/cover no-repeat; border-radius: 50%; text-decoration: none; box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4), 0 0 15px rgba(0, 0, 0, 0.2); transition: all 0.4s ease; position: relative; overflow: hidden; flex-shrink: 0; border: 2px solid rgba(255, 255, 255, 0.7); z-index: 15; }
     #logo:hover { transform: scale(1.05) rotate(3deg); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 0, 0, 0.3); border-color: rgba(255, 255, 255, 0.9); }
     .header-content { display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; gap: 8px; position: relative; z-index: 15; }
     .main-title { font-family: 'Montserrat', sans-serif; font-weight: 800; font-size: 1.4rem; color: #ffffff; margin: 0; letter-spacing: 0.5px; line-height: 1.2; text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3); background: rgba(0, 0, 0, 0.2); padding: 8px 20px; border-radius: 25px; backdrop-filter: blur(5px); }
@@ -678,6 +678,7 @@
     .category-card:hover .car-wheel { animation: wheelFallAndRoll 1.5s ease-in-out; }
     
     /* Новогодние украшения */
+    @media (max-width: 767px) {
     .christmas-ornaments { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 20; }
     .christmas-garland { position: absolute; top: 0; left: 0; width: 100%; height: 40px; display: flex; justify-content: space-around; align-items: center; opacity: 0; }
     .garland-light { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
@@ -705,6 +706,7 @@
     #newyear-card.animate-newyear .snowflake.flake4 { animation: snowfall 3.2s linear infinite; }
     #newyear-card.animate-newyear .snowflake.flake5 { animation: snowfall 2.5s linear infinite; }
     #newyear-card.animate-newyear .snowflake.flake6 { animation: snowfall 3.8s linear infinite; }
+    }
     
     /* Анимация космического корабля в карточке "Звездные войны" */
     .starwars-spaceship-container {
@@ -4236,7 +4238,7 @@
         </div>
       </div>
       
-      <a href="/" id="logo"></a>
+      <a href="#" id="logo"></a>
       
       <div class="qr-code-container" onclick="window.open('https://t.me/TRENERWEDO', '_blank')">
         <div class="qr-code"></div>
@@ -4264,8 +4266,20 @@
     
     <section class="section">
       <h2 class="section-title">Выберите тематику</h2>
+
+      <!-- БЛОК ПОИСКА (Вставить после h2) -->
+      <div class="search-wrapper">
+        <div class="search-box">
+            <i class="fas fa-search search-icon"></i>
+            <input type="text" id="modelSearchInput" placeholder="Поиск модели (например: автомобиль, робот, танк)..." autocomplete="off">
+            <button class="search-clear" id="searchClearBtn" title="Очистить">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="search-stats" id="searchStats">Введите запрос для поиска</div>
+    </div>
       
-      <div class="categories-grid">
+      <div class="categories-grid" id="categoriesGrid">
         <!-- <div class="category-card lucky-card" id="luckyCard">
           <div class="category-name">🎲 На удачу</div>
           <div class="category-count">Случайная тематика</div>
@@ -4608,6 +4622,12 @@
           <div class="category-count">Самые свежие модели</div>
         </a>
       </div>
+
+      <!-- Сетка результатов поиска (Скрыта по умолчанию) -->
+    <div class="models-grid" id="modelsGrid" style="display: none;"></div>
+    
+    <!-- Пагинация (Скрыта по умолчанию) -->
+    <div class="pagination" id="pagination" style="display: none;"></div>
     </section>
     
     <section class="section books-section">
@@ -5536,6 +5556,295 @@
       setInterval(updateClock, 1000);
     });
   </script>
+
+  <script>
+// Конфигурация
+const ITEMS_PER_PAGE = 24;
+// Определение базового пути для GitHub Pages
+const BASE_PATH = window.location.hostname.includes('github.io') ? '/lego/' : '';
+console.log('BASE_PATH:', BASE_PATH); // Для отладки
+let currentPage = 1;
+let filteredModels = [];
+let allModels = [];
+let categoryMap = {}; // Словарь: section_id -> {name, color}
+
+// Цвета для категорий
+const CATEGORY_COLORS = [
+    '#E0F7FA', '#E1F5FE', '#E3F2FD', '#E8EAF6', '#EDE7F6',
+    '#F3E5F5', '#FCE4EC', '#FFEBEE', '#FBE9E7', '#FFF3E0',
+    '#FFF8E1', '#F9FBE7', '#F1F8E9', '#E8F5E9', '#E0F2F1',
+    '#E0F7FA', '#E1F5FE', '#E8EAF6', '#F3E5F5', '#FFEBEE',
+    '#FFF3E0', '#F9FBE7', '#F1F8E9', '#E0F2F1', '#FCE4EC',
+    '#FBE9E7', '#FFF8E1', '#E8F5E9', '#E0F7FA', '#E1F5FE'
+];
+
+// Элементы DOM
+const searchInput = document.getElementById('modelSearchInput');
+const searchClearBtn = document.getElementById('searchClearBtn');
+const searchStats = document.getElementById('searchStats');
+const categoriesGrid = document.getElementById('categoriesGrid');
+const modelsGrid = document.getElementById('modelsGrid');
+const paginationContainer = document.getElementById('pagination');
+
+// 1. Загрузка данных из localStorage
+function loadModels() {
+    try {
+        // Загружаем модели
+        const storedModels = localStorage.getItem('site_cards');
+        if (storedModels) {
+            allModels = JSON.parse(storedModels);
+            console.log(`Загружено моделей: ${allModels.length}`);
+        } else {
+            console.warn('site_cards не найден в localStorage');
+            allModels = [];
+        }
+        
+        // Загружаем категории
+        const storedSections = localStorage.getItem('site_sections');
+        if (storedSections) {
+            const sections = JSON.parse(storedSections);
+            // Создаём карту категорий с цветами
+            sections.forEach((section, index) => {
+                categoryMap[section.id] = {
+                    name: section.name,
+                    color: CATEGORY_COLORS[index % CATEGORY_COLORS.length]
+                };
+            });
+            console.log(`Загружено категорий: ${sections.length}`);
+        } else {
+            console.warn('site_sections не найден в localStorage');
+        }
+    } catch (e) {
+        console.error('Ошибка чтения localStorage:', e);
+        allModels = [];
+        categoryMap = {};
+    }
+}
+
+// 2. Нормализация текста для поиска (убираем регистр, ё->е)
+function normalizeText(text) {
+    return text.toLowerCase()
+        .replace(/ё/g, 'е')
+        .replace(/[^a-zа-я0-9\s]/gi, '')
+        .trim();
+}
+
+// 3. Поиск и фильтрация (ТОЛЬКО ПО НАЗВАНИЮ)
+function performSearch(query) {
+    const normalizedQuery = normalizeText(query);
+    
+    if (!normalizedQuery || normalizedQuery.length < 2) {
+        // Если запрос короткий или пустой - скрываем результаты, показываем категории
+        showCategories();
+        searchStats.textContent = query ? 'Введите минимум 2 символа' : 'Введите запрос для поиска';
+        return;
+    }
+    
+    // ✅ Фильтрация ТОЛЬКО по названию модели (title)
+    filteredModels = allModels.filter(model => {
+        const title = normalizeText(model.title || '');
+        return title.includes(normalizedQuery);
+    });
+    
+    currentPage = 1;
+    renderModels();
+    updateStats();
+    showSearchResults();
+}
+
+// 4. Переключение видимости
+function showSearchResults() {
+    categoriesGrid.style.display = 'none';
+    modelsGrid.style.display = 'grid';
+    paginationContainer.style.display = 'flex';
+}
+
+function showCategories() {
+    categoriesGrid.style.display = 'grid';
+    modelsGrid.style.display = 'none';
+    paginationContainer.style.display = 'none';
+    modelsGrid.innerHTML = '';
+    paginationContainer.innerHTML = '';
+}
+
+// 5. Отрисовка карточек (с пагинацией)
+function renderModels() {
+    const start = (currentPage - 1) * ITEMS_PER_PAGE;
+    const end = start + ITEMS_PER_PAGE;
+    const pageData = filteredModels.slice(start, end);
+    
+    modelsGrid.innerHTML = '';
+    
+    if (pageData.length === 0) {
+        modelsGrid.innerHTML = `
+            <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #7f8c8d;">
+                <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
+                <p style="font-size: 1.2rem;">Ничего не найдено</p>
+                <p>Попробуйте изменить запрос</p>
+            </div>
+        `;
+        paginationContainer.innerHTML = '';
+        return;
+    }
+    
+    pageData.forEach(model => {
+        const card = document.createElement('div');
+        card.className = 'model-card';
+        
+        // ✅ ИСПРАВЛЕНИЕ: Умная обработка путей для картинок
+        let imageUrl = '';
+        if (model.imageUrl) {
+            // Если ссылка абсолютная (начинается с http/https), оставляем как есть
+            if (model.imageUrl.startsWith('http://') || model.imageUrl.startsWith('https://')) {
+                imageUrl = model.imageUrl;
+            } else {
+                // Если относительная, убираем ../ и добавляем BASE_PATH
+                imageUrl = BASE_PATH + model.imageUrl.replace(/^\.\.\//, '');
+            }
+        }
+        
+        // ✅ ИСПРАВЛЕНИЕ: Умная обработка путей для PDF
+        let pdfPath = '#';
+        if (model.pdf && model.pdf.name) {
+            const rawPdfPath = `../instructions/${model.pdf.name}`;
+            if (rawPdfPath.startsWith('http://') || rawPdfPath.startsWith('https://')) {
+                pdfPath = rawPdfPath;
+            } else {
+                pdfPath = BASE_PATH + rawPdfPath.replace(/^\.\.\//, '');
+            }
+        }
+        
+        // ✅ Проверка кнопки видео (только если есть реальная ссылка)
+        const videoUrl = model.videoUrl ? model.videoUrl.trim() : '';
+        const hasValidVideo = videoUrl && videoUrl !== '#' && videoUrl.length > 1;
+        
+        const videoBtn = hasValidVideo ? `
+            <a href="${videoUrl}" target="_blank" class="action-btn btn-video">
+                <i class="fas fa-play"></i> Видео
+            </a>` : '';
+        
+        // ✅ Получаем информацию о категории
+        const categoryInfo = categoryMap[model.section] || { name: 'Категория', color: '#E0F7FA' };
+        
+        // ✅ Обработка ссылки на категорию
+        let categoryHref = '#';
+        if (model.section) {
+            const rawCatPath = `/teams/${model.section}.htm`;
+            if (rawCatPath.startsWith('http://') || rawCatPath.startsWith('https://')) {
+                categoryHref = rawCatPath;
+            } else {
+                categoryHref = BASE_PATH + rawCatPath;
+            }
+        }
+        
+        const categoryBadge = model.section ? `
+            <a href="${categoryHref}" class="model-category" title="Перейти в категорию" 
+               style="background-color: ${categoryInfo.color}; border: 1px solid ${categoryInfo.color}80;">
+                <i class="fas fa-folder-open"></i> ${categoryInfo.name}
+            </a>
+        ` : '';
+        
+        card.innerHTML = `
+            <img src="${imageUrl}" alt="${model.title || 'Модель'}" class="model-image" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 150\'><rect fill=\'%23f0f0f0\' width=\'200\' height=\'150\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23999\' font-size=\'14\'>Нет фото</text></svg>'">
+            ${categoryBadge}
+            <h3 class="model-title">${model.title || 'Без названия'}</h3>
+            <div class="model-actions">
+                ${videoBtn}
+                <a href="${pdfPath}" target="_blank" class="action-btn btn-pdf">
+                    <i class="fas fa-file-pdf"></i> Инструкция
+                </a>
+            </div>
+        `;
+        modelsGrid.appendChild(card);
+    });
+    
+    renderPagination();
+}
+
+// 6. Отрисовка пагинации
+function renderPagination() {
+    const totalPages = Math.ceil(filteredModels.length / ITEMS_PER_PAGE);
+    paginationContainer.innerHTML = '';
+    
+    if (totalPages <= 1) return;
+    
+    // Кнопка "Назад"
+    const prevBtn = document.createElement('button');
+    prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+    prevBtn.disabled = currentPage === 1;
+    prevBtn.onclick = () => { currentPage--; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    paginationContainer.appendChild(prevBtn);
+    
+    // Логика отображения страниц (1 ... 5 6 7 ... 10)
+    let startPage = Math.max(1, currentPage - 2);
+    let endPage = Math.min(totalPages, currentPage + 2);
+    
+    if (startPage > 1) {
+        const firstBtn = document.createElement('button');
+        firstBtn.textContent = '1';
+        firstBtn.onclick = () => { currentPage = 1; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+        paginationContainer.appendChild(firstBtn);
+        if (startPage > 2) {
+            const dots = document.createElement('span');
+            dots.textContent = '...';
+            dots.style.padding = '10px';
+            paginationContainer.appendChild(dots);
+        }
+    }
+    
+    for (let i = startPage; i <= endPage; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        btn.className = i === currentPage ? 'active' : '';
+        btn.onclick = () => { currentPage = i; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+        paginationContainer.appendChild(btn);
+    }
+    
+    if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+            const dots = document.createElement('span');
+            dots.textContent = '...';
+            dots.style.padding = '10px';
+            paginationContainer.appendChild(dots);
+        }
+        const lastBtn = document.createElement('button');
+        lastBtn.textContent = totalPages;
+        lastBtn.onclick = () => { currentPage = totalPages; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+        paginationContainer.appendChild(lastBtn);
+    }
+    
+    // Кнопка "Вперед"
+    const nextBtn = document.createElement('button');
+    nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+    nextBtn.disabled = currentPage === totalPages;
+    nextBtn.onclick = () => { currentPage++; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+    paginationContainer.appendChild(nextBtn);
+}
+
+// 7. Обновление статистики
+function updateStats() {
+    searchStats.textContent = `Найдено: ${filteredModels.length} моделей`;
+}
+
+// 8. Обработчики событий
+searchInput.addEventListener('input', (e) => {
+    const value = e.target.value;
+    performSearch(value);
+    searchClearBtn.classList.toggle('active', value.length > 0);
+});
+
+searchClearBtn.addEventListener('click', () => {
+    searchInput.value = '';
+    searchClearBtn.classList.remove('active');
+    performSearch('');
+    searchInput.focus();
+});
+
+// 9. Инициализация
+document.addEventListener('DOMContentLoaded', () => {
+    loadModels();
+});
+</script>
   <script src="gscript.js"></script>
 </body>
 </html>
