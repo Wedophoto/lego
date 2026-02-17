@@ -5668,7 +5668,6 @@ function showCategories() {
 }
 
 // 5. Отрисовка карточек (с пагинацией)
-// 5. Отрисовка карточек (с пагинацией)
 function renderModels() {
     const start = (currentPage - 1) * ITEMS_PER_PAGE;
     const end = start + ITEMS_PER_PAGE;
@@ -5692,14 +5691,28 @@ function renderModels() {
         const card = document.createElement('div');
         card.className = 'model-card';
         
-        // ✅ ИСПРАВЛЕНИЕ ПУТЕЙ - убираем ../ и добавляем BASE_PATH
-        const imageUrl = model.imageUrl 
-            ? BASE_PATH + model.imageUrl.replace(/^\.\.\//, '') 
-            : '';
+        // ✅ ИСПРАВЛЕНИЕ: Умная обработка путей для картинок
+        let imageUrl = '';
+        if (model.imageUrl) {
+            // Если ссылка абсолютная (начинается с http/https), оставляем как есть
+            if (model.imageUrl.startsWith('http://') || model.imageUrl.startsWith('https://')) {
+                imageUrl = model.imageUrl;
+            } else {
+                // Если относительная, убираем ../ и добавляем BASE_PATH
+                imageUrl = BASE_PATH + model.imageUrl.replace(/^\.\.\//, '');
+            }
+        }
         
-        const pdfPath = model.pdf && model.pdf.name 
-            ? BASE_PATH + '/instructions/' + model.pdf.name 
-            : '#';
+        // ✅ ИСПРАВЛЕНИЕ: Умная обработка путей для PDF
+        let pdfPath = '#';
+        if (model.pdf && model.pdf.name) {
+            const rawPdfPath = `../instructions/${model.pdf.name}`;
+            if (rawPdfPath.startsWith('http://') || rawPdfPath.startsWith('https://')) {
+                pdfPath = rawPdfPath;
+            } else {
+                pdfPath = BASE_PATH + rawPdfPath.replace(/^\.\.\//, '');
+            }
+        }
         
         // ✅ Проверка кнопки видео (только если есть реальная ссылка)
         const videoUrl = model.videoUrl ? model.videoUrl.trim() : '';
@@ -5712,9 +5725,18 @@ function renderModels() {
         
         // ✅ Получаем информацию о категории
         const categoryInfo = categoryMap[model.section] || { name: 'Категория', color: '#E0F7FA' };
-        const categoryHref = model.section ? BASE_PATH + '/teams/' + model.section + '.htm' : '#';
         
-        // ✅ Метка категории с уникальным цветом
+        // ✅ Обработка ссылки на категорию
+        let categoryHref = '#';
+        if (model.section) {
+            const rawCatPath = `/teams/${model.section}.htm`;
+            if (rawCatPath.startsWith('http://') || rawCatPath.startsWith('https://')) {
+                categoryHref = rawCatPath;
+            } else {
+                categoryHref = BASE_PATH + rawCatPath;
+            }
+        }
+        
         const categoryBadge = model.section ? `
             <a href="${categoryHref}" class="model-category" title="Перейти в категорию" 
                style="background-color: ${categoryInfo.color}; border: 1px solid ${categoryInfo.color}80;">
