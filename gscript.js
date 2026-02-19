@@ -1,5 +1,5 @@
 const SCRIPT_URL =
-  "https://script.google.com/macros/s/AKfycbxzqCJUNlmfTGmF2Nb__XTz0ruVL40pvzp63Vy-TbiBJzRrsA1x-fN5-DlChAa8j3Om/exec"; // ← замените
+  "https://script.google.com/macros/s/AKfycbyQBWZZRrIGT6HIy78uvYqNqqo2CDISHIqOPMPTEG1mCvH4gxEn9QJXqlYaHVAV0zBu/exec"; // ← замените
 let fileMap = JSON.parse(localStorage.getItem("drivePdfMap") || "{}");
 
 // === ФУНКЦИЯ: ЗАГРУЗИТЬ СПИСОК ФАЙЛОВ И СОХРАНИТЬ В localStorage ===
