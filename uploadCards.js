@@ -5,78 +5,171 @@ const GAS_APP_URL =
 // Главная функция, объединяющая все операции
 (async function initPage() {
   console.log("🚀 Инициализация страницы...");
+  console.log("📊 ========== НАЧАЛО ЛОГИРОВАНИЯ ==========");
 
   // 1. Получаем ID секции из URL
   const pathName = window.location.pathname;
   const sectionId =
     pathName.substring(pathName.lastIndexOf("/") + 1).replace(".htm", "") ||
     "general";
-  console.log(`Текущая секция (ID): ${sectionId}`);
+  console.log(`📍 Текущая секция (ID): ${sectionId}`);
 
   // 2. Загружаем старые данные для сравнения (если есть)
   const oldDataRaw = localStorage.getItem("site_cards");
-  const oldCards = oldDataRaw ? JSON.parse(oldDataRaw) : [];
-  const oldIds = new Set(oldCards.map((c) => c.id));
+  let oldCards = [];
+  let oldIds = new Set();
+
+  if (oldDataRaw) {
+    try {
+      oldCards = JSON.parse(oldDataRaw);
+      oldIds = new Set(oldCards.map((c) => c.id));
+      console.log(`📦 LocalStorage: загружено ${oldCards.length} карточек`);
+      console.log(
+        `📦 ID карточек в LocalStorage:`,
+        oldCards.map((c) => c.id).join(", "),
+      );
+    } catch (e) {
+      console.warn("⚠️ LocalStorage поврежден");
+      oldCards = [];
+    }
+  } else {
+    console.log("📭 LocalStorage пуст (нет сохраненных карточек)");
+  }
 
   let allCards = [];
 
   // 3. Сначала пробуем из LocalStorage (быстро)
-  if (oldDataRaw) {
+  if (oldDataRaw && oldCards.length > 0) {
     try {
-      allCards = JSON.parse(oldDataRaw);
-      console.log("📦 Данные загружены из LocalStorage");
+      allCards = oldCards;
+      console.log(
+        "✅ Данные загружены из LocalStorage для быстрого отображения",
+      );
       renderGrid(allCards); // Рисуем то, что есть
     } catch (e) {
-      console.warn("LocalStorage поврежден");
+      console.warn("⚠️ Ошибка при использовании LocalStorage:", e);
     }
   }
 
   // 4. Один запрос к серверу для всего
   try {
-    console.log("⏳ Загружаем данные с сервера...");
+    console.log("⏳ Запрашиваем данные с сервера...");
+    console.time("⏱️ Время запроса к серверу");
+
     const res = await fetch(GAS_APP_URL + "?action=getCards&t=" + Date.now());
     const newCardsAll = await res.json();
 
+    console.timeEnd("⏱️ Время запроса к сервером");
+
     if (Array.isArray(newCardsAll)) {
+      console.log(`🌐 Сервер вернул ${newCardsAll.length} карточек`);
+      console.log(
+        `🌐 ID карточек с сервера:`,
+        newCardsAll.map((c) => c.id).join(", "),
+      );
+
       allCards = newCardsAll;
+
+      // Сравниваем количество
+      if (oldCards.length > 0) {
+        console.log(`📊 Сравнение:`);
+        console.log(`   - В LocalStorage: ${oldCards.length} карточек`);
+        console.log(`   - На сервере: ${newCardsAll.length} карточек`);
+
+        if (newCardsAll.length > oldCards.length) {
+          console.log(
+            `📈 На сервере на ${newCardsAll.length - oldCards.length} карточек БОЛЬШЕ`,
+          );
+        } else if (newCardsAll.length < oldCards.length) {
+          console.log(
+            `📉 На сервере на ${oldCards.length - newCardsAll.length} карточек МЕНЬШЕ`,
+          );
+        } else {
+          console.log(
+            `📊 Количество карточек совпадает (${newCardsAll.length})`,
+          );
+        }
+      } else {
+        console.log(
+          `📊 В LocalStorage не было данных, загружено ${newCardsAll.length} карточек с сервера`,
+        );
+      }
 
       // Сохраняем в кэш
       localStorage.setItem("site_cards", JSON.stringify(allCards));
-      console.log("✅ Данные обновлены с сервера");
+      console.log("💾 Данные сохранены в LocalStorage");
 
       // Перерисовываем с актуальными данными
+      console.log("🎨 Перерисовываем сетку с актуальными данными...");
       renderGrid(allCards);
 
       // 5. Проверяем новые карточки
+      console.log("🔍 Проверяем наличие новых карточек...");
       const newItems = newCardsAll.filter((c) => !oldIds.has(c.id));
 
       if (newItems.length > 0) {
-        console.log(`🎉 Найдено новых карточек: ${newItems.length}`);
+        console.log(`🎉 НАЙДЕНО НОВЫХ КАРТОЧЕК: ${newItems.length}`);
+        console.log(
+          `🆕 ID новых карточек:`,
+          newItems.map((c) => c.id).join(", "),
+        );
+        console.log(
+          `🆕 Названия новых карточек:`,
+          newItems.map((c) => c.title).join('", "'),
+        );
 
         // Сохраняем ID новых карточек
         const newIds = newItems.map((c) => c.id);
         localStorage.setItem("notification_card_ids", JSON.stringify(newIds));
+        console.log("💾 ID новых карточек сохранены в notification_card_ids");
 
         // Показываем уведомление
         showNotification(newItems.length);
       } else {
-        console.log("✅ Нет новых инструкций.");
+        console.log("✅ Новых карточек не обнаружено");
+
+        // Проверяем, не было ли удалений
+        const deletedItems = oldCards.filter(
+          (c) => !new Set(newCardsAll.map((n) => n.id)).has(c.id),
+        );
+        if (deletedItems.length > 0) {
+          console.log(
+            `🗑️ Обнаружено удаленных карточек: ${deletedItems.length}`,
+          );
+          console.log(
+            `🗑️ ID удаленных карточек:`,
+            deletedItems.map((c) => c.id).join(", "),
+          );
+        }
       }
+    } else {
+      console.error("❌ Сервер вернул не массив данных:", newCardsAll);
     }
   } catch (e) {
-    console.error("Ошибка загрузки с сервера, работаем с кэшем:", e);
+    console.error("❌ Ошибка загрузки с сервера, работаем с кэшем:", e);
   }
+
+  console.log("📊 ========== КОНЕЦ ЛОГИРОВАНИЯ ==========");
 
   // 6. Функция отрисовки
   function renderGrid(cards) {
+    console.log(`🎨 Вызвана renderGrid с ${cards.length} карточками`);
+
     const container = document.querySelector(".models-grid");
     if (!container) {
-      console.warn("Контейнер .models-grid не найден на странице.");
+      console.warn("⚠️ Контейнер .models-grid не найден на странице.");
       return;
     }
 
     const sectionCards = cards.filter((c) => c.section === sectionId);
-    if (sectionCards.length === 0) return;
+    console.log(
+      `🎯 Для секции "${sectionId}" отобрано ${sectionCards.length} карточек`,
+    );
+
+    if (sectionCards.length === 0) {
+      console.log(`📭 В секции "${sectionId}" нет карточек`);
+      return;
+    }
 
     const html = sectionCards
       .map((card) => {
@@ -103,17 +196,21 @@ const GAS_APP_URL =
       .join("");
 
     container.innerHTML = html;
-    console.log(`🎨 Отрисовано карточек: ${sectionCards.length}`);
+    console.log(`✅ Отрисовано карточек в сетке: ${sectionCards.length}`);
   }
 
   // 7. Функция показа уведомления
   function showNotification(count) {
+    console.log(`🔔 Показываем уведомление о ${count} новых карточках`);
+
     const toast = document.createElement("div");
     toast.className = "new-notify-toast";
 
     const currentUrl = window.location.href;
     const link = `novye-instruktsii-new.htm?q=${count}`;
     const finalLink = currentUrl.includes("teams/") ? link : `teams/${link}`;
+
+    console.log(`🔗 Ссылка в уведомлении: ${finalLink}`);
 
     toast.innerHTML = `
       <div class="new-notify-content">
@@ -126,6 +223,7 @@ const GAS_APP_URL =
 
     toast.addEventListener("click", (e) => {
       if (!e.target.classList.contains("new-notify-close")) {
+        console.log(`👆 Клик по уведомлению, переходим на: ${finalLink}`);
         window.location.href = finalLink;
       }
     });
@@ -135,24 +233,113 @@ const GAS_APP_URL =
 
     setTimeout(() => {
       toast.classList.remove("show");
-      setTimeout(() => toast.remove(), 400);
+      setTimeout(() => {
+        toast.remove();
+        console.log("🔔 Уведомление скрыто");
+      }, 400);
     }, 15000);
+
+    console.log("🔔 Уведомление отображено");
   }
 })();
 
-// Функция для добавления контента в footer (оставляем без изменений)
+// Функция для добавления контента в footer
 function addFooterContent() {
-  // ... (код функции остается без изменений)
+  console.log("🦶 Добавляем контент в footer...");
+
+  const footerDiv = document.querySelector("div.footer");
+  if (footerDiv) {
+    footerDiv.innerHTML = "";
+
+    const link = document.createElement("a");
+    link.href = "https://t.me/kornilovsergey";
+    link.target = "_blank";
+    link.rel = "noopener noreferrer";
+    link.className = "creation-link";
+
+    link.appendChild(
+      document.createTextNode("Создание сайтов и телеграм ботов под ключ"),
+    );
+
+    const arrowSpan = document.createElement("span");
+    arrowSpan.className = "arrow";
+    arrowSpan.textContent = "↗";
+    link.appendChild(arrowSpan);
+
+    footerDiv.appendChild(link);
+    addFooterStyles();
+
+    console.log("✅ Контент успешно добавлен в footer");
+  } else {
+    console.log("❌ Div с классом footer не найден");
+  }
 }
 
-// Функция для добавления стилей (оставляем без изменений)
+// Функция для добавления стилей
 function addFooterStyles() {
-  // ... (код функции остается без изменений)
+  if (!document.getElementById("footer-styles")) {
+    console.log("🎨 Добавляем стили для footer...");
+
+    const styleElement = document.createElement("style");
+    styleElement.id = "footer-styles";
+    styleElement.textContent = `
+      .footer {
+        background-color: #f5f5f5;
+        padding: 20px;
+        text-align: center;
+        font-family: Arial, sans-serif;
+        border-top: 1px solid #ddd;
+      }
+
+      .footer p {
+        margin: 0 0 10px 0;
+        color: #333;
+        font-size: 14px;
+      }
+
+      .creation-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 12px;
+        color: #666;
+        text-decoration: none;
+        padding: 4px 12px;
+        border: 1px solid #ccc;
+        border-radius: 20px;
+        transition: all 0.3s ease;
+        background-color: white;
+        letter-spacing: 0.3px;
+      }
+
+      .creation-link:hover {
+        color: #0088cc;
+        border-color: #0088cc;
+        background-color: #f0f9ff;
+        transform: translateY(-1px);
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      }
+
+      .arrow {
+        font-size: 14px;
+        line-height: 1;
+        transition: transform 0.2s ease;
+      }
+
+      .creation-link:hover .arrow {
+        transform: translate(2px, -2px);
+      }
+    `;
+    document.head.appendChild(styleElement);
+    console.log("✅ Стили для footer добавлены");
+  }
 }
 
 // Запускаем функцию после полной загрузки DOM
 if (document.readyState === "loading") {
+  console.log("⏳ DOM загружается, добавляем обработчик...");
   document.addEventListener("DOMContentLoaded", addFooterContent);
 } else {
+  console.log("✅ DOM уже загружен, запускаем addFooterContent...");
   addFooterContent();
 }
