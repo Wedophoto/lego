@@ -611,112 +611,101 @@
 <script>
     // --- КОНФИГУРАЦИЯ ---
     const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbxzqCJUNlmfTGmF2Nb__XTz0ruVL40pvzp63Vy-TbiBJzRrsA1x-fN5-DlChAa8j3Om/exec';
-
-    // Палитра мягких цветов (30 штук)
-    const CATEGORY_COLORS = [
+    
+    // Палитра мягких цветов
+    const NEWS_CATEGORY_COLORS = [
         '#E0F7FA', '#E1F5FE', '#E3F2FD', '#E8EAF6', '#EDE7F6', '#F3E5F5', '#FCE4EC', '#FFEBEE', '#FBE9E7', '#FFF3E0', 
         '#FFF8E1', '#F9FBE7', '#F1F8E9', '#E8F5E9', '#E0F2F1', '#E0F7FA', '#E1F5FE', '#E8EAF6', '#F3E5F5', '#FFEBEE',
         '#FFF3E0', '#F9FBE7', '#F1F8E9', '#E0F2F1', '#FCE4EC', '#FBE9E7', '#FFF8E1', '#E8F5E9', '#E0F7FA', '#E1F5FE'
     ];
 
-    function getCategoryColor(sectionId) {
+    function getNewsColor(sectionId) {
         let hash = 0;
         for (let i = 0; i < sectionId.length; i++) {
             hash = sectionId.charCodeAt(i) + ((hash << 5) - hash);
         }
-        return CATEGORY_COLORS[Math.abs(hash) % CATEGORY_COLORS.length];
+        return NEWS_CATEGORY_COLORS[Math.abs(hash) % NEWS_CATEGORY_COLORS.length];
     }
 
     (async function initRecentGrid() {
-        console.log('🕒 Инициализация новых карточек...');
+        console.log('🕒 Инициализация карточек...');
 
-        let allCards = [];
-        
-        // 1. Загрузка данных (Сначала LocalStorage для скорости)
-        const localData = localStorage.getItem('site_cards');
-        if (localData) {
-            try {
-                allCards = JSON.parse(localData);
-                console.log('📦 Данные из LocalStorage');
-                renderCards(allCards); // Рисуем сразу
-                
-                // Фоновое обновление БЕЗ перерисовки
-                fetch(GAS_APP_URL + '?action=getCards&t=' + Date.now())
-                    .then(r => r.json())
-                    .then(data => {
-                        if (Array.isArray(data)) {
-                            // ПРОВЕРКА: Обновляем, только если серверные данные новее
-                            if (allCards.length > 0 && data.length > 0) {
-                                const localNewest = new Date(allCards[0].updatedAt || 0).getTime();
-                                const serverNewest = new Date(data[0].updatedAt || 0).getTime();
-                                
-                                if (serverNewest > localNewest) {
-                                    localStorage.setItem('site_cards', JSON.stringify(data));
-                                    allCards = data; // Обновляем переменную для фонового обновления
-                                    console.log('✅ Данные обновлены (сервер свежее)');
-                                } else {
-                                    console.log('⏸️ Данные на сервере не новее, LocalStorage оставляем.');
-                                }
-                            } else {
-                                // Если локально пусто, просто берем с сервера
-                                localStorage.setItem('site_cards', JSON.stringify(data));
-                                allCards = data;
-                            }
-                        }
-                    })
-                    .catch(e => console.warn('Ошибка фонового обновления:', e));
-            } catch (e) { console.warn('Ошибка чтения LocalStorage'); }
+        const urlParams = new URLSearchParams(window.location.search);
+        const hasQParam = urlParams.has('q');  // нам важно только наличие q, не число
+
+        // Загружаем все карточки
+        let currentCards = [];
+        const localDataRaw = localStorage.getItem('site_cards');
+
+        if (localDataRaw) {
+            currentCards = JSON.parse(localDataRaw);
+            console.log('📦 Данные из LocalStorage');
         } else {
-            // Если LocalStorage пуст
-            const res = await fetch(GAS_APP_URL + '?action=getCards&t=' + Date.now());
-            const data = await res.json();
-            if (Array.isArray(data)) {
-                allCards = data;
-                localStorage.setItem('site_cards', JSON.stringify(allCards));
+            // Если нет в localStorage, грузим с сервера
+            console.log('⏳ LocalStorage пуст, загрузка с сервера...');
+            try {
+                const res = await fetch(GAS_APP_URL + '?action=getCards&t=' + Date.now());
+                currentCards = await res.json();
+                if (Array.isArray(currentCards)) {
+                    localStorage.setItem('site_cards', JSON.stringify(currentCards));
+                }
+            } catch (e) {
+                console.error('Ошибка загрузки с сервера:', e);
             }
-            renderCards(allCards);
         }
 
-        function renderCards(cards) {
+        if (currentCards.length > 0) {
+            renderCards(currentCards, hasQParam);
+        } else {
+            const container = document.querySelector('.models-grid');
+            if(container) container.innerHTML = '<p>Нет карточек.</p>';
+        }
+
+        // Функция рендеринга
+        function renderCards(cards, isNotificationMode) {
             if (!cards || cards.length === 0) return;
 
-            // 2. Карта имен категорий
+            let finalCards = [];
+            let message = '';
+
+            if (isNotificationMode) {
+                // РЕЖИМ УВЕДОМЛЕНИЯ: показываем ВСЕ карточки по сохраненным ID
+                const notificationIds = JSON.parse(localStorage.getItem('notification_card_ids')) || [];
+                console.log('🔔 ID из уведомления:', notificationIds);
+                
+                // Фильтруем карточки по этим ID
+                finalCards = cards.filter(card => notificationIds.includes(card.id));
+                
+                // ВАЖНО: ничего не добавляем в просмотренные, не очищаем списки
+                message = `📋 Показано карточек по уведомлению: ${finalCards.length}`;
+                
+            } else {
+                // ОБЫЧНЫЙ РЕЖИМ: последние 20 по дате
+                const sorted = [...cards].sort((a, b) => new Date(b.updatedAt) - new Date(a.updatedAt));
+                finalCards = sorted.slice(0, 20);
+                message = `📅 Режим обычный. Показано последних 20 из ${cards.length}`;
+            }
+            
+            console.log(message);
+
+            // Если нет карточек для показа
+            if (finalCards.length === 0) {
+                const container = document.querySelector('.models-grid');
+                if(container) container.innerHTML = '<p>Нет карточек для отображения.</p>';
+                return;
+            }
+
+            // Рендеринг HTML
             let sectionsMap = {};
             const localSections = localStorage.getItem('site_sections');
             if (localSections) {
-                JSON.parse(localSections).forEach(s => sectionsMap[s.id] = s.name);
-            }
-
-            // 3. Сортировка: Сначала по дате (убывание), затем по ID
-            cards.sort((a, b) => {
-                const dateA = new Date(a.updatedAt || 0).getTime();
-                const dateB = new Date(b.updatedAt || 0).getTime();
-                if (dateA !== dateB) {
-                    return dateB - dateA;
+                try {
+                    JSON.parse(localSections).forEach(s => sectionsMap[s.id] = s.name);
+                } catch (e) {
+                    console.warn('Ошибка парсинга site_sections');
                 }
-                return a.id.localeCompare(b.id);
-            });
-
-            // 4. Фильтрация: последние 3 дня
-            const threeDaysAgo = new Date();
-            threeDaysAgo.setDate(threeDaysAgo.getDate() - 3);
-            
-            let recentCards = cards.filter(c => new Date(c.updatedAt || 0) >= threeDaysAgo);
-
-            // 5. Если меньше 20, добираем самыми свежими
-            if (recentCards.length < 20) {
-                const needed = 20 - recentCards.length;
-                // Берем следующие по свежести (они уже отсортированы)
-                const additionalCards = cards.slice(recentCards.length, recentCards.length + needed);
-                recentCards = recentCards.concat(additionalCards);
             }
-            
-            // Обрезаем ровно 20
-            const finalCards = recentCards.slice(0, 20);
 
-            console.log(`🕒 Отобрано карточек: ${finalCards.length}`);
-
-            // 6. Рендеринг
             const container = document.querySelector('.models-grid');
             if (!container) return;
 
@@ -724,7 +713,7 @@
             const html = finalCards.map(card => {
                 const categoryName = sectionsMap[card.section] || card.section;
                 const categoryLink = `${basePath}${card.section}.htm`;
-                const tagColor = getCategoryColor(card.section);
+                const tagColor = getNewsColor(card.section);
                 const textColor = '#333';
 
                 const pdfLink = card.pdf && card.pdf.id 
@@ -737,7 +726,6 @@
                     <img src="${card.imageUrl}" alt="${card.title}" class="model-image">
                     <h3 class="model-title">${card.title}</h3>
                     
-                    <!-- Тег категории -->
                     <a href="${categoryLink}" class="category-tag" style="background-color: ${tagColor}; color: ${textColor};">
                         ${categoryName}
                     </a>

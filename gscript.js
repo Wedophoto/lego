@@ -1,5 +1,5 @@
 const SCRIPT_URL =
-  "https://script.googleusercontent.com/macros/echo?user_content_key=AehSKLgfUKbCxVhrXXxsT_IL1e44ur-yhlqrMslVRKq7Plm_2kTZCuNzbCAK6swVjo6wST-Rp8H1q_6iIr_iMTdBYDmoMM0QIV97ExRbrYJJA3ALyj3ySeDeKoZkgdpzLtSEdJjuIuWhta_lxzMelmLdumkIF4G4SS-MuG-k-v6sdRZChdwlq0okg9jdnJ47Ubw9kSCGqgR-Gzit1OzQR95ZX2prxPTCrZ6md0dM0bwueUvf2j5hc9Ct5hvA7HVOMUxv0yQBCDg-E5QRYTk9fY2OWEywT34jDw&lib=MbdC-l4jD6k0pdxUCM6Bsp1NLROFN8Rze"; // ← замените
+  "https://script.google.com/macros/s/AKfycbxzqCJUNlmfTGmF2Nb__XTz0ruVL40pvzp63Vy-TbiBJzRrsA1x-fN5-DlChAa8j3Om/exec"; // ← замените
 let fileMap = JSON.parse(localStorage.getItem("drivePdfMap") || "{}");
 
 // === ФУНКЦИЯ: ЗАГРУЗИТЬ СПИСОК ФАЙЛОВ И СОХРАНИТЬ В localStorage ===
@@ -102,3 +102,75 @@ document.addEventListener("DOMContentLoaded", () => {
     console.warn("Не удалось извлечь категории.");
   }
 })();
+
+// const GAS_APP_URL =
+//   "https://script.google.com/macros/s/AKfycbxzqCJUNlmfTGmF2Nb__XTz0ruVL40pvzp63Vy-TbiBJzRrsA1x-fN5-DlChAa8j3Om/exec";
+// (async function checkNewCards() {
+//   console.log("🔔 Проверка новых инструкций...");
+
+//   try {
+//     // 1. Загружаем старые данные из LocalStorage
+//     const oldDataRaw = localStorage.getItem("site_cards");
+//     const oldCards = oldDataRaw ? JSON.parse(oldDataRaw) : [];
+//     const oldIds = new Set(oldCards.map((c) => c.id));
+
+//     // 2. Загружаем свежие данные с сервера
+//     const res = await fetch(GAS_APP_URL + "?action=getCards&t=" + Date.now());
+//     const newCardsAll = await res.json();
+
+//     if (!Array.isArray(newCardsAll)) return;
+
+//     // 3. Ищем новые карточки
+//     const newItems = newCardsAll.filter((c) => !oldIds.has(c.id));
+
+//     if (newItems.length > 0) {
+//       console.log(`🎉 Найдено новых карточек: ${newItems.length}`);
+
+//       // 4. Сохраняем полный список карточек (для отображения на странице)
+//       localStorage.setItem("site_cards", JSON.stringify(newCardsAll));
+
+//       // 5. Сохраняем ТОЛЬКО ID новых карточек (перезаписывая старые)
+//       const newIds = newItems.map((c) => c.id);
+//       localStorage.setItem("notification_card_ids", JSON.stringify(newIds));
+
+//       console.log("💾 Сохранены ID новых карточек:", newIds);
+
+//       showNotification(newItems.length);
+//     } else {
+//       console.log("✅ Нет новых инструкций.");
+//     }
+//   } catch (e) {
+//     console.error("Ошибка проверки обновлений:", e);
+//   }
+
+//   function showNotification(count) {
+//     const toast = document.createElement("div");
+//     toast.className = "new-notify-toast";
+
+//     // В ссылке может быть любое число, но главное - наличие параметра q
+//     const link = `teams/novye-instruktsii-new.htm?q=${count}`;
+
+//     toast.innerHTML = `
+//       <div class="new-notify-content">
+//         <div class="new-notify-title">Новые инструкции!</div>
+//         <div class="new-notify-text">Доступно новых позиций: ${count}.</div>
+//         <a href="${link}" style="color: #4f46e5; text-decoration: none; font-weight: 500; font-size: 0.9rem;">Смотреть &rarr;</a>
+//       </div>
+//       <button class="new-notify-close" onclick="this.parentElement.remove()">&times;</button>
+//     `;
+
+//     toast.addEventListener("click", (e) => {
+//       if (!e.target.classList.contains("new-notify-close")) {
+//         window.location.href = link;
+//       }
+//     });
+
+//     document.body.appendChild(toast);
+//     requestAnimationFrame(() => toast.classList.add("show"));
+
+//     setTimeout(() => {
+//       toast.classList.remove("show");
+//       setTimeout(() => toast.remove(), 400);
+//     }, 15000);
+//   }
+// })();

@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Инструкции для WeDo 2.0 | Тренер Евгений</title>
   <link rel="stylesheet" type="text/css" href="css/st.css">
+  <link rel="stylesheet" type="text/css" href="css/toast.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500&family=Baloo+2:wght@400;500;600&family=Bubblegum+Sans&family=Kalam:wght@400;700&family=Comic+Neue:wght@400;700&family=Luckiest+Guy&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"><link rel="icon" href="../favicon.ico" type="image/x-icon">
@@ -679,33 +680,33 @@
     
     /* Новогодние украшения */
     @media (max-width: 767px) {
-    .christmas-ornaments { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 20; }
-    .christmas-garland { position: absolute; top: 0; left: 0; width: 100%; height: 40px; display: flex; justify-content: space-around; align-items: center; opacity: 0; }
-    .garland-light { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
-    .garland-light:nth-child(3n+1) { color: #ff0000; background-color: #ff0000; }
-    .garland-light:nth-child(3n+2) { color: #00ff00; background-color: #00ff00; }
-    .garland-light:nth-child(3n+3) { color: #ffff00; background-color: #ffff00; }
-    .garland-light:nth-child(3n+4) { color: #0080ff; background-color: #0080ff; }
-    .garland-light:nth-child(3n+5) { color: #ff00ff; background-color: #ff00ff; }
-    .snowflake { position: absolute; color: white; font-size: 18px; opacity: 0; text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); z-index: 19; }
-    .snowflake.flake1 { top: -20px; left: 15%; }
-    .snowflake.flake2 { top: -20px; left: 30%; font-size: 22px; }
-    .snowflake.flake3 { top: -20px; left: 45%; font-size: 16px; }
-    .snowflake.flake4 { top: -20px; left: 60%; font-size: 20px; }
-    .snowflake.flake5 { top: -20px; left: 75%; font-size: 18px; }
-    .snowflake.flake6 { top: -20px; left: 85%; font-size: 24px; }
-    @keyframes garlandAppear { 0% { opacity: 0; transform: translateY(-10px); } 100% { opacity: 1; transform: translateY(0); } }
-    @keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
-    @keyframes snowfall { 0% { top: -20px; opacity: 0; transform: translateX(0) rotate(0deg); } 10% { opacity: 1; } 100% { top: 100%; opacity: 0; transform: translateX(30px) rotate(360deg); } }
-    #newyear-card .christmas-garland, #newyear-card .snowflake { opacity: 0; transition: opacity 0.5s ease; }
-    #newyear-card.animate-newyear .christmas-garland { opacity: 1; animation: garlandAppear 0.5s ease-in forwards; }
-    #newyear-card.animate-newyear .garland-light { animation: twinkle 1.5s ease-in-out infinite; }
-    #newyear-card.animate-newyear .snowflake.flake1 { animation: snowfall 3s linear infinite; }
-    #newyear-card.animate-newyear .snowflake.flake2 { animation: snowfall 3.5s linear infinite; }
-    #newyear-card.animate-newyear .snowflake.flake3 { animation: snowfall 2.8s linear infinite; }
-    #newyear-card.animate-newyear .snowflake.flake4 { animation: snowfall 3.2s linear infinite; }
-    #newyear-card.animate-newyear .snowflake.flake5 { animation: snowfall 2.5s linear infinite; }
-    #newyear-card.animate-newyear .snowflake.flake6 { animation: snowfall 3.8s linear infinite; }
+      .christmas-ornaments { position: absolute; width: 100%; height: 100%; top: 0; left: 0; pointer-events: none; z-index: 20; }
+      .christmas-garland { position: absolute; top: 0; left: 0; width: 100%; height: 40px; display: flex; justify-content: space-around; align-items: center; opacity: 0; }
+      .garland-light { width: 12px; height: 12px; border-radius: 50%; box-shadow: 0 0 6px currentColor; }
+      .garland-light:nth-child(3n+1) { color: #ff0000; background-color: #ff0000; }
+      .garland-light:nth-child(3n+2) { color: #00ff00; background-color: #00ff00; }
+      .garland-light:nth-child(3n+3) { color: #ffff00; background-color: #ffff00; }
+      .garland-light:nth-child(3n+4) { color: #0080ff; background-color: #0080ff; }
+      .garland-light:nth-child(3n+5) { color: #ff00ff; background-color: #ff00ff; }
+      .snowflake { position: absolute; color: white; font-size: 18px; opacity: 0; text-shadow: 0 0 5px rgba(255, 255, 255, 0.8); z-index: 19; }
+      .snowflake.flake1 { top: -20px; left: 15%; }
+      .snowflake.flake2 { top: -20px; left: 30%; font-size: 22px; }
+      .snowflake.flake3 { top: -20px; left: 45%; font-size: 16px; }
+      .snowflake.flake4 { top: -20px; left: 60%; font-size: 20px; }
+      .snowflake.flake5 { top: -20px; left: 75%; font-size: 18px; }
+      .snowflake.flake6 { top: -20px; left: 85%; font-size: 24px; }
+      @keyframes garlandAppear { 0% { opacity: 0; transform: translateY(-10px); } 100% { opacity: 1; transform: translateY(0); } }
+      @keyframes twinkle { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.4; transform: scale(0.8); } }
+      @keyframes snowfall { 0% { top: -20px; opacity: 0; transform: translateX(0) rotate(0deg); } 10% { opacity: 1; } 100% { top: 100%; opacity: 0; transform: translateX(30px) rotate(360deg); } }
+      #newyear-card .christmas-garland, #newyear-card .snowflake { opacity: 0; transition: opacity 0.5s ease; }
+      #newyear-card.animate-newyear .christmas-garland { opacity: 1; animation: garlandAppear 0.5s ease-in forwards; }
+      #newyear-card.animate-newyear .garland-light { animation: twinkle 1.5s ease-in-out infinite; }
+      #newyear-card.animate-newyear .snowflake.flake1 { animation: snowfall 3s linear infinite; }
+      #newyear-card.animate-newyear .snowflake.flake2 { animation: snowfall 3.5s linear infinite; }
+      #newyear-card.animate-newyear .snowflake.flake3 { animation: snowfall 2.8s linear infinite; }
+      #newyear-card.animate-newyear .snowflake.flake4 { animation: snowfall 3.2s linear infinite; }
+      #newyear-card.animate-newyear .snowflake.flake5 { animation: snowfall 2.5s linear infinite; }
+      #newyear-card.animate-newyear .snowflake.flake6 { animation: snowfall 3.8s linear infinite; }
     }
     
     /* Анимация космического корабля в карточке "Звездные войны" */
@@ -3933,21 +3934,21 @@
     .defender-toggle.off {
       background: linear-gradient(135deg, #888888 0%, #555555 100%);
     }
-
-        /* Адаптивность для мобильных устройств (меньше 768px) */
+    
+    /* Адаптивность для мобильных устройств (меньше 768px) */
     @media (max-width: 768px) {
       
       /* 1. Скрываем часы на мобильных */
       .lego-clock {
         display: none;
       }
-
+      
       /* 2. Скрываем и останавливаем анимацию QR-кода на мобильных */
       .qr-code-container {
         display: none;
         animation-play-state: paused;
       }
-
+      
       /* 3. Настраиваем Header: перестраиваем на колонку */
       .header {
         padding: 20px 15px;
@@ -3958,20 +3959,20 @@
         align-items: center;
         gap: 15px; /* Отступы между элементами */
       }
-
+      
       /* Убираем лишние отступы у контента шапки */
       .header-content {
         text-align: center;
         width: 100%;
         order: 2; /* Контент размещаем ниже лого */
       }
-
+      
       /* Лого размещаем первым */
       #logo {
         margin: 0;
         order: 1;
       }
-
+      
       /* 4. Кнопки Shorts выравниваем по центру внизу и растягиваем */
       .shorts-block {
         position: static; /* Убираем абсолютное позиционирование */
@@ -3979,26 +3980,26 @@
         margin-top: 10px;
         order: 3; /* Размещаем кнопки самым нижним блоком в шапке */
       }
-
+      
       .shorts-title {
         text-align: center;
         margin-bottom: 10px;
       }
-
+      
       .shorts-buttons {
         display: flex;
         justify-content: center; /* Центрируем кнопки */
         width: 100%;
         gap: 10px;
       }
-
+      
       .shorts-btn {
         flex: 1; /* Кнопки растягиваются на всю доступную ширину поровну */
         justify-content: center;
         padding: 12px 10px;
         font-size: 0.9rem;
       }
-
+      
       /* Небольшая корректировка сетки карточек для удобства */
       .categories-grid {
         grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
@@ -4006,19 +4007,19 @@
       }
     }
   </style>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
     (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+      m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+      m[i].l=1*new Date();
+      for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+      k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
     })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106848012', 'ym');
-
+    
     ym(106848012, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/106848012" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+  </script>
+  <noscript><div><img src="https://mc.yandex.ru/watch/106848012" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <!-- /Yandex.Metrika counter -->
 </head>
 <body>
   <!-- Поздравительное окно с днем рождения тренера -->
@@ -4260,31 +4261,31 @@
       
       <div class="header-content">
         <h1 class="main-title">Инструкции для WeDo 2.0</h1>
-         <p class="site-subtitle">Библиотека обучающих материалов и инструкций</p>
+        <p class="site-subtitle">Библиотека обучающих материалов и инструкций</p>
       </div>
     </header>
     
     <section class="section">
       <h2 class="section-title">Выберите тематику</h2>
-
+      
       <!-- БЛОК ПОИСКА (Вставить после h2) -->
       <div class="search-wrapper">
         <div class="search-box">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" id="modelSearchInput" placeholder="Поиск модели (например: автомобиль, робот, танк)..." autocomplete="off">
-            <button class="search-clear" id="searchClearBtn" title="Очистить">
-                <i class="fas fa-times"></i>
-            </button>
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="modelSearchInput" placeholder="Поиск модели (например: автомобиль, робот, танк)..." autocomplete="off">
+          <button class="search-clear" id="searchClearBtn" title="Очистить">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
         <div class="search-stats" id="searchStats">Введите запрос для поиска</div>
-    </div>
+      </div>
       
       <div class="categories-grid" id="categoriesGrid">
         <!-- <div class="category-card lucky-card" id="luckyCard">
           <div class="category-name">🎲 На удачу</div>
           <div class="category-count">Случайная тематика</div>
         </div> -->
-
+        
         <a href="teams/random-cards.htm" class="category-card lucky-card" id="cars-card">
           <div class="category-name">На удачу</div>
           <div class="category-count">Случайная тематика</div>
@@ -4622,12 +4623,12 @@
           <div class="category-count">Самые свежие модели</div>
         </a>
       </div>
-
+      
       <!-- Сетка результатов поиска (Скрыта по умолчанию) -->
-    <div class="models-grid" id="modelsGrid" style="display: none;"></div>
-    
-    <!-- Пагинация (Скрыта по умолчанию) -->
-    <div class="pagination" id="pagination" style="display: none;"></div>
+      <div class="models-grid" id="modelsGrid" style="display: none;"></div>
+      
+      <!-- Пагинация (Скрыта по умолчанию) -->
+      <div class="pagination" id="pagination" style="display: none;"></div>
     </section>
     
     <section class="section books-section">
@@ -4785,7 +4786,7 @@
       <a href="https://t.me/kornilovsergey" target="_blank" rel="noopener noreferrer" class="creation-link">
         Создание сайтов и телеграм ботов под ключ
         <span class="arrow">↗</span>
-    </a>
+      </a>
       
       <!-- Кнопка переключения новогодних украшений -->
       <div class="christmas-toggle off" id="christmasToggle">
@@ -5556,126 +5557,126 @@
       setInterval(updateClock, 1000);
     });
   </script>
-
+  
   <script>
-// Конфигурация
-const ITEMS_PER_PAGE = 24;
-// Определение базового пути для GitHub Pages
-const BASE_PATH = window.location.hostname.includes('github.io') ? '/lego/' : '';
-console.log('BASE_PATH:', BASE_PATH); // Для отладки
-let currentPage = 1;
-let filteredModels = [];
-let allModels = [];
-let categoryMap = {}; // Словарь: section_id -> {name, color}
-
-// Цвета для категорий
-const CATEGORY_COLORS = [
+    // Конфигурация
+    const ITEMS_PER_PAGE = 24;
+    // Определение базового пути для GitHub Pages
+    const BASE_PATH = window.location.hostname.includes('github.io') ? '/lego/' : '';
+    console.log('BASE_PATH:', BASE_PATH); // Для отладки
+    let currentPage = 1;
+    let filteredModels = [];
+    let allModels = [];
+    let categoryMap = {}; // Словарь: section_id -> {name, color}
+    
+    // Цвета для категорий
+    const CATEGORY_COLORS = [
     '#E0F7FA', '#E1F5FE', '#E3F2FD', '#E8EAF6', '#EDE7F6',
     '#F3E5F5', '#FCE4EC', '#FFEBEE', '#FBE9E7', '#FFF3E0',
     '#FFF8E1', '#F9FBE7', '#F1F8E9', '#E8F5E9', '#E0F2F1',
     '#E0F7FA', '#E1F5FE', '#E8EAF6', '#F3E5F5', '#FFEBEE',
     '#FFF3E0', '#F9FBE7', '#F1F8E9', '#E0F2F1', '#FCE4EC',
     '#FBE9E7', '#FFF8E1', '#E8F5E9', '#E0F7FA', '#E1F5FE'
-];
-
-// Элементы DOM
-const searchInput = document.getElementById('modelSearchInput');
-const searchClearBtn = document.getElementById('searchClearBtn');
-const searchStats = document.getElementById('searchStats');
-const categoriesGrid = document.getElementById('categoriesGrid');
-const modelsGrid = document.getElementById('modelsGrid');
-const paginationContainer = document.getElementById('pagination');
-
-// 1. Загрузка данных из localStorage
-function loadModels() {
-    try {
+    ];
+    
+    // Элементы DOM
+    const searchInput = document.getElementById('modelSearchInput');
+    const searchClearBtn = document.getElementById('searchClearBtn');
+    const searchStats = document.getElementById('searchStats');
+    const categoriesGrid = document.getElementById('categoriesGrid');
+    const modelsGrid = document.getElementById('modelsGrid');
+    const paginationContainer = document.getElementById('pagination');
+    
+    // 1. Загрузка данных из localStorage
+    function loadModels() {
+      try {
         // Загружаем модели
         const storedModels = localStorage.getItem('site_cards');
         if (storedModels) {
-            allModels = JSON.parse(storedModels);
-            console.log(`Загружено моделей: ${allModels.length}`);
+          allModels = JSON.parse(storedModels);
+          console.log(`Загружено моделей: ${allModels.length}`);
         } else {
-            console.warn('site_cards не найден в localStorage');
-            allModels = [];
+          console.warn('site_cards не найден в localStorage');
+          allModels = [];
         }
         
         // Загружаем категории
         const storedSections = localStorage.getItem('site_sections');
         if (storedSections) {
-            const sections = JSON.parse(storedSections);
-            // Создаём карту категорий с цветами
-            sections.forEach((section, index) => {
-                categoryMap[section.id] = {
-                    name: section.name,
-                    color: CATEGORY_COLORS[index % CATEGORY_COLORS.length]
-                };
-            });
-            console.log(`Загружено категорий: ${sections.length}`);
+          const sections = JSON.parse(storedSections);
+          // Создаём карту категорий с цветами
+          sections.forEach((section, index) => {
+            categoryMap[section.id] = {
+              name: section.name,
+              color: CATEGORY_COLORS[index % CATEGORY_COLORS.length]
+            };
+          });
+          console.log(`Загружено категорий: ${sections.length}`);
         } else {
-            console.warn('site_sections не найден в localStorage');
+          console.warn('site_sections не найден в localStorage');
         }
-    } catch (e) {
+      } catch (e) {
         console.error('Ошибка чтения localStorage:', e);
         allModels = [];
         categoryMap = {};
+      }
     }
-}
-
-// 2. Нормализация текста для поиска (убираем регистр, ё->е)
-function normalizeText(text) {
-    return text.toLowerCase()
-        .replace(/ё/g, 'е')
-        .replace(/[^a-zа-я0-9\s]/gi, '')
-        .trim();
-}
-
-// 3. Поиск и фильтрация (ТОЛЬКО ПО НАЗВАНИЮ)
-function performSearch(query) {
-    const normalizedQuery = normalizeText(query);
     
-    if (!normalizedQuery || normalizedQuery.length < 2) {
+    // 2. Нормализация текста для поиска (убираем регистр, ё->е)
+    function normalizeText(text) {
+      return text.toLowerCase()
+      .replace(/ё/g, 'е')
+      .replace(/[^a-zа-я0-9\s]/gi, '')
+      .trim();
+    }
+    
+    // 3. Поиск и фильтрация (ТОЛЬКО ПО НАЗВАНИЮ)
+    function performSearch(query) {
+      const normalizedQuery = normalizeText(query);
+      
+      if (!normalizedQuery || normalizedQuery.length < 2) {
         // Если запрос короткий или пустой - скрываем результаты, показываем категории
         showCategories();
         searchStats.textContent = query ? 'Введите минимум 2 символа' : 'Введите запрос для поиска';
         return;
-    }
-    
-    // ✅ Фильтрация ТОЛЬКО по названию модели (title)
-    filteredModels = allModels.filter(model => {
+      }
+      
+      // ✅ Фильтрация ТОЛЬКО по названию модели (title)
+      filteredModels = allModels.filter(model => {
         const title = normalizeText(model.title || '');
         return title.includes(normalizedQuery);
-    });
+      });
+      
+      currentPage = 1;
+      renderModels();
+      updateStats();
+      showSearchResults();
+    }
     
-    currentPage = 1;
-    renderModels();
-    updateStats();
-    showSearchResults();
-}
-
-// 4. Переключение видимости
-function showSearchResults() {
-    categoriesGrid.style.display = 'none';
-    modelsGrid.style.display = 'grid';
-    paginationContainer.style.display = 'flex';
-}
-
-function showCategories() {
-    categoriesGrid.style.display = 'grid';
-    modelsGrid.style.display = 'none';
-    paginationContainer.style.display = 'none';
-    modelsGrid.innerHTML = '';
-    paginationContainer.innerHTML = '';
-}
-
-// 5. Отрисовка карточек (с пагинацией)
-function renderModels() {
-    const start = (currentPage - 1) * ITEMS_PER_PAGE;
-    const end = start + ITEMS_PER_PAGE;
-    const pageData = filteredModels.slice(start, end);
+    // 4. Переключение видимости
+    function showSearchResults() {
+      categoriesGrid.style.display = 'none';
+      modelsGrid.style.display = 'grid';
+      paginationContainer.style.display = 'flex';
+    }
     
-    modelsGrid.innerHTML = '';
+    function showCategories() {
+      categoriesGrid.style.display = 'grid';
+      modelsGrid.style.display = 'none';
+      paginationContainer.style.display = 'none';
+      modelsGrid.innerHTML = '';
+      paginationContainer.innerHTML = '';
+    }
     
-    if (pageData.length === 0) {
+    // 5. Отрисовка карточек (с пагинацией)
+    function renderModels() {
+      const start = (currentPage - 1) * ITEMS_PER_PAGE;
+      const end = start + ITEMS_PER_PAGE;
+      const pageData = filteredModels.slice(start, end);
+      
+      modelsGrid.innerHTML = '';
+      
+      if (pageData.length === 0) {
         modelsGrid.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #7f8c8d;">
                 <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
@@ -5685,33 +5686,33 @@ function renderModels() {
         `;
         paginationContainer.innerHTML = '';
         return;
-    }
-    
-    pageData.forEach(model => {
+      }
+      
+      pageData.forEach(model => {
         const card = document.createElement('div');
         card.className = 'model-card';
         
         // ✅ ИСПРАВЛЕНИЕ: Умная обработка путей для картинок
         let imageUrl = '';
         if (model.imageUrl) {
-            // Если ссылка абсолютная (начинается с http/https), оставляем как есть
-            if (model.imageUrl.startsWith('http://') || model.imageUrl.startsWith('https://')) {
-                imageUrl = model.imageUrl;
-            } else {
-                // Если относительная, убираем ../ и добавляем BASE_PATH
-                imageUrl = BASE_PATH + model.imageUrl.replace(/^\.\.\//, '');
-            }
+          // Если ссылка абсолютная (начинается с http/https), оставляем как есть
+          if (model.imageUrl.startsWith('http://') || model.imageUrl.startsWith('https://')) {
+            imageUrl = model.imageUrl;
+          } else {
+            // Если относительная, убираем ../ и добавляем BASE_PATH
+            imageUrl = BASE_PATH + model.imageUrl.replace(/^\.\.\//, '');
+          }
         }
         
         // ✅ ИСПРАВЛЕНИЕ: Умная обработка путей для PDF
         let pdfPath = '#';
         if (model.pdf && model.pdf.name) {
-            const rawPdfPath = `../instructions/${model.pdf.name}`;
-            if (rawPdfPath.startsWith('http://') || rawPdfPath.startsWith('https://')) {
-                pdfPath = rawPdfPath;
-            } else {
-                pdfPath = BASE_PATH + rawPdfPath.replace(/^\.\.\//, '');
-            }
+          const rawPdfPath = `../instructions/${model.pdf.name}`;
+          if (rawPdfPath.startsWith('http://') || rawPdfPath.startsWith('https://')) {
+            pdfPath = rawPdfPath;
+          } else {
+            pdfPath = BASE_PATH + rawPdfPath.replace(/^\.\.\//, '');
+          }
         }
         
         // ✅ Проверка кнопки видео (только если есть реальная ссылка)
@@ -5729,12 +5730,12 @@ function renderModels() {
         // ✅ Обработка ссылки на категорию
         let categoryHref = '#';
         if (model.section) {
-            const rawCatPath = `/teams/${model.section}.htm`;
-            if (rawCatPath.startsWith('http://') || rawCatPath.startsWith('https://')) {
-                categoryHref = rawCatPath;
-            } else {
-                categoryHref = BASE_PATH + rawCatPath;
-            }
+          const rawCatPath = `/teams/${model.section}.htm`;
+          if (rawCatPath.startsWith('http://') || rawCatPath.startsWith('https://')) {
+            categoryHref = rawCatPath;
+          } else {
+            categoryHref = BASE_PATH + rawCatPath;
+          }
         }
         
         const categoryBadge = model.section ? `
@@ -5756,95 +5757,96 @@ function renderModels() {
             </div>
         `;
         modelsGrid.appendChild(card);
-    });
+      });
+      
+      renderPagination();
+    }
     
-    renderPagination();
-}
-
-// 6. Отрисовка пагинации
-function renderPagination() {
-    const totalPages = Math.ceil(filteredModels.length / ITEMS_PER_PAGE);
-    paginationContainer.innerHTML = '';
-    
-    if (totalPages <= 1) return;
-    
-    // Кнопка "Назад"
-    const prevBtn = document.createElement('button');
-    prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-    prevBtn.disabled = currentPage === 1;
-    prevBtn.onclick = () => { currentPage--; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-    paginationContainer.appendChild(prevBtn);
-    
-    // Логика отображения страниц (1 ... 5 6 7 ... 10)
-    let startPage = Math.max(1, currentPage - 2);
-    let endPage = Math.min(totalPages, currentPage + 2);
-    
-    if (startPage > 1) {
+    // 6. Отрисовка пагинации
+    function renderPagination() {
+      const totalPages = Math.ceil(filteredModels.length / ITEMS_PER_PAGE);
+      paginationContainer.innerHTML = '';
+      
+      if (totalPages <= 1) return;
+      
+      // Кнопка "Назад"
+      const prevBtn = document.createElement('button');
+      prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.onclick = () => { currentPage--; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      paginationContainer.appendChild(prevBtn);
+      
+      // Логика отображения страниц (1 ... 5 6 7 ... 10)
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages, currentPage + 2);
+      
+      if (startPage > 1) {
         const firstBtn = document.createElement('button');
         firstBtn.textContent = '1';
         firstBtn.onclick = () => { currentPage = 1; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
         paginationContainer.appendChild(firstBtn);
         if (startPage > 2) {
-            const dots = document.createElement('span');
-            dots.textContent = '...';
-            dots.style.padding = '10px';
-            paginationContainer.appendChild(dots);
+          const dots = document.createElement('span');
+          dots.textContent = '...';
+          dots.style.padding = '10px';
+          paginationContainer.appendChild(dots);
         }
-    }
-    
-    for (let i = startPage; i <= endPage; i++) {
+      }
+      
+      for (let i = startPage; i <= endPage; i++) {
         const btn = document.createElement('button');
         btn.textContent = i;
         btn.className = i === currentPage ? 'active' : '';
         btn.onclick = () => { currentPage = i; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
         paginationContainer.appendChild(btn);
-    }
-    
-    if (endPage < totalPages) {
+      }
+      
+      if (endPage < totalPages) {
         if (endPage < totalPages - 1) {
-            const dots = document.createElement('span');
-            dots.textContent = '...';
-            dots.style.padding = '10px';
-            paginationContainer.appendChild(dots);
+          const dots = document.createElement('span');
+          dots.textContent = '...';
+          dots.style.padding = '10px';
+          paginationContainer.appendChild(dots);
         }
         const lastBtn = document.createElement('button');
         lastBtn.textContent = totalPages;
         lastBtn.onclick = () => { currentPage = totalPages; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
         paginationContainer.appendChild(lastBtn);
+      }
+      
+      // Кнопка "Вперед"
+      const nextBtn = document.createElement('button');
+      nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.onclick = () => { currentPage++; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
+      paginationContainer.appendChild(nextBtn);
     }
     
-    // Кнопка "Вперед"
-    const nextBtn = document.createElement('button');
-    nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-    nextBtn.disabled = currentPage === totalPages;
-    nextBtn.onclick = () => { currentPage++; renderModels(); window.scrollTo({ top: 0, behavior: 'smooth' }); };
-    paginationContainer.appendChild(nextBtn);
-}
-
-// 7. Обновление статистики
-function updateStats() {
-    searchStats.textContent = `Найдено: ${filteredModels.length} моделей`;
-}
-
-// 8. Обработчики событий
-searchInput.addEventListener('input', (e) => {
-    const value = e.target.value;
-    performSearch(value);
-    searchClearBtn.classList.toggle('active', value.length > 0);
-});
-
-searchClearBtn.addEventListener('click', () => {
-    searchInput.value = '';
-    searchClearBtn.classList.remove('active');
-    performSearch('');
-    searchInput.focus();
-});
-
-// 9. Инициализация
-document.addEventListener('DOMContentLoaded', () => {
-    loadModels();
-});
-</script>
+    // 7. Обновление статистики
+    function updateStats() {
+      searchStats.textContent = `Найдено: ${filteredModels.length} моделей`;
+    }
+    
+    // 8. Обработчики событий
+    searchInput.addEventListener('input', (e) => {
+      const value = e.target.value;
+      performSearch(value);
+      searchClearBtn.classList.toggle('active', value.length > 0);
+    });
+    
+    searchClearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchClearBtn.classList.remove('active');
+      performSearch('');
+      searchInput.focus();
+    });
+    
+    // 9. Инициализация
+    document.addEventListener('DOMContentLoaded', () => {
+      loadModels();
+    });
+  </script>
   <script src="gscript.js"></script>
+  <script src="uploadCards.js"></script>
 </body>
 </html>
