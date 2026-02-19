@@ -7,14 +7,14 @@ const GAS_APP_URL =
   console.log("🚀 Инициализация страницы...");
   console.log("📊 ========== НАЧАЛО ЛОГИРОВАНИЯ ==========");
 
-  // 1. Получаем ID секции из URL
+  // 1. Получаем ID секции из URL (только для отрисовки)
   const pathName = window.location.pathname;
   const sectionId =
     pathName.substring(pathName.lastIndexOf("/") + 1).replace(".htm", "") ||
     "general";
-  console.log(`📍 Текущая секция (ID): ${sectionId}`);
+  console.log(`📍 Текущая секция для отрисовки: ${sectionId}`);
 
-  // 2. Загружаем старые данные для сравнения (если есть)
+  // 2. Загружаем ВСЕ старые данные из LocalStorage
   const oldDataRaw = localStorage.getItem("site_cards");
   let oldCards = [];
   let oldIds = new Set();
@@ -23,11 +23,20 @@ const GAS_APP_URL =
     try {
       oldCards = JSON.parse(oldDataRaw);
       oldIds = new Set(oldCards.map((c) => c.id));
-      console.log(`📦 LocalStorage: загружено ${oldCards.length} карточек`);
       console.log(
-        `📦 ID карточек в LocalStorage:`,
+        `📦 LocalStorage: загружено ВСЕГО ${oldCards.length} карточек (из всех секций)`,
+      );
+      console.log(
+        `📦 ID всех карточек в LocalStorage:`,
         oldCards.map((c) => c.id).join(", "),
       );
+
+      // Группировка по секциям для информации
+      const sectionsCount = {};
+      oldCards.forEach((card) => {
+        sectionsCount[card.section] = (sectionsCount[card.section] || 0) + 1;
+      });
+      console.log(`📊 Распределение по секциям в LocalStorage:`, sectionsCount);
     } catch (e) {
       console.warn("⚠️ LocalStorage поврежден");
       oldCards = [];
@@ -45,7 +54,7 @@ const GAS_APP_URL =
       console.log(
         "✅ Данные загружены из LocalStorage для быстрого отображения",
       );
-      renderGrid(allCards); // Рисуем то, что есть
+      renderGrid(allCards); // Рисуем то, что есть (с фильтром по секции внутри функции)
     } catch (e) {
       console.warn("⚠️ Ошибка при использовании LocalStorage:", e);
     }
@@ -59,20 +68,33 @@ const GAS_APP_URL =
     const res = await fetch(GAS_APP_URL + "?action=getCards&t=" + Date.now());
     const newCardsAll = await res.json();
 
-    console.timeEnd("⏱️ Время запроса к сервером");
+    console.timeEnd("⏱️ Время запроса к серверу");
 
     if (Array.isArray(newCardsAll)) {
-      console.log(`🌐 Сервер вернул ${newCardsAll.length} карточек`);
       console.log(
-        `🌐 ID карточек с сервера:`,
+        `🌐 Сервер вернул ВСЕГО ${newCardsAll.length} карточек (из всех секций)`,
+      );
+      console.log(
+        `🌐 ID всех карточек с сервера:`,
         newCardsAll.map((c) => c.id).join(", "),
+      );
+
+      // Группировка по секциям с сервера
+      const serverSectionsCount = {};
+      newCardsAll.forEach((card) => {
+        serverSectionsCount[card.section] =
+          (serverSectionsCount[card.section] || 0) + 1;
+      });
+      console.log(
+        `📊 Распределение по секциям на сервере:`,
+        serverSectionsCount,
       );
 
       allCards = newCardsAll;
 
-      // Сравниваем количество
+      // Сравниваем ВСЕ карточки (без фильтрации по секции)
       if (oldCards.length > 0) {
-        console.log(`📊 Сравнение:`);
+        console.log(`\n📊 СРАВНЕНИЕ ВСЕХ КАРТОЧЕК (по всем секциям):`);
         console.log(`   - В LocalStorage: ${oldCards.length} карточек`);
         console.log(`   - На сервере: ${newCardsAll.length} карточек`);
 
@@ -95,16 +117,18 @@ const GAS_APP_URL =
         );
       }
 
-      // Сохраняем в кэш
+      // Сохраняем в кэш ВСЕ карточки
       localStorage.setItem("site_cards", JSON.stringify(allCards));
-      console.log("💾 Данные сохранены в LocalStorage");
+      console.log("💾 Все данные сохранены в LocalStorage");
 
       // Перерисовываем с актуальными данными
       console.log("🎨 Перерисовываем сетку с актуальными данными...");
       renderGrid(allCards);
 
-      // 5. Проверяем новые карточки
-      console.log("🔍 Проверяем наличие новых карточек...");
+      // 5. Проверяем новые карточки (по ВСЕМ карточкам, без фильтрации по секции!)
+      console.log("\n🔍 Проверяем наличие новых карточек ПО ВСЕМ СЕКЦИЯМ...");
+
+      // Сравниваем по ID все карточки из обоих источников
       const newItems = newCardsAll.filter((c) => !oldIds.has(c.id));
 
       if (newItems.length > 0) {
@@ -115,10 +139,20 @@ const GAS_APP_URL =
         );
         console.log(
           `🆕 Названия новых карточек:`,
-          newItems.map((c) => c.title).join('", "'),
+          newItems.map((c) => `"${c.title}"`).join(", "),
         );
 
-        // Сохраняем ID новых карточек
+        // Группировка новых карточек по секциям
+        const newBySection = {};
+        newItems.forEach((card) => {
+          newBySection[card.section] = (newBySection[card.section] || 0) + 1;
+        });
+        console.log(
+          `📊 Распределение новых карточек по секциям:`,
+          newBySection,
+        );
+
+        // Сохраняем ID всех новых карточек
         const newIds = newItems.map((c) => c.id);
         localStorage.setItem("notification_card_ids", JSON.stringify(newIds));
         console.log("💾 ID новых карточек сохранены в notification_card_ids");
@@ -126,12 +160,12 @@ const GAS_APP_URL =
         // Показываем уведомление
         showNotification(newItems.length);
       } else {
-        console.log("✅ Новых карточек не обнаружено");
+        console.log("✅ Новых карточек не обнаружено (во всех секциях)");
 
-        // Проверяем, не было ли удалений
-        const deletedItems = oldCards.filter(
-          (c) => !new Set(newCardsAll.map((n) => n.id)).has(c.id),
-        );
+        // Проверяем, не было ли удалений (по всем секциям)
+        const serverIds = new Set(newCardsAll.map((n) => n.id));
+        const deletedItems = oldCards.filter((c) => !serverIds.has(c.id));
+
         if (deletedItems.length > 0) {
           console.log(
             `🗑️ Обнаружено удаленных карточек: ${deletedItems.length}`,
@@ -139,6 +173,17 @@ const GAS_APP_URL =
           console.log(
             `🗑️ ID удаленных карточек:`,
             deletedItems.map((c) => c.id).join(", "),
+          );
+
+          // Группировка удаленных по секциям
+          const deletedBySection = {};
+          deletedItems.forEach((card) => {
+            deletedBySection[card.section] =
+              (deletedBySection[card.section] || 0) + 1;
+          });
+          console.log(
+            `📊 Распределение удаленных карточек по секциям:`,
+            deletedBySection,
           );
         }
       }
@@ -149,11 +194,13 @@ const GAS_APP_URL =
     console.error("❌ Ошибка загрузки с сервера, работаем с кэшем:", e);
   }
 
-  console.log("📊 ========== КОНЕЦ ЛОГИРОВАНИЯ ==========");
+  console.log("📊 ========== КОНЕЦ ЛОГИРОВАНИЯ ==========\n");
 
-  // 6. Функция отрисовки
+  // 6. Функция отрисовки (фильтрует по секции ТОЛЬКО для отображения)
   function renderGrid(cards) {
-    console.log(`🎨 Вызвана renderGrid с ${cards.length} карточками`);
+    console.log(
+      `🎨 Вызвана renderGrid с ${cards.length} карточками (все секции)`,
+    );
 
     const container = document.querySelector(".models-grid");
     if (!container) {
@@ -161,13 +208,16 @@ const GAS_APP_URL =
       return;
     }
 
+    // Фильтруем ТОЛЬКО для отображения на текущей странице
     const sectionCards = cards.filter((c) => c.section === sectionId);
     console.log(
-      `🎯 Для секции "${sectionId}" отобрано ${sectionCards.length} карточек`,
+      `🎯 Для отображения в секции "${sectionId}" отобрано ${sectionCards.length} карточек`,
     );
 
     if (sectionCards.length === 0) {
-      console.log(`📭 В секции "${sectionId}" нет карточек`);
+      console.log(`📭 В секции "${sectionId}" нет карточек для отображения`);
+      container.innerHTML =
+        '<p class="no-models">В этом разделе пока нет моделей.</p>';
       return;
     }
 
@@ -201,7 +251,9 @@ const GAS_APP_URL =
 
   // 7. Функция показа уведомления
   function showNotification(count) {
-    console.log(`🔔 Показываем уведомление о ${count} новых карточках`);
+    console.log(
+      `🔔 Показываем уведомление о ${count} новых карточках (во всех секциях)`,
+    );
 
     const toast = document.createElement("div");
     toast.className = "new-notify-toast";
@@ -243,7 +295,7 @@ const GAS_APP_URL =
   }
 })();
 
-// Функция для добавления контента в footer
+// Функция для добавления контента в footer (без изменений)
 function addFooterContent() {
   console.log("🦶 Добавляем контент в footer...");
 
@@ -275,7 +327,7 @@ function addFooterContent() {
   }
 }
 
-// Функция для добавления стилей
+// Функция для добавления стилей (без изменений)
 function addFooterStyles() {
   if (!document.getElementById("footer-styles")) {
     console.log("🎨 Добавляем стили для footer...");
