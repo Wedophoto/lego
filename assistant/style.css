@@ -287,7 +287,7 @@ body.modal-active .site-wrapper {
 .message.assistant .avatar {
   /* background: #10b981;
   border-color: #10b981; */
-  background-image: url("/assistant/assets/ann.png");
+  background-image: url("assets/ann.png");
   background-size: cover;
   background-position: center;
 }
