@@ -214,6 +214,8 @@ const GAS_APP_URL =
       `🎯 Для отображения в секции "${sectionId}" отобрано ${sectionCards.length} карточек`,
     );
 
+    sectionCards.sort((a, b) => a.title.localeCompare(b.title, "ru"));
+
     if (sectionCards.length === 0) {
       console.log(`📭 В секции "${sectionId}" нет карточек для отображения`);
       container.innerHTML =
