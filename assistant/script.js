@@ -1,5 +1,7 @@
 // --- НАСТРОЙКИ ---
-const API_KEY = "shds-wjHVLdPJCQcQ3c8y1qSOhglAQyr";
+const GAS_URL =
+  "https://script.google.com/macros/s/AKfycbyQBWZZRrIGT6HIy78uvYqNqqo2CDISHIqOPMPTEG1mCvH4gxEn9QJXqlYaHVAV0zBu/exec";
+const STORAGE_KEY = "api_key";
 //   "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"; // ВСТАВЬТЕ СЮДА ВАШ КЛЮЧ
 // const API_URL = "https://openrouter.ai/api/v1/chat/completions";
 const API_URL = "https://gptunnel.ru/v1/chat/completions";
@@ -172,7 +174,7 @@ async function askGPT(question) {
       ...chatHistory.slice(-MAX_CONTEXT_MESSAGES),
       { role: "user", content: question },
     ];
-
+    const API_KEY = await getApiKey();
     const response = await fetch(API_URL, {
       method: "POST",
       headers: {
@@ -422,5 +424,78 @@ window.addEventListener("load", () => {
     scrollToBottom();
   }
 });
+
+async function getApiKey() {
+  // Сначала быстро возвращаем из localStorage (если есть)
+  const storedKey = localStorage.getItem(STORAGE_KEY);
+
+  // Запускаем фоновое обновление независимо от наличия ключа
+  updateKeyInBackground();
+
+  // Если ключ есть - сразу возвращаем его
+  if (storedKey) {
+    console.log("API ключ найден в локальном хранилище");
+    return storedKey;
+  }
+
+  // Если ключа нет - ждем первый запрос
+  console.log("Запрашиваем API ключ с сервера");
+  return waitForFirstKey();
+}
+
+// Функция для фонового обновления ключа
+async function updateKeyInBackground() {
+  try {
+    console.log("Фоновое обновление API ключа");
+    const response = await fetch(`${GAS_URL}?action=getApiKey`);
+
+    if (!response.ok) {
+      throw new Error(`Ошибка HTTP: ${response.status}`);
+    }
+
+    // Сервер возвращает просто строку, а не JSON
+    const apiKey = await response.text(); // Используем text() вместо json()
+
+    if (apiKey) {
+      const oldKey = localStorage.getItem(STORAGE_KEY);
+      localStorage.setItem(STORAGE_KEY, apiKey);
+
+      if (oldKey !== apiKey) {
+        console.log("API ключ обновлен в фоне:", apiKey);
+        // Можно вызвать колбэк для уведомления об обновлении
+        window.dispatchEvent(
+          new CustomEvent("apikeyupdated", { detail: { key: apiKey } }),
+        );
+      }
+    }
+  } catch (error) {
+    console.error("Ошибка фонового обновления ключа:", error);
+  }
+}
+
+// Функция для первого получения ключа
+async function waitForFirstKey() {
+  try {
+    const response = await fetch(`${GAS_URL}?action=getApiKey`);
+
+    if (!response.ok) {
+      throw new Error(`Ошибка HTTP: ${response.status}`);
+    }
+
+    // Сервер возвращает просто строку
+    const apiKey = await response.text(); // Используем text() вместо json()
+
+    if (!apiKey) {
+      throw new Error("Сервер не вернул API ключ");
+    }
+
+    localStorage.setItem(STORAGE_KEY, apiKey);
+    console.log("API ключ получен с сервера и сохранен:", apiKey);
+    return apiKey;
+  } catch (error) {
+    console.error("Ошибка при получении API ключа:", error);
+    throw error;
+  }
+}
 
 /* Внешний JS: https://cdn.jsdelivr.net/npm/marked/marked.min.js */
