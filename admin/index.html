@@ -14,9 +14,9 @@
             --card-bg: #ffffff;
             --text: #111827;
         }
-
+        
         body { margin: 0; font-family: 'Segoe UI', sans-serif; background: var(--bg); color: var(--text); display: flex; height: 100vh; overflow: hidden; }
-
+        
         /* Login Screen */
         #login-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -28,11 +28,11 @@
         }
         .login-box input { width: 90%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; border-radius: 4px; }
         .login-box button { width: 100%; padding: 10px; background: var(--primary); color: white; border: none; border-radius: 4px; cursor: pointer; }
-
+        
         /* Main Layout */
         #app-container { display: flex; width: 100%; height: 100%; visibility: hidden; opacity: 0; transition: opacity 0.3s; }
         #app-container.active { visibility: visible; opacity: 1; }
-
+        
         /* Sidebar */
         aside { width: 250px; background: var(--sidebar-bg); color: var(--sidebar-text); display: flex; flex-direction: column; }
         .brand { padding: 20px; font-size: 1.2rem; font-weight: bold; border-bottom: 1px solid #374151; }
@@ -43,12 +43,12 @@
         }
         nav button:hover, nav button.active { background: #374151; color: white; }
         .logout-btn { margin-top: auto; padding: 15px; background: #111827; color: #ef4444; text-align: center; cursor: pointer; }
-
+        
         /* Content */
         main { flex: 1; padding: 20px; overflow-y: auto; position: relative; }
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
         .add-btn { background: var(--primary); color: white; padding: 10px 20px; border: none; border-radius: 6px; cursor: pointer; font-weight: 500; }
-
+        
         /* Grid */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
         .card {
@@ -59,6 +59,7 @@
         .card-img { height: 160px; background: #e5e7eb; object-fit: cover; width: 100%; }
         .card-body { padding: 15px; flex: 1; display: flex; flex-direction: column; }
         .card-title { font-size: 1.1rem; font-weight: 600; margin-bottom: 10px; }
+
         .card-links { margin-top: auto; display: flex; flex-direction: column; gap: 8px; }
         .link-item { font-size: 0.9rem; color: var(--primary); text-decoration: none; display: flex; align-items: center; gap: 5px; }
         .link-item:hover { text-decoration: underline; }
@@ -68,7 +69,7 @@
         }
         .card:hover .card-actions { opacity: 1; }
         .action-btn { background: rgba(255,255,255,0.9); border: none; border-radius: 4px; padding: 5px 8px; cursor: pointer; box-shadow: 0 1px 2px rgba(0,0,0,0.2); }
-
+        
         /* Modal */
         .modal-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5);
@@ -79,6 +80,43 @@
         .form-group { margin-bottom: 15px; }
         .form-group label { display: block; margin-bottom: 5px; font-weight: 500; font-size: 0.9rem; }
         .form-group input, .form-group select { width: 100%; padding: 8px; border: 1px solid #ddd; border-radius: 4px; box-sizing: border-box; }
+        /* Стили для textarea в форме */
+        .form-group textarea {
+            width: 100%;
+            padding: 10px;              /* Чуть больше воздуха внутри */
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;     /* Чтобы padding не ломал ширину */
+            font-family: 'Segoe UI', sans-serif;
+            font-size: 0.95rem;
+            color: var(--text);
+            background-color: #fff;
+            resize: vertical;           /* Разрешить растягивать только по вертикали */
+            min-height: 80px;           /* Минимальная высота */
+            transition: border-color 0.2s, box-shadow 0.2s;
+            line-height: 1.5;           /* Удобнее читать многострочный текст */
+        }
+
+        /* Эффект при фокусе (как у input) */
+        .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); /* Мягкая подсветка цветом primary */
+        }
+
+        /* Плейсхолдер чуть бледнее */
+        .form-group textarea::placeholder {
+            color: #9ca3af;
+            font-style: italic;
+        }
+
+        /* Отключаем изменение размера на очень маленьких экранах, если нужно */
+        @media (max-width: 600px) {
+            .form-group textarea {
+                resize: none; /* На мобильных часто удобнее фиксированный размер или авто-высота */
+                min-height: 100px;
+            }
+        }
         .modal-footer { display: flex; justify-content: flex-end; gap: 10px; margin-top: 20px; }
         .btn-cancel { background: #9ca3af; color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
         .btn-save { background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer; }
@@ -86,29 +124,29 @@
         .tabs { display: flex; gap: 10px; margin-bottom: 10px; border-bottom: 1px solid #eee; padding-bottom: 5px; }
         .tab-btn { background: none; border: none; padding: 5px 10px; cursor: pointer; color: #666; border-bottom: 2px solid transparent; }
         .tab-btn.active { color: var(--primary); border-color: var(--primary); }
-
+        
         /* Spinner */
         #loader { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.8); padding: 20px; border-radius: 8px; display: none; z-index: 2000; }
     </style>
-<!-- Yandex.Metrika counter -->
-<script type="text/javascript">
-    (function(m,e,t,r,i,k,a){
-        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-        m[i].l=1*new Date();
-        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
-        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106848012', 'ym');
-
-    ym(106848012, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
-</script>
-<noscript><div><img src="https://mc.yandex.ru/watch/106848012" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Yandex.Metrika counter -->
+    <!-- Yandex.Metrika counter -->
+    <script type="text/javascript">
+        (function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+        })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106848012', 'ym');
+        
+        ym(106848012, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+    </script>
+    <noscript><div><img src="https://mc.yandex.ru/watch/106848012" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <!-- /Yandex.Metrika counter -->
 </head>
 <body>
-
+    
     <!-- Loader -->
     <div id="loader">Загрузка...</div>
-
+    
     <!-- Login -->
     <div id="login-screen">
         <div class="login-box">
@@ -119,7 +157,7 @@
             <p id="login-error" style="color:red; font-size: 0.8rem; display:none;">Неверные данные</p>
         </div>
     </div>
-
+    
     <!-- App -->
     <div id="app-container">
         <aside>
@@ -129,556 +167,565 @@
             </nav>
             <div class="logout-btn" onclick="Auth.logout()">Выход</div>
         </aside>
-
+        
         <main>
             <!-- Найдите этот блок в <main> -->
-            <header>
-                <h2 id="current-section-title">Раздел</h2>
-                <div style="display: flex; gap: 10px; align-items: center;">
-                    <!-- ДОБАВЬТЕ ЭТОТ SELECT -->
-                    <select id="sort-select" onchange="UI.changeSortType(this.value)" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
-                        <option value="date">По дате (новые сверху)</option>
-                        <option value="alphabet">По алфавиту (А-Я)</option>
-                    </select>
-                    <button class="add-btn" onclick="CardManager.openModal()">+ Добавить карточку</button>
-                </div>
-            </header>
-            <div id="cards-grid" class="grid">
-                <!-- Cards will be generated here -->
-            </div>
-        </main>
-    </div>
-
-    <!-- Modal Form -->
-    <div class="modal-overlay" id="card-modal">
-        <div class="modal">
-            <h3 id="modal-title">Карточка</h3>
-            <form id="card-form" onsubmit="event.preventDefault(); CardManager.save();">
-                <input type="hidden" id="card-id">
-                
-                <div class="form-group">
-                    <label>Раздел</label>
-                    <select id="card-section" required></select>
-                </div>
-
-                <div class="form-group">
-                    <label>Название</label>
-                    <input type="text" id="card-title" required>
-                </div>
-
-                <div class="form-group">
-                    <label>Ссылка на видео</label>
-                    <input type="url" id="card-video" placeholder="https://rutube.ru/...">
-                </div>
-
-                <div class="form-group">
-                    <label>Картинка</label>
-                    <input type="file" id="card-image-file" accept="image/*" onchange="CardManager.handleImagePreview(this)">
-                    <input type="hidden" id="card-image-base64">
-                    <input type="hidden" id="card-image-mime">
-                    <input type="hidden" id="card-image-name">
-                    <input type="hidden" id="card-image-url-current">
-                    <div id="image-preview" style="margin-top:5px; max-height: 100px; display:none;"></div>
-                </div>
-
-                <div class="form-group">
-                    <label>PDF Документ</label>
-                    <div class="tabs">
-                        <button type="button" class="tab-btn active" onclick="CardManager.switchPdfTab('select')">Выбрать из диска</button>
-                        <button type="button" class="tab-btn" onclick="CardManager.switchPdfTab('upload')">Загрузить файл</button>
-                    </div>
-
-                    <!-- Tab 1: Select from Drive -->
-                    <div id="pdf-tab-select">
-                        <select id="card-pdf-select">
-                            <option value="">Загрузка списка...</option>
+                <header>
+                    <h2 id="current-section-title">Раздел</h2>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <!-- ДОБАВЬТЕ ЭТОТ SELECT -->
+                        <select id="sort-select" onchange="UI.changeSortType(this.value)" style="padding: 8px; border-radius: 4px; border: 1px solid #ddd;">
+                            <option value="date">По дате (новые сверху)</option>
+                            <option value="alphabet">По алфавиту (А-Я)</option>
                         </select>
+                        <button class="add-btn" onclick="CardManager.openModal()">+ Добавить карточку</button>
                     </div>
-
-                    <!-- Tab 2: Upload File -->
-                    <div id="pdf-tab-upload" style="display:none;">
-                        <input type="file" id="card-pdf-file" accept="application/pdf">
-                    </div>
+                </header>
+                <div id="cards-grid" class="grid">
+                    <!-- Cards will be generated here -->
                 </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn-cancel" onclick="CardManager.closeModal()">Отмена</button>
-                    <button type="submit" class="btn-save">Сохранить</button>
-                </div>
-            </form>
+            </main>
         </div>
-    </div>
-
+        
+        <!-- Modal Form -->
+        <div class="modal-overlay" id="card-modal">
+            <div class="modal">
+                <h3 id="modal-title">Карточка</h3>
+                <form id="card-form" onsubmit="event.preventDefault(); CardManager.save();">
+                    <input type="hidden" id="card-id">
+                    
+                    <div class="form-group">
+                        <label>Раздел</label>
+                        <select id="card-section" required></select>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Название</label>
+                        <input type="text" id="card-title" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Описание (кратко о модели)</label>
+                        <textarea id="card-description" rows="3" placeholder="Например: Робот-собака, который умеет вилять хвостом..."></textarea>
+                        <small style="color: #666; font-size: 0.8rem;">Отображается под названием карточки на сайте</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Ссылка на видео</label>
+                        <input type="url" id="card-video" placeholder="https://rutube.ru/...">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>Картинка</label>
+                        <input type="file" id="card-image-file" accept="image/*" onchange="CardManager.handleImagePreview(this)">
+                        <input type="hidden" id="card-image-base64">
+                        <input type="hidden" id="card-image-mime">
+                        <input type="hidden" id="card-image-name">
+                        <input type="hidden" id="card-image-url-current">
+                        <div id="image-preview" style="margin-top:5px; max-height: 100px; display:none;"></div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label>PDF Документ</label>
+                        <div class="tabs">
+                            <button type="button" class="tab-btn active" onclick="CardManager.switchPdfTab('select')">Выбрать из диска</button>
+                            <button type="button" class="tab-btn" onclick="CardManager.switchPdfTab('upload')">Загрузить файл</button>
+                        </div>
+                        
+                        <!-- Tab 1: Select from Drive -->
+                        <div id="pdf-tab-select">
+                            <select id="card-pdf-select">
+                                <option value="">Загрузка списка...</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Tab 2: Upload File -->
+                        <div id="pdf-tab-upload" style="display:none;">
+                            <input type="file" id="card-pdf-file" accept="application/pdf">
+                        </div>
+                    </div>
+                    
+                    <div class="modal-footer">
+                        <button type="button" class="btn-cancel" onclick="CardManager.closeModal()">Отмена</button>
+                        <button type="submit" class="btn-save">Сохранить</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        
         <script>
-        // --- КОНФИГУРАЦИЯ ---
-        const CREDENTIALS = { login: 'admin', pass: '12345' }; 
-        // ВСТАВЬТЕ СЮД ВАШУ ССЫЛКУ НА WEB APP
-        const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbyQBWZZRrIGT6HIy78uvYqNqqo2CDISHIqOPMPTEG1mCvH4gxEn9QJXqlYaHVAV0zBu/exec';
-
-        // Ссылка на главную страницу для парсера (если разделы не найдены в памяти)
-        const MAIN_PAGE_URL = 'https://wedophoto.github.io/lego/'; 
-
-        // --- ГЛОБАЛЬНОЕ СОСТОЯНИЕ ---
-        let state = {
-            cards: [],
-            pdfFilesMap: {},
-            currentSection: '', // Будет задан динамически
-            sections: [],        // Сюда загрузятся разделы из LocalStorage или парсера
-            sortType: 'date'
-        };
-
-        // --- АВТОРИЗАЦИЯ ---
-                // --- АВТОРИЗАЦИЯ ---
-        const Auth = {
-            login: async () => {
-                const l = document.getElementById('login').value;
-                const p = document.getElementById('password').value;
-
-                if (!l || !p) {
-                    document.getElementById('login-error').style.display = 'block';
-                    document.getElementById('login-error').innerText = 'Введите логин и пароль';
-                    return;
-                }
-
-                // Показываем индикатор загрузки
-                const btn = document.querySelector('.login-box button');
-                const originalText = btn.innerText;
-                btn.innerText = 'Проверка...';
-                btn.disabled = true;
-
-                try {
-                    // Отправляем запрос на сервер для проверки пароля
-                    const res = await fetch(GAS_APP_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            action: 'login',
-                            username: l, // Логин пока ни на что не влияет, но шлем его
-                            password: p
-                        })
-                    });
+            // --- КОНФИГУРАЦИЯ ---
+            const CREDENTIALS = { login: 'admin', pass: '12345' }; 
+            // ВСТАВЬТЕ СЮД ВАШУ ССЫЛКУ НА WEB APP
+            const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbyQBWZZRrIGT6HIy78uvYqNqqo2CDISHIqOPMPTEG1mCvH4gxEn9QJXqlYaHVAV0zBu/exec';
+            
+            // Ссылка на главную страницу для парсера (если разделы не найдены в памяти)
+            const MAIN_PAGE_URL = 'https://wedophoto.github.io/lego/'; 
+            
+            // --- ГЛОБАЛЬНОЕ СОСТОЯНИЕ ---
+            let state = {
+                cards: [],
+                pdfFilesMap: {},
+                currentSection: '', // Будет задан динамически
+                sections: [],        // Сюда загрузятся разделы из LocalStorage или парсера
+                sortType: 'date'
+            };
+            
+            // --- АВТОРИЗАЦИЯ ---
+            // --- АВТОРИЗАЦИЯ ---
+            const Auth = {
+                login: async () => {
+                    const l = document.getElementById('login').value;
+                    const p = document.getElementById('password').value;
                     
-                    const result = await res.json();
-                    
-                    if (result.status === 'success') {
-                        document.getElementById('login-screen').style.display = 'none';
-                        document.getElementById('app-container').classList.add('active');
-                        App.init();
-                    } else {
+                    if (!l || !p) {
                         document.getElementById('login-error').style.display = 'block';
-                        document.getElementById('login-error').innerText = result.message || 'Неверные данные';
+                        document.getElementById('login-error').innerText = 'Введите логин и пароль';
+                        return;
                     }
-
-                } catch (e) {
-                    console.error(e);
-                    document.getElementById('login-error').style.display = 'block';
-                    document.getElementById('login-error').innerText = 'Ошибка соединения';
-                } finally {
-                    btn.innerText = originalText;
-                    btn.disabled = false;
-                }
-            },
-            logout: () => { location.reload(); }
-        };
-        // --- ПАРСЕР СЕКЦИЙ ---
-                const SectionParser = {
-            parse: async () => {
-                try {
-                    console.log('🔍 Попытка получить разделы с главной страницы...');
-                    const response = await fetch(MAIN_PAGE_URL);
-                    if (!response.ok) throw new Error('Ошибка сети');
-                    const text = await response.text();
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(text, 'text/html');
                     
-                    const cards = doc.querySelectorAll('.category-card');
-                    const parsedSections = [];
+                    // Показываем индикатор загрузки
+                    const btn = document.querySelector('.login-box button');
+                    const originalText = btn.innerText;
+                    btn.innerText = 'Проверка...';
+                    btn.disabled = true;
                     
-                    cards.forEach(card => {
-                        const href = card.getAttribute('href');
-                        const nameEl = card.querySelector('.category-name');
-                        if (href && nameEl) {
-                            let id = href.includes('/') ? href.substring(href.lastIndexOf('/') + 1) : href;
-                            if (id.endsWith('.htm')) id = id.replace('.htm', '');
-                            
-                            parsedSections.push({ id: id, name: nameEl.innerText.trim() });
-                        }
-                    });
-
-                    if (parsedSections.length > 0) {
-                        // ПЕРЕЗАПИСЫВАЕМ localStorage полностью
-                        localStorage.setItem('site_sections', JSON.stringify(parsedSections));
+                    try {
+                        // Отправляем запрос на сервер для проверки пароля
+                        const res = await fetch(GAS_APP_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                action: 'login',
+                                username: l, // Логин пока ни на что не влияет, но шлем его
+                                password: p
+                            })
+                        });
                         
-                        // ПЕРЕЗАПИСЫВАЕМ state.sections
-                        state.sections = parsedSections;
+                        const result = await res.json();
                         
-                        console.log(`✅ Разделы обновлены (${parsedSections.length} шт.)`);
-                    }
-                } catch (e) {
-                    console.error('Не удалось распарсить разделы:', e);
-                }
-            }
-        };
-        // --- ОСНОВНАЯ ЛОГИКА ---
-        const App = {
-                             init: async () => {
-                // Вспомогательная функция для фильтрации (удаляем лишние категории)
-                const filterSections = (list) => {
-                    const excludeIds = ['random-cards', 'novye-instruktsii-new'];
-                    return list.filter(s => !excludeIds.includes(s.id));
-                };
-
-                // 1. Сначала берем из кэша
-                const cachedSections = localStorage.getItem('site_sections');
-                if (cachedSections) {
-                    // Фильтруем при загрузке из кэша
-                    state.sections = filterSections(JSON.parse(cachedSections));
-                    UI.renderSidebar();
-                }
-
-                // 2. Обновляем с сайта
-                console.log('🔄 Обновление списка разделов с сайта...');
-                try {
-                    await SectionParser.parse(); 
-                    
-                    // Фильтруем после обновления с сайта
-                    state.sections = filterSections(state.sections);
-                    
-                    // Обновляем кэш уже с отфильтрованным списком, чтобы не фильтровать каждый раз
-                    localStorage.setItem('site_sections', JSON.stringify(state.sections));
-                    
-                    console.log('✅ Разделы обновлены и отфильтрованы.');
-                    UI.renderSidebar();
-                } catch (e) {
-                    console.error('Ошибка при обновлении разделов:', e);
-                }
-
-                if (state.sections.length === 0) {
-                    alert('Список разделов пуст!');
-                    return;
-                }
-
-                state.currentSection = state.sections[0].id;
-
-                // 3. Загружаем данные
-                await Promise.all([App.loadCards(), App.loadPdfList()]);
-                UI.renderCards(state.currentSection);
-            },
-
-                        loadCards: async () => {
-                console.log('🔄 ЗАПУСК ЗАГРУЗКИ КАРТОЧЕК...');
-                // Загружаем сохраненную сортировку
-                const savedSort = localStorage.getItem('sort_preference');
-                if (savedSort) {
-                    state.sortType = savedSort;
-                    document.getElementById('sort-select').value = savedSort;
-                }
-                try {
-                    // Формируем URL и сразу выводим его
-                    const cacheBuster = '&t=' + Date.now();
-                    const url = GAS_APP_URL + '?action=getCards' + cacheBuster;
-                    
-                    console.log('%c🌐 Запрос по ссылке:', 'color: blue; font-weight: bold;');
-                    console.log(url);
-
-                    const res = await fetch(url);
-                    
-                    console.log('Статус ответа:', res.status);
-                    
-                    if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
-
-                    const data = await res.json();
-                    
-                    console.log('Тип данных:', typeof data);
-                    console.log('Первый ключ (если объект):', Object.keys(data)[0]);
-
-                    if (Array.isArray(data)) {
-                        state.cards = data;
-                        localStorage.setItem('site_cards', JSON.stringify(data));
-                        console.log(`✅ Успех! Загружено ${data.length} карточек.`);
-                        UI.renderCards(state.currentSection);
-                    } else {
-                        console.error('❌ ОШИБКА: Пришел не массив карточек, а что-то другое.');
-                        console.error('Содержимое ответа:', data);
-                    }
-
-                } catch (e) {
-                    console.error('💥 Ошибка:', e);
-                }
-            },
-
-            loadPdfList: async () => {
-                try {
-                    const res = await fetch(GAS_APP_URL + '?action=getFilesList');
-                    if (res.ok) {
-                        const data = await res.json();
-                        state.pdfFilesMap = data;
-                        localStorage.setItem('drivePdfMap', JSON.stringify(data));
-                    }
-                } catch (e) {
-                    console.error("Ошибка загрузки списка PDF", e);
-                }
-            }
-        };
-
-        // --- МЕНЕДЖЕР КАРТОЧЕК ---
-        const CardManager = {
-            currentPdfMode: 'select',
-
-            openModal: (editCardId = null) => {
-                const modal = document.getElementById('card-modal');
-                const form = document.getElementById('card-form');
-                const titleEl = document.getElementById('modal-title');
-                
-                form.reset();
-                document.getElementById('image-preview').innerHTML = '';
-                document.getElementById('image-preview').style.display = 'none';
-                
-                // Заполняем селект секций (ИСПОЛЬЗУЯ ДИНАМИЧЕСКИЙ СПИСОК)
-                const sectionSelect = document.getElementById('card-section');
-                sectionSelect.innerHTML = state.sections.map(s => 
-                    `<option value="${s.id}">${s.name}</option>`
-                ).join('');
-                
-                // Заполняем селект PDF
-                const pdfSelect = document.getElementById('card-pdf-select');
-                pdfSelect.innerHTML = '<option value="">Выберите файл...</option>' + 
-                    Object.keys(state.pdfFilesMap).map(name => 
-                        `<option value="${state.pdfFilesMap[name]}">${name}</option>`
-                    ).join('');
-
-                if (editCardId) {
-                    const card = state.cards.find(c => c.id === editCardId);
-                    titleEl.textContent = 'Редактировать карточку';
-                    document.getElementById('card-id').value = card.id;
-                    document.getElementById('card-section').value = card.section;
-                    document.getElementById('card-title').value = card.title;
-                    document.getElementById('card-video').value = card.videoUrl || '';
-                    
-                    if (card.imageUrl) {
-                        document.getElementById('card-image-url-current').value = card.imageUrl;
-                        document.getElementById('image-preview').innerHTML = `<img src="${card.imageUrl}" style="max-height:100px;">`;
-                        document.getElementById('image-preview').style.display = 'block';
-                    }
-
-                    if (card.pdf && card.pdf.id) {
-                        const foundInMap = Object.keys(state.pdfFilesMap).find(key => state.pdfFilesMap[key] === card.pdf.id);
-                        if (foundInMap) {
-                            pdfSelect.value = card.pdf.id;
+                        if (result.status === 'success') {
+                            document.getElementById('login-screen').style.display = 'none';
+                            document.getElementById('app-container').classList.add('active');
+                            App.init();
                         } else {
-                            const opt = document.createElement('option');
-                            opt.value = card.pdf.id;
-                            opt.text = card.pdf.name || 'Файл';
-                            opt.selected = true;
-                            pdfSelect.add(opt);
+                            document.getElementById('login-error').style.display = 'block';
+                            document.getElementById('login-error').innerText = result.message || 'Неверные данные';
                         }
+                        
+                    } catch (e) {
+                        console.error(e);
+                        document.getElementById('login-error').style.display = 'block';
+                        document.getElementById('login-error').innerText = 'Ошибка соединения';
+                    } finally {
+                        btn.innerText = originalText;
+                        btn.disabled = false;
                     }
-                } else {
-                    titleEl.textContent = 'Новая карточка';
-                    document.getElementById('card-id').value = '';
-                    document.getElementById('card-section').value = state.currentSection;
-                }
-
-                modal.classList.add('open');
-            },
-
-            closeModal: () => {
-                document.getElementById('card-modal').classList.remove('open');
-            },
-
-            switchPdfTab: (mode) => {
-                CardManager.currentPdfMode = mode;
-                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-                event.target.classList.add('active');
-                if (mode === 'select') {
-                    document.getElementById('pdf-tab-select').style.display = 'block';
-                    document.getElementById('pdf-tab-upload').style.display = 'none';
-                } else {
-                    document.getElementById('pdf-tab-select').style.display = 'none';
-                    document.getElementById('pdf-tab-upload').style.display = 'block';
-                }
-            },
-
-            handleImagePreview: (input) => {
-                if (input.files && input.files[0]) {
-                    const reader = new FileReader();
-                    reader.onload = function(e) {
-                        document.getElementById('image-preview').innerHTML = `<img src="${e.target.result}" style="max-height:100px;">`;
-                        document.getElementById('image-preview').style.display = 'block';
+                },
+                logout: () => { location.reload(); }
+            };
+            // --- ПАРСЕР СЕКЦИЙ ---
+            const SectionParser = {
+                parse: async () => {
+                    try {
+                        console.log('🔍 Попытка получить разделы с главной страницы...');
+                        const response = await fetch(MAIN_PAGE_URL);
+                        if (!response.ok) throw new Error('Ошибка сети');
+                        const text = await response.text();
+                        const parser = new DOMParser();
+                        const doc = parser.parseFromString(text, 'text/html');
+                        
+                        const cards = doc.querySelectorAll('.category-card');
+                        const parsedSections = [];
+                        
+                        cards.forEach(card => {
+                            const href = card.getAttribute('href');
+                            const nameEl = card.querySelector('.category-name');
+                            if (href && nameEl) {
+                                let id = href.includes('/') ? href.substring(href.lastIndexOf('/') + 1) : href;
+                                if (id.endsWith('.htm')) id = id.replace('.htm', '');
+                                
+                                parsedSections.push({ id: id, name: nameEl.innerText.trim() });
+                            }
+                        });
+                        
+                        if (parsedSections.length > 0) {
+                            // ПЕРЕЗАПИСЫВАЕМ localStorage полностью
+                            localStorage.setItem('site_sections', JSON.stringify(parsedSections));
+                            
+                            // ПЕРЕЗАПИСЫВАЕМ state.sections
+                            state.sections = parsedSections;
+                            
+                            console.log(`✅ Разделы обновлены (${parsedSections.length} шт.)`);
+                        }
+                    } catch (e) {
+                        console.error('Не удалось распарсить разделы:', e);
                     }
-                    reader.readAsDataURL(input.files[0]);
                 }
-            },
-
-            fileToBase64: (file) => {
-                return new Promise((resolve, reject) => {
-                    const reader = new FileReader();
-                    reader.readAsDataURL(file);
-                    reader.onload = () => resolve({
-                        base64: reader.result.split(',')[1],
-                        mime: file.type,
-                        name: file.name
-                    });
-                    reader.onerror = error => reject(error);
-                });
-            },
-
-            save: async () => {
-                UI.showLoader(true);
-                try {
-                    const id = document.getElementById('card-id').value;
-                    const section = document.getElementById('card-section').value;
-                    const title = document.getElementById('card-title').value;
-                    const videoUrl = document.getElementById('card-video').value;
-                    
-                    const imageFile = document.getElementById('card-image-file').files[0];
-                    let imagePayload = {};
-                    if (imageFile) imagePayload = await CardManager.fileToBase64(imageFile);
-
-                    let pdfPayload = { id: '', name: '' };
-                    if (CardManager.currentPdfMode === 'select') {
-                        const select = document.getElementById('card-pdf-select');
-                        if (select.value) {
-                            pdfPayload.id = select.value;
-                            pdfPayload.name = select.options[select.selectedIndex].text;
-                        }
-                    } else {
-                        const pdfFile = document.getElementById('card-pdf-file').files[0];
-                        if (pdfFile) {
-                            const pdfData = await CardManager.fileToBase64(pdfFile);
-                            pdfPayload.base64 = pdfData.base64;
-                            pdfPayload.name = pdfData.name;
-                        }
-                    }
-
-                    const payload = {
-                        action: 'saveCard',
-                        card: {
-                            id: id || null,
-                            section: section,
-                            title: title,
-                            videoUrl: videoUrl,
-                            imageBase64: imagePayload.base64 || null,
-                            imageMimeType: imagePayload.mime || null,
-                            imageName: imagePayload.name || null,
-                            imageUrl: id ? document.getElementById('card-image-url-current').value : null,
-                            pdfId: pdfPayload.id || null,
-                            pdfName: pdfPayload.name || null,
-                            pdfBase64: pdfPayload.base64 || null
-                        }
+            };
+            // --- ОСНОВНАЯ ЛОГИКА ---
+            const App = {
+                init: async () => {
+                    // Вспомогательная функция для фильтрации (удаляем лишние категории)
+                    const filterSections = (list) => {
+                        const excludeIds = ['random-cards', 'novye-instruktsii-new'];
+                        return list.filter(s => !excludeIds.includes(s.id));
                     };
-
-                    const response = await fetch(GAS_APP_URL, {
-                        method: 'POST',
-                        body: JSON.stringify(payload)
-                    });
                     
-                    const result = await response.json();
-                    
-                    if (result.status === 'success') {
-                        state.cards = result.data;
-                        localStorage.setItem('site_cards', JSON.stringify(state.cards));
-                        UI.renderCards(state.currentSection);
-                        CardManager.closeModal();
-                        alert('Сохранено успешно!');
-                    } else {
-                        alert('Ошибка: ' + result.message);
+                    // 1. Сначала берем из кэша
+                    const cachedSections = localStorage.getItem('site_sections');
+                    if (cachedSections) {
+                        // Фильтруем при загрузке из кэша
+                        state.sections = filterSections(JSON.parse(cachedSections));
+                        UI.renderSidebar();
                     }
-
-                } catch (e) {
-                    console.error(e);
-                    alert('Произошла ошибка при сохранении.');
-                } finally {
-                    UI.showLoader(false);
-                }
-            },
-
-            deleteCard: async (id) => {
-                if (!confirm('Вы уверены, что хотите удалить эту карточку?')) return;
-
-                UI.showLoader(true);
-                try {
-                    const res = await fetch(GAS_APP_URL, {
-                        method: 'POST',
-                        body: JSON.stringify({
-                            action: 'deleteCard',
-                            id: id
-                        })
-                    });
                     
-                    const result = await res.json();
-                    
-                    if (result.status === 'success') {
-                        state.cards = result.data;
-                        localStorage.setItem('site_cards', JSON.stringify(state.cards));
-                        UI.renderCards(state.currentSection);
-                        // alert('Удалено');
-                    } else {
-                        alert('Ошибка удаления: ' + result.message);
+                    // 2. Обновляем с сайта
+                    console.log('🔄 Обновление списка разделов с сайта...');
+                    try {
+                        await SectionParser.parse(); 
+                        
+                        // Фильтруем после обновления с сайта
+                        state.sections = filterSections(state.sections);
+                        
+                        // Обновляем кэш уже с отфильтрованным списком, чтобы не фильтровать каждый раз
+                        localStorage.setItem('site_sections', JSON.stringify(state.sections));
+                        
+                        console.log('✅ Разделы обновлены и отфильтрованы.');
+                        UI.renderSidebar();
+                    } catch (e) {
+                        console.error('Ошибка при обновлении разделов:', e);
                     }
-
-                } catch (e) {
-                    console.error(e);
-                    alert('Ошибка сети при удалении.');
-                } finally {
-                    UI.showLoader(false);
+                    
+                    if (state.sections.length === 0) {
+                        alert('Список разделов пуст!');
+                        return;
+                    }
+                    
+                    state.currentSection = state.sections[0].id;
+                    
+                    // 3. Загружаем данные
+                    await Promise.all([App.loadCards(), App.loadPdfList()]);
+                    UI.renderCards(state.currentSection);
+                },
+                
+                loadCards: async () => {
+                    console.log('🔄 ЗАПУСК ЗАГРУЗКИ КАРТОЧЕК...');
+                    // Загружаем сохраненную сортировку
+                    const savedSort = localStorage.getItem('sort_preference');
+                    if (savedSort) {
+                        state.sortType = savedSort;
+                        document.getElementById('sort-select').value = savedSort;
+                    }
+                    try {
+                        // Формируем URL и сразу выводим его
+                        const cacheBuster = '&t=' + Date.now();
+                        const url = GAS_APP_URL + '?action=getCards' + cacheBuster;
+                        
+                        console.log('%c🌐 Запрос по ссылке:', 'color: blue; font-weight: bold;');
+                        console.log(url);
+                        
+                        const res = await fetch(url);
+                        
+                        console.log('Статус ответа:', res.status);
+                        
+                        if (!res.ok) throw new Error(`HTTP error! status: ${res.status}`);
+                        
+                        const data = await res.json();
+                        
+                        console.log('Тип данных:', typeof data);
+                        console.log('Первый ключ (если объект):', Object.keys(data)[0]);
+                        
+                        if (Array.isArray(data)) {
+                            state.cards = data;
+                            localStorage.setItem('site_cards', JSON.stringify(data));
+                            console.log(`✅ Успех! Загружено ${data.length} карточек.`);
+                            UI.renderCards(state.currentSection);
+                        } else {
+                            console.error('❌ ОШИБКА: Пришел не массив карточек, а что-то другое.');
+                            console.error('Содержимое ответа:', data);
+                        }
+                        
+                    } catch (e) {
+                        console.error('💥 Ошибка:', e);
+                    }
+                },
+                
+                loadPdfList: async () => {
+                    try {
+                        const res = await fetch(GAS_APP_URL + '?action=getFilesList');
+                        if (res.ok) {
+                            const data = await res.json();
+                            state.pdfFilesMap = data;
+                            localStorage.setItem('drivePdfMap', JSON.stringify(data));
+                        }
+                    } catch (e) {
+                        console.error("Ошибка загрузки списка PDF", e);
+                    }
                 }
-            },
-        };
-
-        // --- UI РЕНДЕРИНГ ---
-        const UI = {
-            renderSidebar: () => {
-                const nav = document.getElementById('sections-nav');
-                // ИСПОЛЬЗУЕМ state.sections ДЛЯ РИСОВАНИЯ
-                nav.innerHTML = state.sections.map(s => 
+            };
+            
+            // --- МЕНЕДЖЕР КАРТОЧЕК ---
+            const CardManager = {
+                currentPdfMode: 'select',
+                
+                openModal: (editCardId = null) => {
+                    const modal = document.getElementById('card-modal');
+                    const form = document.getElementById('card-form');
+                    const titleEl = document.getElementById('modal-title');
+                    
+                    form.reset();
+                    document.getElementById('image-preview').innerHTML = '';
+                    document.getElementById('image-preview').style.display = 'none';
+                    
+                    // Заполняем селект секций (ИСПОЛЬЗУЯ ДИНАМИЧЕСКИЙ СПИСОК)
+                    const sectionSelect = document.getElementById('card-section');
+                    sectionSelect.innerHTML = state.sections.map(s => 
+                    `<option value="${s.id}">${s.name}</option>`
+                    ).join('');
+                    
+                    // Заполняем селект PDF
+                    const pdfSelect = document.getElementById('card-pdf-select');
+                    pdfSelect.innerHTML = '<option value="">Выберите файл...</option>' + 
+                    Object.keys(state.pdfFilesMap).map(name => 
+                    `<option value="${state.pdfFilesMap[name]}">${name}</option>`
+                    ).join('');
+                    
+                    if (editCardId) {
+                        const card = state.cards.find(c => c.id === editCardId);
+                        titleEl.textContent = 'Редактировать карточку';
+                        document.getElementById('card-id').value = card.id;
+                        document.getElementById('card-section').value = card.section;
+                        document.getElementById('card-title').value = card.title;
+                        document.getElementById('card-description').value = card.description || '';
+                        document.getElementById('card-video').value = card.videoUrl || '';
+                        
+                        if (card.imageUrl) {
+                            document.getElementById('card-image-url-current').value = card.imageUrl;
+                            document.getElementById('image-preview').innerHTML = `<img src="${card.imageUrl}" style="max-height:100px;">`;
+                            document.getElementById('image-preview').style.display = 'block';
+                        }
+                        
+                        if (card.pdf && card.pdf.id) {
+                            const foundInMap = Object.keys(state.pdfFilesMap).find(key => state.pdfFilesMap[key] === card.pdf.id);
+                            if (foundInMap) {
+                                pdfSelect.value = card.pdf.id;
+                            } else {
+                                const opt = document.createElement('option');
+                                opt.value = card.pdf.id;
+                                opt.text = card.pdf.name || 'Файл';
+                                opt.selected = true;
+                                pdfSelect.add(opt);
+                            }
+                        }
+                    } else {
+                        titleEl.textContent = 'Новая карточка';
+                        document.getElementById('card-id').value = '';
+                        document.getElementById('card-section').value = state.currentSection;
+                    }
+                    
+                    modal.classList.add('open');
+                },
+                
+                closeModal: () => {
+                    document.getElementById('card-modal').classList.remove('open');
+                },
+                
+                switchPdfTab: (mode) => {
+                    CardManager.currentPdfMode = mode;
+                    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                    event.target.classList.add('active');
+                    if (mode === 'select') {
+                        document.getElementById('pdf-tab-select').style.display = 'block';
+                        document.getElementById('pdf-tab-upload').style.display = 'none';
+                    } else {
+                        document.getElementById('pdf-tab-select').style.display = 'none';
+                        document.getElementById('pdf-tab-upload').style.display = 'block';
+                    }
+                },
+                
+                handleImagePreview: (input) => {
+                    if (input.files && input.files[0]) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            document.getElementById('image-preview').innerHTML = `<img src="${e.target.result}" style="max-height:100px;">`;
+                            document.getElementById('image-preview').style.display = 'block';
+                        }
+                        reader.readAsDataURL(input.files[0]);
+                    }
+                },
+                
+                fileToBase64: (file) => {
+                    return new Promise((resolve, reject) => {
+                        const reader = new FileReader();
+                        reader.readAsDataURL(file);
+                        reader.onload = () => resolve({
+                            base64: reader.result.split(',')[1],
+                            mime: file.type,
+                            name: file.name
+                        });
+                        reader.onerror = error => reject(error);
+                    });
+                },
+                
+                save: async () => {
+                    UI.showLoader(true);
+                    try {
+                        const id = document.getElementById('card-id').value;
+                        const section = document.getElementById('card-section').value;
+                        const title = document.getElementById('card-title').value;
+                        const description = document.getElementById('card-description').value || '';
+                        const videoUrl = document.getElementById('card-video').value;
+                        
+                        const imageFile = document.getElementById('card-image-file').files[0];
+                        let imagePayload = {};
+                        if (imageFile) imagePayload = await CardManager.fileToBase64(imageFile);
+                        
+                        let pdfPayload = { id: '', name: '' };
+                        if (CardManager.currentPdfMode === 'select') {
+                            const select = document.getElementById('card-pdf-select');
+                            if (select.value) {
+                                pdfPayload.id = select.value;
+                                pdfPayload.name = select.options[select.selectedIndex].text;
+                            }
+                        } else {
+                            const pdfFile = document.getElementById('card-pdf-file').files[0];
+                            if (pdfFile) {
+                                const pdfData = await CardManager.fileToBase64(pdfFile);
+                                pdfPayload.base64 = pdfData.base64;
+                                pdfPayload.name = pdfData.name;
+                            }
+                        }
+                        
+                        const payload = {
+                            action: 'saveCard',
+                            card: {
+                                id: id || null,
+                                section: section,
+                                title: title,
+                                description: description,
+                                videoUrl: videoUrl,
+                                imageBase64: imagePayload.base64 || null,
+                                imageMimeType: imagePayload.mime || null,
+                                imageName: imagePayload.name || null,
+                                imageUrl: id ? document.getElementById('card-image-url-current').value : null,
+                                pdfId: pdfPayload.id || null,
+                                pdfName: pdfPayload.name || null,
+                                pdfBase64: pdfPayload.base64 || null
+                            }
+                        };
+                        
+                        const response = await fetch(GAS_APP_URL, {
+                            method: 'POST',
+                            body: JSON.stringify(payload)
+                        });
+                        
+                        const result = await response.json();
+                        
+                        if (result.status === 'success') {
+                            state.cards = result.data;
+                            localStorage.setItem('site_cards', JSON.stringify(state.cards));
+                            UI.renderCards(state.currentSection);
+                            CardManager.closeModal();
+                            alert('Сохранено успешно!');
+                        } else {
+                            alert('Ошибка: ' + result.message);
+                        }
+                        
+                    } catch (e) {
+                        console.error(e);
+                        alert('Произошла ошибка при сохранении.');
+                    } finally {
+                        UI.showLoader(false);
+                    }
+                },
+                
+                deleteCard: async (id) => {
+                    if (!confirm('Вы уверены, что хотите удалить эту карточку?')) return;
+                    
+                    UI.showLoader(true);
+                    try {
+                        const res = await fetch(GAS_APP_URL, {
+                            method: 'POST',
+                            body: JSON.stringify({
+                                action: 'deleteCard',
+                                id: id
+                            })
+                        });
+                        
+                        const result = await res.json();
+                        
+                        if (result.status === 'success') {
+                            state.cards = result.data;
+                            localStorage.setItem('site_cards', JSON.stringify(state.cards));
+                            UI.renderCards(state.currentSection);
+                            // alert('Удалено');
+                        } else {
+                            alert('Ошибка удаления: ' + result.message);
+                        }
+                        
+                    } catch (e) {
+                        console.error(e);
+                        alert('Ошибка сети при удалении.');
+                    } finally {
+                        UI.showLoader(false);
+                    }
+                },
+            };
+            
+            // --- UI РЕНДЕРИНГ ---
+            const UI = {
+                renderSidebar: () => {
+                    const nav = document.getElementById('sections-nav');
+                    // ИСПОЛЬЗУЕМ state.sections ДЛЯ РИСОВАНИЯ
+                    nav.innerHTML = state.sections.map(s => 
                     `<button onclick="UI.changeSection('${s.id}')" class="${s.id === state.currentSection ? 'active' : ''}">${s.name}</button>`
-                ).join('');
-            },
-
-            changeSection: (sectionId) => {
-                state.currentSection = sectionId;
-                UI.renderSidebar();
-                UI.renderCards(sectionId);
-            },
-
-            sortCards: (cards, type) => {
-                const sorted = [...cards];
-                if (type === 'alphabet') {
-                    sorted.sort((a, b) => a.title.localeCompare(b.title, 'ru'));
-                } else {
-                    // Сортировка по дате добавления (предполагаем, что есть поле createdAt)
-                    // Если нет поля даты, можно использовать id или порядок из массива
-                    sorted.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
-                }
-                return sorted;
-            },
-
-            renderCards: (sectionId) => {
-                const currentSectionObj = state.sections.find(s => s.id === sectionId);
-                const sectionName = currentSectionObj ? currentSectionObj.name : 'Раздел';
+                    ).join('');
+                },
                 
-                document.getElementById('current-section-title').textContent = sectionName;
+                changeSection: (sectionId) => {
+                    state.currentSection = sectionId;
+                    UI.renderSidebar();
+                    UI.renderCards(sectionId);
+                },
                 
-                const grid = document.getElementById('cards-grid');
-                let filtered = state.cards.filter(c => c.section === sectionId);
+                sortCards: (cards, type) => {
+                    const sorted = [...cards];
+                    if (type === 'alphabet') {
+                        sorted.sort((a, b) => a.title.localeCompare(b.title, 'ru'));
+                    } else {
+                        // Сортировка по дате добавления (предполагаем, что есть поле createdAt)
+                        // Если нет поля даты, можно использовать id или порядок из массива
+                        sorted.sort((a, b) => (b.createdAt || 0) - (a.createdAt || 0));
+                    }
+                    return sorted;
+                },
                 
-                // 🔽 ДОБАВЬТЕ СОРТИРОВКУ 🔽
-                filtered = UI.sortCards(filtered, state.sortType);
-                
-                if (filtered.length === 0) {
-                    grid.innerHTML = '<p style="color:#666; grid-column: 1/-1; text-align:center;">В этом разделе пока нет карточек.</p>';
-                    return;
-                }
-
-                grid.innerHTML = filtered.map(card => {
-                    const pdfLink = card.pdf && card.pdf.id 
+                renderCards: (sectionId) => {
+                    const currentSectionObj = state.sections.find(s => s.id === sectionId);
+                    const sectionName = currentSectionObj ? currentSectionObj.name : 'Раздел';
+                    
+                    document.getElementById('current-section-title').textContent = sectionName;
+                    
+                    const grid = document.getElementById('cards-grid');
+                    let filtered = state.cards.filter(c => c.section === sectionId);
+                    
+                    // 🔽 ДОБАВЬТЕ СОРТИРОВКУ 🔽
+                    filtered = UI.sortCards(filtered, state.sortType);
+                    
+                    if (filtered.length === 0) {
+                        grid.innerHTML = '<p style="color:#666; grid-column: 1/-1; text-align:center;">В этом разделе пока нет карточек.</p>';
+                        return;
+                    }
+                    
+                    grid.innerHTML = filtered.map(card => {
+                        const pdfLink = card.pdf && card.pdf.id 
                         ? `<a href="https://drive.google.com/file/d/${card.pdf.id}/preview" target="_blank" class="link-item">📄 ${card.pdf.name || 'Документ'}</a>` 
                         : '';
-                    const videoLink = card.videoUrl 
+                        const videoLink = card.videoUrl 
                         ? `<a href="${card.videoUrl}" target="_blank" class="location-item">🎬 Видео</a>` 
                         : '';
-
-                    return `
+                        
+                        return `
                     <div class="card">
                         <div class="card-actions">
                             <button class="action-btn" onclick="CardManager.openModal('${card.id}')">✎</button>
@@ -691,22 +738,23 @@
                                 ${pdfLink}
                                 ${videoLink}
                             </div>
+                            ${card.description ? `<div style="font-size:0.85rem; color:#666; margin-bottom:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;">${card.description}</div>` : ''}
                         </div>
                     </div>
                     `;
-                }).join('');
-            },
-
-            // 🔽 ДОБАВЬТЕ НОВУЮ ФУНКЦИЮ 🔽
-            changeSortType: (type) => {
-                state.sortType = type;
-                localStorage.setItem('sort_preference', type); // сохраняем выбор
-                UI.renderCards(state.currentSection);
-            },
-            showLoader: (show) => {
-                document.getElementById('loader').style.display = show ? 'block' : 'none';
-            }
-        };
-    </script>
-</body>
-</html>
+                    }).join('');
+                },
+                
+                // 🔽 ДОБАВЬТЕ НОВУЮ ФУНКЦИЮ 🔽
+                changeSortType: (type) => {
+                    state.sortType = type;
+                    localStorage.setItem('sort_preference', type); // сохраняем выбор
+                    UI.renderCards(state.currentSection);
+                },
+                showLoader: (show) => {
+                    document.getElementById('loader').style.display = show ? 'block' : 'none';
+                }
+            };
+        </script>
+    </body>
+    </html>

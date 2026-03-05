@@ -233,17 +233,28 @@ const GAS_APP_URL =
         const imgUrl = card.imageUrl || "";
 
         return `
-        <div class="model-card">
-          <img src="${imgUrl}" alt="${card.title}" class="model-image">
-          <h3 class="model-title">${card.title}</h3>
-          <div class="model-details">
-            ${videoLink !== "#" ? `<a href="${videoLink}" target="_blank" class="video-btn"><i class="fas fa-play"></i> Видео</a>` : ""}
+          <div class="model-card">
+            <img src="${imgUrl}" alt="${card.title}" class="model-image">
+            
+            <!-- Заголовок -->
+            <h3 class="model-title">${card.title}</h3>
+            
+            ${
+              card.description
+                ? `
+              <p class="model-description">${card.description}</p>
+            `
+                : ""
+            }
+            
+            <div class="model-details">
+              ${videoLink !== "#" ? `<a href="${videoLink}" target="_blank" class="video-btn"><i class="fas fa-play"></i> Видео</a>` : ""}
+            </div>
+            <a href="${pdfLink}" target="_blank" class="instruction-btn">
+              <i class="fas fa-file-pdf"></i> Открыть инструкцию
+            </a>
           </div>
-          <a href="${pdfLink}" target="_blank" class="instruction-btn">
-            <i class="fas fa-file-pdf"></i> Открыть инструкцию
-          </a>
-        </div>
-      `;
+        `;
       })
       .join("");
 

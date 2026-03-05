@@ -137,6 +137,27 @@ h1 {
   font-size: 1.2rem;
 }
 
+.model-description {
+  font-size: 0.85rem; /* Чуть меньше основного текста */
+  color: #666; /* Серый цвет */
+  margin: 8px 0 12px 0; /* Отступы сверху и снизу */
+  line-height: 1.4; /* Межстрочный интервал */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Обрезать после 2 строк */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Троеточие в конце */
+  min-height: 2.4em; /* Резервируем место, чтобы карточки не прыгали */
+}
+
+/* Адаптив для мобильных: можно показывать больше строк или убрать фиксированную высоту */
+@media (max-width: 600px) {
+  .model-description {
+    -webkit-line-clamp: 3; /* На телефоне показываем 3 строки */
+    min-height: auto;
+  }
+}
+
 .model-details {
   display: flex;
   justify-content: center;
