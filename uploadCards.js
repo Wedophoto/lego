@@ -239,13 +239,9 @@ const GAS_APP_URL =
             <!-- Заголовок -->
             <h3 class="model-title">${card.title}</h3>
             
-            ${
-              card.description
-                ? `
-              <p class="model-description">${card.description}</p>
-            `
-                : ""
-            }
+            
+              <p class="model-description">${card.description ? card.description : ""}</p>
+           
             
             <div class="model-details">
               ${videoLink !== "#" ? `<a href="${videoLink}" target="_blank" class="video-btn"><i class="fas fa-play"></i> Видео</a>` : ""}
