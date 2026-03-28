@@ -404,3 +404,12 @@ if (document.readyState === "loading") {
   console.log("✅ DOM уже загружен, запускаем addFooterContent...");
   addFooterContent();
 }
+
+// Проверяем, находимся ли мы на GitHub Pages
+if (
+  window.location.hostname.includes("github.io") ||
+  window.location.hostname.includes("github.com")
+) {
+  // Переадресация на новый хостинг
+  window.location.replace("https://ведо.рф" + window.location.pathname);
+}

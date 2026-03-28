@@ -1,0 +1,50 @@
+--- NEW REQUEST 20:25:36 ---
+POST: Array
+(
+    [json_data] => {"id":null,"title":"тест","tags":[],"content":"пепе","image_url":null}
+)
+
+FILES: Array
+(
+)
+
+RAW INPUT: ...
+DETECTED ACTION: 
+ERROR: Действие не найдено во входящих данных
+--- NEW REQUEST 20:25:38 ---
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+RAW INPUT: ...
+DETECTED ACTION: 
+ERROR: Действие не найдено во входящих данных
+--- NEW REQUEST 20:25:40 ---
+POST: Array
+(
+)
+
+FILES: Array
+(
+)
+
+RAW INPUT: ...
+DETECTED ACTION: 
+ERROR: Действие не найдено во входящих данных
+--- 11:47:09 ---
+Action: getPosts
+--- 11:47:09 ---
+Action: getTags
+--- 11:48:04 ---
+Action: 
+Error: Action is empty
+--- 11:51:04 ---
+Action: getPosts
+--- 11:51:04 ---
+Action: getTags
+--- 11:51:14 ---
+Action: savePost

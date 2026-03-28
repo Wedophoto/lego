@@ -1,0 +1,8 @@
+2026-03-08 20:23:00 REQUEST START
+Action detected: getPosts
+2026-03-08 20:23:02 REQUEST START
+Action detected: getTags
+ERROR: Неизвестное действие: getTags
+2026-03-08 20:23:14 REQUEST START
+Action detected: 
+ERROR: Действие не указано или не распознано

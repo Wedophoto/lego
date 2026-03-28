@@ -1,0 +1,5 @@
+[11-Mar-2026 11:51:14 Europe/Moscow] PHP Fatal error:  Uncaught TypeError: explode(): Argument #2 ($string) must be of type string, array given in /var/www/vedo_rf_usr/data/www/xn--b1aec1b.xn--p1ai/api/api.php:191
+Stack trace:
+#0 /var/www/vedo_rf_usr/data/www/xn--b1aec1b.xn--p1ai/api/api.php(191): explode()
+#1 {main}
+  thrown in /var/www/vedo_rf_usr/data/www/xn--b1aec1b.xn--p1ai/api/api.php on line 191

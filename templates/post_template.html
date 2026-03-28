@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{TITLE} | Мой Блог</title>
+    <meta name="description" content="{DESCRIPTION}">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{TITLE}">
+    <meta property="og:description" content="{DESCRIPTION}">
+    <meta property="og:image" content="{IMAGE_URL}">
+
+    <style>
+        /* CSS переменные для светлой и темной темы */
+        :root {
+            --bg: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --text-dark: #111111;
+            --border: #eeeeee;
+            --accent: #4f46e5;
+            --accent-hover: #4338ca;
+            --code-bg: #f3f4f6;
+            --code-color: #d63384;
+            --pre-bg: #1f2937;
+            --pre-color: #e5e7eb;
+            --blockquote-bg: #f9fafb;
+            --blockquote-border: #4f46e5;
+            --tag-bg: #e0e7ff;
+            --tag-color: #4338ca;
+            --table-header-bg: #f9fafb;
+            --table-border: #e5e7eb;
+            --table-stripe: #f9fafb;
+            --icon-color: #666666;
+            --shadow: rgba(0,0,0,0.05);
+        }
+
+        [data-theme="dark"] {
+            --bg: #1a1a1a;
+            --text: #e5e5e5;
+            --text-light: #a0a0a0;
+            --text-dark: #ffffff;
+            --border: #333333;
+            --accent: #818cf8;
+            --accent-hover: #6366f1;
+            --code-bg: #2d2d2d;
+            --code-color: #f472b6;
+            --pre-bg: #0d1117;
+            --pre-color: #e5e7eb;
+            --blockquote-bg: #2d2d2d;
+            --blockquote-border: #818cf8;
+            --tag-bg: #374151;
+            --tag-color: #818cf8;
+            --table-header-bg: #2d2d2d;
+            --table-border: #404040;
+            --table-stripe: #262626;
+            --icon-color: #a0a0a0;
+            --shadow: rgba(0,0,0,0.2);
+        }
+
+        * {
+            transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            line-height: 1.7;
+            color: var(--text);
+            background: var(--bg);
+            position: relative;
+        }
+
+        /* Переключатель темы */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: 40px;
+            padding: 8px;
+            box-shadow: 0 2px 10px var(--shadow);
+            display: flex;
+            gap: 8px;
+            backdrop-filter: blur(8px);
+            background: color-mix(in srgb, var(--bg) 80%, transparent);
+        }
+
+        .theme-btn {
+            background: transparent;
+            border: none;
+            padding: 8px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-light);
+            transition: all 0.2s ease;
+            width: 36px;
+            height: 36px;
+        }
+
+        .theme-btn:hover {
+            background: var(--border);
+            color: var(--text-dark);
+            transform: scale(1.05);
+        }
+
+        .theme-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .theme-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        /* Навигация (Хлебные крошки) */
+        .breadcrumbs {
+            font-size: 0.9rem;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid var(--border);
+        }
+        .breadcrumbs a {
+            color: var(--accent);
+            text-decoration: none;
+            margin-right: 5px;
+        }
+        .breadcrumbs a:hover { text-decoration: underline; }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--text-dark);
+            line-height: 1.2;
+        }
+
+        .meta {
+            color: var(--text-light);
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        /* Современные иконки для мета-информации */
+        .meta-icon {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .meta-icon svg {
+            width: 18px;
+            height: 18px;
+            fill: none;
+            stroke: currentColor;
+            stroke-width: 2;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .cover-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 40px;
+            box-shadow: 0 4px 6px var(--shadow);
+        }
+
+        .content {
+            font-size: 1.1rem;
+        }
+        
+        /* --- СТИЛИ ДЛЯ MARKDOWN ЭЛЕМЕНТОВ --- */
+        .content h2 { 
+            font-size: 1.8rem; 
+            margin-top: 2.5rem; 
+            margin-bottom: 1rem; 
+            color: var(--text-dark); 
+            border-bottom: 1px solid var(--border); 
+            padding-bottom: 10px; 
+        }
+        .content h3 { 
+            font-size: 1.4rem; 
+            margin-top: 2rem; 
+            margin-bottom: 1rem; 
+            color: var(--text-dark); 
+        }
+        .content h4 { 
+            font-size: 1.2rem; 
+            margin-top: 1.5rem; 
+            margin-bottom: 0.8rem; 
+        }
+        .content p { margin-bottom: 1.5rem; }
+        .content ul, .content ol { 
+            margin-bottom: 1.5rem; 
+            padding-left: 2rem; 
+        }
+        .content li { margin-bottom: 0.5rem; }
+        .content blockquote {
+            border-left: 4px solid var(--blockquote-border);
+            padding-left: 20px;
+            margin: 2rem 0;
+            font-style: italic;
+            color: var(--text-light);
+            background: var(--blockquote-bg);
+            padding: 15px 20px;
+            border-radius: 0 8px 8px 0;
+        }
+        .content img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 8px;
+            margin: 2rem 0;
+            display: block;
+        }
+        .content pre {
+            background: var(--pre-bg);
+            color: var(--pre-color);
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            margin: 2rem 0;
+        }
+        .content code {
+            background: var(--code-bg);
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-family: monospace;
+            font-size: 0.9em;
+            color: var(--code-color);
+        }
+        .content pre code {
+            background: transparent;
+            padding: 0;
+            color: inherit;
+        }
+
+        /* Стили для таблиц с горизонтальной прокруткой */
+        .content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+            font-size: 0.95rem;
+            display: block;
+            overflow-x: auto;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: thin;
+            scrollbar-color: var(--accent) var(--border);
+        }
+
+        /* Кастомный скроллбар для WebKit */
+        .content table::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        .content table::-webkit-scrollbar-track {
+            background: var(--border);
+            border-radius: 4px;
+        }
+
+        .content table::-webkit-scrollbar-thumb {
+            background: var(--accent);
+            border-radius: 4px;
+        }
+
+        .content table::-webkit-scrollbar-thumb:hover {
+            background: var(--accent-hover);
+        }
+
+        .content th,
+        .content td {
+            padding: 12px 16px;
+            border: 1px solid var(--table-border);
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        .content th {
+            background-color: var(--table-header-bg);
+            font-weight: 600;
+            color: var(--text-dark);
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .content td {
+            background-color: var(--bg);
+        }
+
+        /* Полосатая таблица для лучшей читаемости */
+        .content tr:nth-child(even) td {
+            background-color: var(--table-stripe);
+        }
+
+        /* Адаптивность для маленьких экранов */
+        @media (max-width: 600px) {
+            .content th,
+            .content td {
+                padding: 8px 12px;
+                font-size: 0.85rem;
+            }
+            
+            h1 {
+                font-size: 2rem;
+            }
+            
+            .theme-toggle {
+                top: 10px;
+                right: 10px;
+                padding: 4px;
+            }
+            
+            .theme-btn {
+                width: 32px;
+                height: 32px;
+            }
+            
+            .theme-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+        }
+
+        /* Теги */
+        .tags-container {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border);
+        }
+        .tag {
+            display: inline-block;
+            background: var(--tag-bg);
+            color: var(--tag-color);
+            padding: 6px 14px;
+            border-radius: 99px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-decoration: none;
+            margin-right: 8px;
+            margin-bottom: 8px;
+            transition: all 0.2s ease;
+        }
+        .tag:hover { 
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+    </style>
+</head>
+<body data-theme="light">
+
+    <!-- Переключатель темы -->
+    <div class="theme-toggle">
+        <button class="theme-btn active" id="light-theme-btn" title="Светлая тема">
+            <svg viewBox="0 0 24 24">
+                <circle cx="12" cy="12" r="5"/>
+                <line x1="12" y1="1" x2="12" y2="3"/>
+                <line x1="12" y1="21" x2="12" y2="23"/>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+                <line x1="1" y1="12" x2="3" y2="12"/>
+                <line x1="21" y1="12" x2="23" y2="12"/>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+            </svg>
+        </button>
+        <button class="theme-btn" id="dark-theme-btn" title="Темная тема">
+            <svg viewBox="0 0 24 24">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+            </svg>
+        </button>
+    </div>
+
+    <!-- Навигация -->
+    <div class="breadcrumbs">
+        <a href="/">Главная</a>
+        <span style="color:var(--border);">/</span>
+        <a href="/blog/">Все статьи</a>
+    </div>
+
+    <article>
+        <h1>{TITLE}</h1>
+        
+        <div class="meta">
+            <span class="meta-icon">
+                <svg viewBox="0 0 24 24">
+                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2"/>
+                    <line x1="16" y1="2" x2="16" y2="6"/>
+                    <line x1="8" y1="2" x2="8" y2="6"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                    <path d="M8 14h.01"/>
+                    <path d="M12 14h.01"/>
+                    <path d="M16 14h.01"/>
+                    <path d="M8 18h.01"/>
+                    <path d="M12 18h.01"/>
+                    <path d="M16 18h.01"/>
+                </svg>
+                {DATE}
+            </span>
+            <span class="meta-icon">
+                <svg viewBox="0 0 24 24">
+                    <path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/>
+                    <line x1="7" y1="7" x2="7.01" y2="7"/>
+                </svg>
+                {TAGS}
+            </span>
+        </div>
+
+        {IMAGE_HTML}
+
+        <div class="content">
+            {CONTENT}
+        </div>
+
+        <!-- Блок тегов -->
+        <div class="tags-container" id="tags-block">
+            <span id="raw-tags" style="display:none;">{TAGS}</span>
+            <div id="formatted-tags"></div>
+        </div>
+    </article>
+
+    <script>
+        // Переключение темы
+        const lightBtn = document.getElementById('light-theme-btn');
+        const darkBtn = document.getElementById('dark-theme-btn');
+        const html = document.body;
+
+        // Проверяем сохраненную тему
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        html.setAttribute('data-theme', savedTheme);
+        updateActiveButton(savedTheme);
+
+        lightBtn.addEventListener('click', () => {
+            html.setAttribute('data-theme', 'light');
+            localStorage.setItem('theme', 'light');
+            updateActiveButton('light');
+        });
+
+        darkBtn.addEventListener('click', () => {
+            html.setAttribute('data-theme', 'dark');
+            localStorage.setItem('theme', 'dark');
+            updateActiveButton('dark');
+        });
+
+        function updateActiveButton(theme) {
+            if (theme === 'light') {
+                lightBtn.classList.add('active');
+                darkBtn.classList.remove('active');
+            } else {
+                darkBtn.classList.add('active');
+                lightBtn.classList.remove('active');
+            }
+        }
+
+        // Скрипт для красивого вывода тегов
+        const rawTags = document.getElementById('raw-tags').innerText.trim();
+        const tagsContainer = document.getElementById('tags-block');
+        const formattedContainer = document.getElementById('formatted-tags');
+
+        if (rawTags && rawTags !== '{TAGS}') {
+            const tags = rawTags.split(',').map(t => t.trim()).filter(t => t);
+            if (tags.length > 0) {
+                tags.forEach(tag => {
+                    const a = document.createElement('a');
+                    a.href = '/blog/';
+                    a.className = 'tag';
+                    a.innerText = '#' + tag;
+                    formattedContainer.appendChild(a);
+                });
+            } else {
+                tagsContainer.style.display = 'none';
+            }
+        } else {
+            tagsContainer.style.display = 'none';
+        }
+    </script>
+</body>
+</html>
