@@ -411,5 +411,5 @@ if (
   window.location.hostname.includes("github.com")
 ) {
   // Переадресация на новый хостинг
-  window.location.replace("https://ведо.рф" + window.location.pathname);
+  window.location.replace("http://ведо.рф");
 }
