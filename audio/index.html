@@ -418,7 +418,7 @@
     // ВАЖНО: Убедитесь, что файлы лежат в папке 'audio' рядом с этим html файлом.
     // Обложки должны иметь такое же имя, как и аудио (например, song.mp3 и song.jpg)
     
-        const songs = [
+        let songs = [
         {
             title: "Хулиганы",
             artist: "Тренер Евгений",
@@ -472,7 +472,7 @@
     ];
 
     // Путь к папке (не меняйте, если папка называется 'audio')
-    const AUDIO_FOLDER = "audio/";
+    const AUDIO_FOLDER = "https://wedophoto.github.io/lego/audio/audio/";
 
     // ==========================================
     // КОД ПЛЕЕРА (НЕ МЕНЯТЬ)
@@ -499,28 +499,31 @@
     let isPlaying = false;
 
     // Инициализация
-    function init() {
+        function init() {
         // Подготовка путей
         songs = songs.map(song => {
-            // Определяем расширение файла (mp3, wav и т.д.) для поиска обложки
-            // Если файл не указан явно, пробуем угадать по названию
+            // Если файл не указан, берем название
             if (!song.file) song.file = song.title + ".mp3";
             
             const fileName = song.file;
             const baseName = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
             
-            // Ищем обложку: пробуем jpg, png, jpeg. Если нет - заглушка
-            let coverUrl = `https://picsum.photos/seed/${encodeURIComponent(song.title)}/400/400`;
-            // Примечание: локальные картинки проверяются 'на лету' при загрузке, 
-            // но здесь мы просто ставим ссылку. Если картинка не существует, браузер покажет сломанную иконку 
-            // или заглушку, если мы добавим обработчик onerror.
+            // !!! ВОТ ЭТА СТРОКА ИСПРАВЛЯЕТ ССЫЛКИ С ПРОБЕЛАМИ !!!
+            const safeFileName = encodeURIComponent(fileName);
+
+            // Полный путь к аудио с исправленным именем
+            let audioUrl = AUDIO_FOLDER + safeFileName;
             
-            // Добавляем полный путь к аудио
+            // Пробуем найти локальную (или удаленную) обложку
+            // Для обложек тоже кодируем имя
+            let coverUrl = AUDIO_FOLDER + encodeURIComponent(baseName) + ".jpg";
+            
+            // Если обложка jpg не загрузится, JS попытается найти png или покажет заглушку (это работает в коде ниже через onerror)
+
             return {
                 ...song,
-                url: AUDIO_FOLDER + fileName,
-                // Пробуем найти локальную обложку
-                cover: AUDIO_FOLDER + baseName + ".jpg" 
+                url: audioUrl,
+                cover: coverUrl
             };
         });
 
