@@ -38,27 +38,29 @@
             display: flex;
             width: 100%;
             max-width: 900px;
-            height: 600px;
+            /* Убираем жесткую высоту на десктопе, чтобы контент тягнулся, 
+              но ограничиваем maxHeight, чтобы не растягивалось на весь экран */
+            height: 600px; 
+            max-height: 90vh; 
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: var(--radius);
             border: var(--glass-border);
             box-shadow: var(--shadow);
-            overflow: hidden;
+            overflow: hidden; /* Обрезаем всё, что вылезает */
         }
 
-        /* Левая часть: Плеер */
-        .player-section {
-            flex: 1;
-            padding: 40px;
+        .playlist-section {
+            width: 400px;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            border-right: var(--glass-border);
-            position: relative;
+            background: rgba(0, 0, 0, 0.2);
+            /* Гарантируем прокрутку внутри этого блока */
+            overflow-y: auto; 
+            overflow-x: hidden;
         }
+
 
         .cover-wrapper {
             width: 280px;
@@ -318,27 +320,24 @@
         }
 
         @media (max-width: 768px) {
-            .app-container {
-                flex-direction: column;
-                height: 90vh;
-                max-width: 400px;
-            }
-            .player-section {
-                padding: 20px;
-                border-right: none;
-                border-bottom: var(--glass-border);
-                flex: 0 0 auto;
-            }
-            .cover-wrapper {
-                width: 150px;
-                height: 150px;
-                margin-bottom: 15px;
-            }
-            .playlist-section {
-                width: 100%;
-                flex: 1;
-            }
-        }
+          .app-container {
+              flex-direction: column; /* Вертикально */
+              height: 90vh; /* Высота 90% от экрана */
+              max-width: 400px;
+          }
+          .player-section {
+              padding: 20px;
+              border-right: none;
+              border-bottom: var(--glass-border);
+              /* Уменьшаем размер плеера, чтобы место осталось под список */
+              flex: 0 0 auto; 
+          }
+          .playlist-section {
+              width: 100%; /* На всю ширину */
+              flex: 1; /* Занимает остаток места */
+              /* height убираем, он управляется flex родителя */
+          }
+      }
         
         .toast {
             position: absolute;
@@ -598,17 +597,34 @@
     }
 
     function playSong() {
-        isPlaying = true;
-        playerSection.classList.add('playing');
-        playIcon.classList.replace('ph-play', 'ph-pause');
-        
-        audio.play().catch(error => {
-            console.error("Ошибка воспроизведения:", error);
-            showToast("Не удалось воспроизвести файл. Проверьте путь.");
-            isPlaying = false;
-            playIcon.classList.replace('ph-pause', 'ph-play');
+    // 1. Останавливаем предыдущий воспроизведение корректно
+    if (!audio.paused) {
+        audio.pause();
+        // Маленькая пауза, чтобы предыдущий play успел отмениться
+        // (избавляет от AbortError при быстром переключении)
+    }
+
+    isPlaying = true;
+    playerSection.classList.add('playing');
+    playIcon.classList.replace('ph-play', 'ph-pause');
+
+    // 2. Запускаем новый
+    const playPromise = audio.play();
+
+    if (playPromise !== undefined) {
+        playPromise.then(_ => {
+            // Успех
+        }).catch(error => {
+            // Игнорируем AbortError (быстрый клик), но покажем другие ошибки
+            if (error.name !== 'AbortError') {
+                console.error("Ошибка воспроизведения:", error);
+                showToast("Ошибка: " + error.message);
+                isPlaying = false;
+                playIcon.classList.replace('ph-pause', 'ph-play');
+            }
         });
     }
+}
 
     function pauseSong() {
         isPlaying = false;
