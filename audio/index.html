@@ -19,7 +19,7 @@
             --radius: 24px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; -webkit-tap-highlight-color: transparent; }
 
         body {
             font-family: 'Segoe UI', Roboto, sans-serif;
@@ -32,6 +32,7 @@
             justify-content: center;
             align-items: center;
             padding: 20px;
+            overflow: hidden; /* Предотвращаем скролл body */
         }
 
         .app-container {
@@ -46,6 +47,7 @@
             border: var(--glass-border);
             box-shadow: var(--shadow);
             overflow: hidden;
+            position: relative; /* Для позиционирования мобильного меню */
         }
 
         /* Левая часть: Плеер */
@@ -58,6 +60,7 @@
             justify-content: center;
             border-right: var(--glass-border);
             position: relative;
+            z-index: 1;
         }
 
         .cover-wrapper {
@@ -109,6 +112,7 @@
             cursor: pointer;
             margin-bottom: 8px;
             position: relative;
+            z-index: 10;
         }
 
         .progress-bar {
@@ -190,6 +194,20 @@
             color: var(--text-sec);
         }
 
+        /* Кнопка плейлиста для мобильного */
+        .playlist-toggle-btn {
+            display: none; /* Скрыта на десктопе */
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--primary);
+            background: rgba(139, 92, 246, 0.1);
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+        .playlist-toggle-btn:hover {
+            background: rgba(139, 92, 246, 0.2);
+        }
+
         .volume-container {
             display: flex;
             align-items: center;
@@ -222,6 +240,7 @@
             display: flex;
             flex-direction: column;
             background: rgba(0, 0, 0, 0.2);
+            height: 100%;
         }
 
         .playlist-header {
@@ -229,6 +248,9 @@
             border-bottom: var(--glass-border);
             font-weight: 600;
             font-size: 1.1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
         }
 
         .playlist {
@@ -278,6 +300,7 @@
 
         .track-item-info {
             flex: 1;
+            min-width: 0; /* Для корректного обрезания текста */
         }
 
         .track-item-title {
@@ -286,7 +309,6 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
-            max-width: 200px;
         }
 
         .track-item-artist {
@@ -317,26 +339,109 @@
             50% { height: 100%; }
         }
 
+        .close-playlist {
+            display: none; /* Только для мобильного */
+            background: none;
+            border: none;
+            color: var(--text-sec);
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        /* --- АДАПТИВНОСТЬ (MOBILE) --- */
         @media (max-width: 768px) {
+            body { padding: 0; }
+            
             .app-container {
                 flex-direction: column;
-                height: 90vh;
-                max-width: 400px;
+                height: 100vh;
+                max-height: none;
+                width: 100%;
+                border-radius: 0;
+                border: none;
             }
+
             .player-section {
+                flex: 1;
                 padding: 20px;
                 border-right: none;
-                border-bottom: var(--glass-border);
-                flex: 0 0 auto;
-            }
-            .cover-wrapper {
-                width: 150px;
-                height: 150px;
-                margin-bottom: 15px;
-            }
-            .playlist-section {
+                border-bottom: none;
                 width: 100%;
-                flex: 1;
+                justify-content: flex-start; /* Контент сверху */
+                padding-top: 40px;
+            }
+
+            .cover-wrapper {
+                width: 200px;
+                height: 200px;
+                margin-bottom: 20px;
+                margin-top: auto; /* Прижимаем обложку к низу верхней части */
+            }
+
+            .controls {
+                margin-top: auto; /* Кнопки внизу */
+                margin-bottom: 20px;
+                gap: 15px;
+            }
+
+            .btn-main { width: 50px; height: 50px; }
+            .btn-sec { width: 35px; height: 35px; }
+
+            .volume-container { display: none; } /* Скрываем громкость для экономии места */
+
+            /* Показываем кнопку открытия плейлиста */
+            .playlist-toggle-btn {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            /* --- СТИЛИ ДЛЯ ВЫЕЗДАЮЩЕГО МЕНЮ --- */
+            .playlist-section {
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                width: 100%;
+                height: 65vh; /* Занимает 65% высоты экрана */
+                background: rgba(30, 41, 59, 0.95);
+                backdrop-filter: blur(25px);
+                border-top: 1px solid rgba(255,255,255,0.1);
+                border-radius: 20px 20px 0 0;
+                transform: translateY(100%); /* Скрыто внизу */
+                transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+                z-index: 100;
+                box-shadow: 0 -10px 40px rgba(0,0,0,0.5);
+            }
+
+            /* Класс, когда меню открыто */
+            .playlist-section.open {
+                transform: translateY(0);
+            }
+
+            /* Ручка для захвата (визуальный элемент) */
+            .playlist-header {
+                position: sticky;
+                top: 0;
+                background: transparent;
+                z-index: 10;
+                cursor: pointer; /* Можно кликнуть на заголовок, чтобы закрыть */
+                padding: 10px 20px;
+            }
+            
+            .drag-handle {
+                width: 40px;
+                height: 4px;
+                background: rgba(255,255,255,0.2);
+                border-radius: 2px;
+                margin: 0 auto 10px auto;
+            }
+
+            .close-playlist {
+                display: block;
+            }
+
+            .playlist {
+                padding-bottom: 40px; /* Отступ снизу для системных gesture */
             }
         }
         
@@ -352,7 +457,7 @@
             opacity: 0;
             transition: opacity 0.3s;
             pointer-events: none;
-            z-index: 10;
+            z-index: 200; /* Поверх плейлиста */
         }
         .toast.show { opacity: 1; }
     </style>
@@ -392,6 +497,11 @@
             </button>
         </div>
         
+        <!-- Кнопка вызова плейлиста (только мобильный) -->
+        <button class="btn playlist-toggle-btn" id="mobilePlaylistBtn">
+            <i class="ph ph-list"></i> Плейлист
+        </button>
+        
         <div class="volume-container">
             <i class="ph ph-speaker-low"></i>
             <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.8">
@@ -400,8 +510,15 @@
     </div>
 
     <!-- Секция плейлиста -->
-    <div class="playlist-section">
-        <div class="playlist-header">Плейлист</div>
+    <div class="playlist-section" id="playlistSection">
+        <div class="playlist-header" id="closePlaylistArea">
+            <!-- Ручка -->
+            <div class="drag-handle"></div>
+            <span>Список треков</span>
+            <button class="close-playlist" id="closePlaylistBtn">
+                <i class="ph ph-x"></i>
+            </button>
+        </div>
         <div class="playlist" id="playlistContainer">
             <!-- Треки будут добавлены через JS -->
         </div>
@@ -412,11 +529,8 @@
 
 <script>
     // ==========================================
-    // НАСТРОЙКИ: ЗАПИШИТЕ ВАШИ ФАЙЛЫ ЗДЕСЬ
+    // НАСТРОЙКИ
     // ==========================================
-    
-    // ВАЖНО: Убедитесь, что файлы лежат в папке 'audio' рядом с этим html файлом.
-    // Обложки должны иметь такое же имя, как и аудио (например, song.mp3 и song.jpg)
     
         let songs = [
         {
@@ -471,11 +585,10 @@
         }
     ];
 
-    // Путь к папке (не меняйте, если папка называется 'audio')
     const AUDIO_FOLDER = "https://wedophoto.github.io/lego/audio/files/";
 
     // ==========================================
-    // КОД ПЛЕЕРА (НЕ МЕНЯТЬ)
+    // ЛОГИКА ПЛЕЕРА
     // ==========================================
 
     const audio = document.getElementById('audio');
@@ -494,32 +607,25 @@
     const playerSection = document.getElementById('playerSection');
     const volumeSlider = document.getElementById('volumeSlider');
     const toastEl = document.getElementById('toast');
+    
+    // Элементы для мобильного меню
+    const mobilePlaylistBtn = document.getElementById('mobilePlaylistBtn');
+    const closePlaylistBtn = document.getElementById('closePlaylistBtn');
+    const closePlaylistArea = document.getElementById('closePlaylistArea');
+    const playlistSection = document.getElementById('playlistSection');
 
     let currentSongIndex = 0;
     let isPlaying = false;
 
-    // Инициализация
-        function init() {
-        // Подготовка путей
+    function init() {
         songs = songs.map(song => {
-            // Если файл не указан, берем название
             if (!song.file) song.file = song.title + ".mp3";
-            
             const fileName = song.file;
             const baseName = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
-            
-            // !!! ВОТ ЭТА СТРОКА ИСПРАВЛЯЕТ ССЫЛКИ С ПРОБЕЛАМИ !!!
             const safeFileName = encodeURIComponent(fileName);
-
-            // Полный путь к аудио с исправленным именем
             let audioUrl = AUDIO_FOLDER + safeFileName;
-            
-            // Пробуем найти локальную (или удаленную) обложку
-            // Для обложек тоже кодируем имя
             let coverUrl = AUDIO_FOLDER + encodeURIComponent(baseName) + ".jpg";
             
-            // Если обложка jpg не загрузится, JS попытается найти png или покажет заглушку (это работает в коде ниже через onerror)
-
             return {
                 ...song,
                 url: audioUrl,
@@ -529,9 +635,28 @@
 
         renderPlaylist();
         loadSong(songs[currentSongIndex]);
+        
+        // Мобильные события
+        setupMobileEvents();
     }
 
-    // Обработка ошибок загрузки картинок (подмена на заглушку)
+    function setupMobileEvents() {
+        // Открытие плейлиста
+        mobilePlaylistBtn.addEventListener('click', () => {
+            playlistSection.classList.add('open');
+        });
+
+        // Закрытие плейлиста (кнопка крестик)
+        closePlaylistBtn.addEventListener('click', () => {
+            playlistSection.classList.remove('open');
+        });
+
+        // Закрытие плейлиста (клик по "ручке" или заголовку)
+        closePlaylistArea.addEventListener('click', () => {
+            playlistSection.classList.remove('open');
+        });
+    }
+
     function handleImageError(img) {
         if (!img.dataset.fallback) {
             img.dataset.fallback = "true";
@@ -563,6 +688,10 @@
                 currentSongIndex = index;
                 loadSong(songs[currentSongIndex]);
                 playSong();
+                // На мобильном закрываем плейлист после выбора трека
+                if (window.innerWidth <= 768) {
+                    playlistSection.classList.remove('open');
+                }
             });
             
             playlistContainer.appendChild(item);
@@ -575,7 +704,6 @@
         audio.src = song.url;
         currentCover.src = song.cover;
         
-        // Обработка ошибки загрузки обложки в главном плеере
         currentCover.onerror = function() {
             if (!currentCover.dataset.fallback) {
                 currentCover.dataset.fallback = "true";
@@ -598,34 +726,29 @@
     }
 
     function playSong() {
-    // 1. Останавливаем предыдущий воспроизведение корректно
-    if (!audio.paused) {
-        audio.pause();
-        // Маленькая пауза, чтобы предыдущий play успел отмениться
-        // (избавляет от AbortError при быстром переключении)
+        if (!audio.paused) {
+            audio.pause();
+        }
+
+        isPlaying = true;
+        playerSection.classList.add('playing');
+        playIcon.classList.replace('ph-play', 'ph-pause');
+
+        const playPromise = audio.play();
+
+        if (playPromise !== undefined) {
+            playPromise.then(_ => {
+                // Success
+            }).catch(error => {
+                if (error.name !== 'AbortError') {
+                    console.error("Ошибка воспроизведения:", error);
+                    showToast("Ошибка: " + error.message);
+                    isPlaying = false;
+                    playIcon.classList.replace('ph-pause', 'ph-play');
+                }
+            });
+        }
     }
-
-    isPlaying = true;
-    playerSection.classList.add('playing');
-    playIcon.classList.replace('ph-play', 'ph-pause');
-
-    // 2. Запускаем новый
-    const playPromise = audio.play();
-
-    if (playPromise !== undefined) {
-        playPromise.then(_ => {
-            // Успех
-        }).catch(error => {
-            // Игнорируем AbortError (быстрый клик), но покажем другие ошибки
-            if (error.name !== 'AbortError') {
-                console.error("Ошибка воспроизведения:", error);
-                showToast("Ошибка: " + error.message);
-                isPlaying = false;
-                playIcon.classList.replace('ph-pause', 'ph-play');
-            }
-        });
-    }
-}
 
     function pauseSong() {
         isPlaying = false;
@@ -704,7 +827,6 @@
         }, 3000);
     }
 
-    // События
     playBtn.addEventListener('click', togglePlay);
     prevBtn.addEventListener('click', prevSong);
     nextBtn.addEventListener('click', nextSong);
@@ -713,7 +835,6 @@
     progressArea.addEventListener('click', setProgress);
     volumeSlider.addEventListener('input', (e) => audio.volume = e.target.value);
 
-    // Запуск
     init();
 
 </script>
