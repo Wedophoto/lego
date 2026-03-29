@@ -38,29 +38,27 @@
             display: flex;
             width: 100%;
             max-width: 900px;
-            /* Убираем жесткую высоту на десктопе, чтобы контент тягнулся, 
-              но ограничиваем maxHeight, чтобы не растягивалось на весь экран */
-            height: 600px; 
-            max-height: 90vh; 
+            height: 600px;
             background: var(--card-bg);
             backdrop-filter: blur(20px);
             -webkit-backdrop-filter: blur(20px);
             border-radius: var(--radius);
             border: var(--glass-border);
             box-shadow: var(--shadow);
-            overflow: hidden; /* Обрезаем всё, что вылезает */
+            overflow: hidden;
         }
 
-        .playlist-section {
-            width: 400px;
+        /* Левая часть: Плеер */
+        .player-section {
+            flex: 1;
+            padding: 40px;
             display: flex;
             flex-direction: column;
-            background: rgba(0, 0, 0, 0.2);
-            /* Гарантируем прокрутку внутри этого блока */
-            overflow-y: auto; 
-            overflow-x: hidden;
+            align-items: center;
+            justify-content: center;
+            border-right: var(--glass-border);
+            position: relative;
         }
-
 
         .cover-wrapper {
             width: 280px;
@@ -320,24 +318,27 @@
         }
 
         @media (max-width: 768px) {
-          .app-container {
-              flex-direction: column; /* Вертикально */
-              height: 90vh; /* Высота 90% от экрана */
-              max-width: 400px;
-          }
-          .player-section {
-              padding: 20px;
-              border-right: none;
-              border-bottom: var(--glass-border);
-              /* Уменьшаем размер плеера, чтобы место осталось под список */
-              flex: 0 0 auto; 
-          }
-          .playlist-section {
-              width: 100%; /* На всю ширину */
-              flex: 1; /* Занимает остаток места */
-              /* height убираем, он управляется flex родителя */
-          }
-      }
+            .app-container {
+                flex-direction: column;
+                height: 90vh;
+                max-width: 400px;
+            }
+            .player-section {
+                padding: 20px;
+                border-right: none;
+                border-bottom: var(--glass-border);
+                flex: 0 0 auto;
+            }
+            .cover-wrapper {
+                width: 150px;
+                height: 150px;
+                margin-bottom: 15px;
+            }
+            .playlist-section {
+                width: 100%;
+                flex: 1;
+            }
+        }
         
         .toast {
             position: absolute;
