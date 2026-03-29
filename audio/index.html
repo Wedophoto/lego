@@ -1,0 +1,701 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Локальный Аудиоплеер</title>
+    <!-- Подключаем иконки -->
+    <script src="https://unpkg.com/@phosphor-icons/web"></script>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: rgba(30, 41, 59, 0.7);
+            --primary: #8b5cf6;
+            --primary-hover: #7c3aed;
+            --text-main: #f8fafc;
+            --text-sec: #94a3b8;
+            --glass-border: 1px solid rgba(255, 255, 255, 0.1);
+            --shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+            --radius: 24px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; user-select: none; }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background-color: var(--bg-color);
+            background-image: radial-gradient(at 0% 0%, hsla(253,16%,7%,1) 0, transparent 50%), 
+                              radial-gradient(at 50% 0%, hsla(225,39%,30%,1) 0, transparent 50%);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .app-container {
+            display: flex;
+            width: 100%;
+            max-width: 900px;
+            height: 600px;
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: var(--radius);
+            border: var(--glass-border);
+            box-shadow: var(--shadow);
+            overflow: hidden;
+        }
+
+        /* Левая часть: Плеер */
+        .player-section {
+            flex: 1;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-right: var(--glass-border);
+            position: relative;
+        }
+
+        .cover-wrapper {
+            width: 280px;
+            height: 280px;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.3);
+            margin-bottom: 30px;
+            position: relative;
+        }
+
+        .cover-img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .player-section.playing .cover-img {
+            transform: scale(1.05);
+        }
+
+        .track-info {
+            text-align: center;
+            margin-bottom: 30px;
+            width: 100%;
+        }
+
+        .track-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 8px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .track-artist {
+            color: var(--text-sec);
+            font-size: 1rem;
+        }
+
+        .progress-area {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            cursor: pointer;
+            margin-bottom: 8px;
+            position: relative;
+        }
+
+        .progress-bar {
+            height: 100%;
+            background: var(--primary);
+            border-radius: 3px;
+            width: 0%;
+            transition: width 0.1s linear;
+            position: relative;
+        }
+
+        .progress-bar::after {
+            content: '';
+            position: absolute;
+            right: -6px;
+            top: -3px;
+            width: 12px;
+            height: 12px;
+            background: #fff;
+            border-radius: 50%;
+            opacity: 0;
+            transition: opacity 0.2s;
+        }
+
+        .progress-area:hover .progress-bar::after {
+            opacity: 1;
+        }
+
+        .time-labels {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: var(--text-sec);
+            margin-bottom: 25px;
+            width: 100%;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn {
+            background: none;
+            border: none;
+            color: var(--text-main);
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+        }
+
+        .btn:hover {
+            color: var(--primary);
+            background: rgba(255,255,255,0.05);
+        }
+
+        .btn-main {
+            width: 60px;
+            height: 60px;
+            background: var(--primary);
+            box-shadow: 0 4px 15px rgba(139, 92, 246, 0.4);
+        }
+
+        .btn-main:hover {
+            background: var(--primary-hover);
+            transform: scale(1.05);
+            color: white;
+        }
+
+        .btn-sec {
+            width: 40px;
+            height: 40px;
+            color: var(--text-sec);
+        }
+
+        .volume-container {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-top: 25px;
+            width: 80%;
+        }
+
+        .volume-slider {
+            -webkit-appearance: none;
+            width: 100%;
+            height: 4px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            outline: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px;
+            height: 12px;
+            background: var(--text-main);
+            border-radius: 50%;
+            cursor: pointer;
+        }
+
+        /* Правая часть: Список */
+        .playlist-section {
+            width: 400px;
+            display: flex;
+            flex-direction: column;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .playlist-header {
+            padding: 20px;
+            border-bottom: var(--glass-border);
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .playlist {
+            flex: 1;
+            overflow-y: auto;
+            padding: 10px;
+        }
+
+        .playlist::-webkit-scrollbar {
+            width: 6px;
+        }
+        .playlist::-webkit-scrollbar-thumb {
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+        }
+
+        .track-item {
+            display: flex;
+            align-items: center;
+            padding: 12px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .track-item:hover {
+            background: rgba(255,255,255,0.05);
+        }
+
+        .track-item.active {
+            background: rgba(139, 92, 246, 0.15);
+            border: 1px solid rgba(139, 92, 246, 0.3);
+        }
+
+        .track-item.active .track-item-title {
+            color: var(--primary);
+        }
+
+        .track-item img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            margin-right: 15px;
+            object-fit: cover;
+        }
+
+        .track-item-info {
+            flex: 1;
+        }
+
+        .track-item-title {
+            font-size: 0.95rem;
+            margin-bottom: 4px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            max-width: 200px;
+        }
+
+        .track-item-artist {
+            font-size: 0.8rem;
+            color: var(--text-sec);
+        }
+
+        .equalizer {
+            display: none;
+            gap: 3px;
+            height: 15px;
+            align-items: flex-end;
+        }
+        .track-item.active .equalizer {
+            display: flex;
+        }
+        .bar {
+            width: 3px;
+            background: var(--primary);
+            animation: bounce 1s infinite ease-in-out;
+        }
+        .bar:nth-child(1) { animation-delay: 0.1s; height: 60%; }
+        .bar:nth-child(2) { animation-delay: 0.3s; height: 100%; }
+        .bar:nth-child(3) { animation-delay: 0.5s; height: 50%; }
+
+        @keyframes bounce {
+            0%, 100% { height: 30%; }
+            50% { height: 100%; }
+        }
+
+        @media (max-width: 768px) {
+            .app-container {
+                flex-direction: column;
+                height: 90vh;
+                max-width: 400px;
+            }
+            .player-section {
+                padding: 20px;
+                border-right: none;
+                border-bottom: var(--glass-border);
+                flex: 0 0 auto;
+            }
+            .cover-wrapper {
+                width: 150px;
+                height: 150px;
+                margin-bottom: 15px;
+            }
+            .playlist-section {
+                width: 100%;
+                flex: 1;
+            }
+        }
+        
+        .toast {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0,0,0,0.8);
+            padding: 10px 20px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            pointer-events: none;
+            z-index: 10;
+        }
+        .toast.show { opacity: 1; }
+    </style>
+</head>
+<body>
+
+<div class="app-container">
+    <!-- Секция плеера -->
+    <div class="player-section" id="playerSection">
+        <div class="cover-wrapper">
+            <img src="https://picsum.photos/seed/music/300/300" alt="Cover" class="cover-img" id="currentCover">
+        </div>
+        
+        <div class="track-info">
+            <div class="track-title" id="currentTitle">Локальный Плеер</div>
+            <div class="track-artist" id="currentArtist">Выберите трек</div>
+        </div>
+
+        <div class="progress-area" id="progressArea">
+            <div class="progress-bar" id="progressBar"></div>
+            <audio id="audio"></audio>
+        </div>
+        <div class="time-labels">
+            <span id="currentTime">0:00</span>
+            <span id="duration">0:00</span>
+        </div>
+
+        <div class="controls">
+            <button class="btn btn-sec" id="prevBtn" title="Предыдущий">
+                <i class="ph-fill ph-skip-back"></i>
+            </button>
+            <button class="btn btn-main" id="playBtn" title="Воспроизвести / Пауза">
+                <i class="ph-fill ph-play" id="playIcon"></i>
+            </button>
+            <button class="btn btn-sec" id="nextBtn" title="Следующий">
+                <i class="ph-fill ph-skip-forward"></i>
+            </button>
+        </div>
+        
+        <div class="volume-container">
+            <i class="ph ph-speaker-low"></i>
+            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.8">
+            <i class="ph ph-speaker-high"></i>
+        </div>
+    </div>
+
+    <!-- Секция плейлиста -->
+    <div class="playlist-section">
+        <div class="playlist-header">Плейлист</div>
+        <div class="playlist" id="playlistContainer">
+            <!-- Треки будут добавлены через JS -->
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Сообщение</div>
+</div>
+
+<script>
+    // ==========================================
+    // НАСТРОЙКИ: ЗАПИШИТЕ ВАШИ ФАЙЛЫ ЗДЕСЬ
+    // ==========================================
+    
+    // ВАЖНО: Убедитесь, что файлы лежат в папке 'audio' рядом с этим html файлом.
+    // Обложки должны иметь такое же имя, как и аудио (например, song.mp3 и song.jpg)
+    
+        const songs = [
+        {
+            title: "Хулиганы",
+            artist: "Тренер Евгений",
+            file: "Хулиганы.mp3"
+        },
+        {
+            title: "Робототехника круче, чем потеха",
+            artist: "Тренер Евгений",
+            file: "Робототехника круче, чем потеха.mp3"
+        },
+        {
+            title: "Робо-сборка",
+            artist: "Тренер Евгений",
+            file: "Робо-сборка.mp3"
+        },
+        {
+            title: "Робоклуб",
+            artist: "Тренер Евгений",
+            file: "Робоклуб.mp3"
+        },
+        {
+            title: "Кринж",
+            artist: "Тренер Евгений",
+            file: "Кринж.mp3"
+        },
+        {
+            title: "Командный успех",
+            artist: "Тренер Евгений",
+            file: "Командный успех.mp3"
+        },
+        {
+            title: "Дети будущего",
+            artist: "Тренер Евгений",
+            file: "Дети будущего.mp3"
+        },
+        {
+            title: "Девочка",
+            artist: "Тренер Евгений",
+            file: "Девочка.mp3"
+        },
+        {
+            title: "Движ",
+            artist: "Тренер Евгений",
+            file: "Движ.mp3"
+        },
+        {
+            title: "В коробке яркой детали лежат",
+            artist: "Тренер Евгений",
+            file: "В коробке яркой детали лежат.mp3"
+        }
+    ];
+
+    // Путь к папке (не меняйте, если папка называется 'audio')
+    const AUDIO_FOLDER = "audio/";
+
+    // ==========================================
+    // КОД ПЛЕЕРА (НЕ МЕНЯТЬ)
+    // ==========================================
+
+    const audio = document.getElementById('audio');
+    const playBtn = document.getElementById('playBtn');
+    const playIcon = document.getElementById('playIcon');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progressArea = document.getElementById('progressArea');
+    const progressBar = document.getElementById('progressBar');
+    const currentTimeEl = document.getElementById('currentTime');
+    const durationEl = document.getElementById('duration');
+    const playlistContainer = document.getElementById('playlistContainer');
+    const currentCover = document.getElementById('currentCover');
+    const currentTitle = document.getElementById('currentTitle');
+    const currentArtist = document.getElementById('currentArtist');
+    const playerSection = document.getElementById('playerSection');
+    const volumeSlider = document.getElementById('volumeSlider');
+    const toastEl = document.getElementById('toast');
+
+    let currentSongIndex = 0;
+    let isPlaying = false;
+
+    // Инициализация
+    function init() {
+        // Подготовка путей
+        songs = songs.map(song => {
+            // Определяем расширение файла (mp3, wav и т.д.) для поиска обложки
+            // Если файл не указан явно, пробуем угадать по названию
+            if (!song.file) song.file = song.title + ".mp3";
+            
+            const fileName = song.file;
+            const baseName = fileName.substring(0, fileName.lastIndexOf('.')) || fileName;
+            
+            // Ищем обложку: пробуем jpg, png, jpeg. Если нет - заглушка
+            let coverUrl = `https://picsum.photos/seed/${encodeURIComponent(song.title)}/400/400`;
+            // Примечание: локальные картинки проверяются 'на лету' при загрузке, 
+            // но здесь мы просто ставим ссылку. Если картинка не существует, браузер покажет сломанную иконку 
+            // или заглушку, если мы добавим обработчик onerror.
+            
+            // Добавляем полный путь к аудио
+            return {
+                ...song,
+                url: AUDIO_FOLDER + fileName,
+                // Пробуем найти локальную обложку
+                cover: AUDIO_FOLDER + baseName + ".jpg" 
+            };
+        });
+
+        renderPlaylist();
+        loadSong(songs[currentSongIndex]);
+    }
+
+    // Обработка ошибок загрузки картинок (подмена на заглушку)
+    function handleImageError(img) {
+        if (!img.dataset.fallback) {
+            img.dataset.fallback = "true";
+            img.src = `https://picsum.photos/seed/${encodeURIComponent(img.alt)}/400/400`;
+        }
+    }
+
+    function renderPlaylist() {
+        playlistContainer.innerHTML = "";
+        songs.forEach((song, index) => {
+            const item = document.createElement('div');
+            item.classList.add('track-item');
+            if (index === currentSongIndex) item.classList.add('active');
+            
+            item.innerHTML = `
+                <img src="${song.cover}" alt="${song.title}" onerror="handleImageError(this)">
+                <div class="track-item-info">
+                    <div class="track-item-title">${song.title}</div>
+                    <div class="track-item-artist">${song.artist || 'Unknown'}</div>
+                </div>
+                <div class="equalizer">
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                    <div class="bar"></div>
+                </div>
+            `;
+            
+            item.addEventListener('click', () => {
+                currentSongIndex = index;
+                loadSong(songs[currentSongIndex]);
+                playSong();
+            });
+            
+            playlistContainer.appendChild(item);
+        });
+    }
+
+    function loadSong(song) {
+        currentTitle.innerText = song.title;
+        currentArtist.innerText = song.artist || "Unknown Artist";
+        audio.src = song.url;
+        currentCover.src = song.cover;
+        
+        // Обработка ошибки загрузки обложки в главном плеере
+        currentCover.onerror = function() {
+            if (!currentCover.dataset.fallback) {
+                currentCover.dataset.fallback = "true";
+                currentCover.src = `https://picsum.photos/seed/${encodeURIComponent(song.title)}/400/400`;
+            }
+        };
+        
+        renderPlaylist();
+        progressBar.style.width = '0%';
+        currentTimeEl.innerText = "0:00";
+        setMediaSession(song);
+    }
+
+    function togglePlay() {
+        if (isPlaying) {
+            pauseSong();
+        } else {
+            playSong();
+        }
+    }
+
+    function playSong() {
+        isPlaying = true;
+        playerSection.classList.add('playing');
+        playIcon.classList.replace('ph-play', 'ph-pause');
+        
+        audio.play().catch(error => {
+            console.error("Ошибка воспроизведения:", error);
+            showToast("Не удалось воспроизвести файл. Проверьте путь.");
+            isPlaying = false;
+            playIcon.classList.replace('ph-pause', 'ph-play');
+        });
+    }
+
+    function pauseSong() {
+        isPlaying = false;
+        playerSection.classList.remove('playing');
+        playIcon.classList.replace('ph-pause', 'ph-play');
+        audio.pause();
+    }
+
+    function prevSong() {
+        currentSongIndex--;
+        if (currentSongIndex < 0) {
+            currentSongIndex = songs.length - 1;
+        }
+        loadSong(songs[currentSongIndex]);
+        if (isPlaying) playSong();
+    }
+
+    function nextSong() {
+        currentSongIndex++;
+        if (currentSongIndex > songs.length - 1) {
+            currentSongIndex = 0;
+        }
+        loadSong(songs[currentSongIndex]);
+        if (isPlaying) playSong();
+    }
+
+    function updateProgress(e) {
+        const { duration, currentTime } = e.srcElement;
+        if (isNaN(duration)) return;
+
+        const progressPercent = (currentTime / duration) * 100;
+        progressBar.style.width = `${progressPercent}%`;
+
+        currentTimeEl.innerText = formatTime(currentTime);
+        durationEl.innerText = formatTime(duration);
+    }
+
+    function setProgress(e) {
+        const width = this.clientWidth;
+        const clickX = e.offsetX;
+        const duration = audio.duration;
+        
+        if (isNaN(duration)) return;
+
+        audio.currentTime = (clickX / width) * duration;
+    }
+
+    function formatTime(seconds) {
+        const min = Math.floor(seconds / 60);
+        const sec = Math.floor(seconds % 60);
+        return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+    }
+
+    function setMediaSession(song) {
+        if ('mediaSession' in navigator) {
+            navigator.mediaSession.metadata = new MediaMetadata({
+                title: song.title,
+                artist: song.artist,
+                artwork: [
+                    { src: song.cover, sizes: '300x300', type: 'image/jpeg' }
+                ]
+            });
+
+            navigator.mediaSession.setActionHandler('play', playSong);
+            navigator.mediaSession.setActionHandler('pause', pauseSong);
+            navigator.mediaSession.setActionHandler('previoustrack', prevSong);
+            navigator.mediaSession.setActionHandler('nexttrack', nextSong);
+        }
+    }
+
+    function showToast(message) {
+        toastEl.textContent = message;
+        toastEl.classList.add('show');
+        setTimeout(() => {
+            toastEl.classList.remove('show');
+        }, 3000);
+    }
+
+    // События
+    playBtn.addEventListener('click', togglePlay);
+    prevBtn.addEventListener('click', prevSong);
+    nextBtn.addEventListener('click', nextSong);
+    audio.addEventListener('timeupdate', updateProgress);
+    audio.addEventListener('ended', nextSong);
+    progressArea.addEventListener('click', setProgress);
+    volumeSlider.addEventListener('input', (e) => audio.volume = e.target.value);
+
+    // Запуск
+    init();
+
+</script>
+</body>
+</html>
