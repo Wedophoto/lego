@@ -255,6 +255,23 @@
         .be-preview-area ul, .be-preview-area ol { margin-bottom: 1rem; padding-left: 1.5rem; }
         .be-preview-area blockquote { border-left: 4px solid var(--primary); padding-left: 1rem; color: #6b7280; font-style: italic; }
 
+                /* Difficulty Badge */
+        .difficulty-badge {
+            font-size: 0.7rem;
+            font-weight: 600;
+            padding: 4px 10px;
+            border-radius: 20px;
+            background: #f3f4f6;
+            color: #4b5563;
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .difficulty-badge[data-level="very_easy"] { background: #d1fae5; color: #065f46; }
+        .difficulty-badge[data-level="easy"] { background: #dbeafe; color: #1e40af; }
+        .difficulty-badge[data-level="hard"] { background: #fee2e2; color: #991b1b; }
+        .difficulty-badge[data-level="pro"] { background: #ede9fe; color: #5b21b6; }
+
         @media (max-width: 900px) {
             .be-header { flex-direction: column; }
             .be-meta-inputs { width: 100%; }
@@ -269,10 +286,10 @@
             m[i].l=1*new Date();
             for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
             k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-        })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106848012', 'ym');
-        ym(106848012, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+        })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108280737', 'ym');
+        ym(108280737, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
     </script>
-    <noscript><div><img src="https://mc.yandex.ru/watch/106848012" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+    <noscript><div><img src="https://mc.yandex.ru/watch/108280737" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 </head>
 <body>
     
@@ -417,6 +434,16 @@
                 <div class="form-group">
                     <label>Название</label>
                     <input type="text" id="card-title" class="form-control" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Уровень сложности</label>
+                    <select id="card-difficulty" class="form-control">
+                        <option value="very_easy">⭐ Очень простой</option>
+                        <option value="easy">★★ Простой</option>
+                        <option value="hard">★★★ Сложный</option>
+                        <option value="pro">★★★★ Профи</option>
+                    </select>
                 </div>
                 
                 <div class="form-group">
@@ -770,6 +797,7 @@
                         title: title,
                         tags: tags,
                         content: renderedHtml, // Отправляем ГОТОВЫЙ HTML
+                        markdown: rawContent,
                         // raw_content: rawContent, // Можно сохранять и сырое, если захотите редактировать позже, но пока не обязательно
                         image_url: BlogManager.currentImage && !imageFile ? BlogManager.currentImage : null
                     };
@@ -1012,6 +1040,7 @@
                     document.getElementById('card-title').value = card.title;
                     document.getElementById('card-description').value = card.description || '';
                     document.getElementById('card-video').value = card.videoUrl || '';
+                    document.getElementById('card-difficulty').value = card.difficulty || 'easy';
                     
                     if (card.imageUrl) {
                         document.getElementById('card-image-url-current').value = card.imageUrl;
@@ -1035,12 +1064,13 @@
                     titleEl.textContent = 'Новая карточка';
                     document.getElementById('card-id').value = '';
                     document.getElementById('card-section').value = state.currentSection;
+                    document.getElementById('card-difficulty').value = 'easy';
                 }
                 
                 modal.classList.add('open');
             },
             
-            closeModal: () => { document.getElementById('card-modal').classList.remove('open'); },
+            closeModal: () => { document.getElementById('card-modal').classList.remove('open'); document.getElementById('card-difficulty').value = 'easy'; },
             
             switchPdfTab: (mode) => {
                 CardManager.currentPdfMode = mode;
@@ -1117,7 +1147,8 @@
                             imageUrl: id ? document.getElementById('card-image-url-current').value : null,
                             pdfId: pdfPayload.id || null,
                             pdfName: pdfPayload.name || null,
-                            pdfBase64: pdfPayload.base64 || null
+                            pdfBase64: pdfPayload.base64 || null,
+                            difficulty: document.getElementById('card-difficulty').value,
                         }
                     };
                     
@@ -1171,6 +1202,15 @@
             },
         };
         
+        function getDifficultyText(level) {
+            const map = {
+                'very_easy': '⭐ Очень простой',
+                'easy': '★★ Простой',
+                'hard': '★★★ Сложный',
+                'pro': '★★★★ Профи'
+            };
+            return map[level] || level;
+        }
         // --- UI RENDERER ---
         const UI = {
             renderSidebar: () => {
@@ -1230,7 +1270,10 @@
                     </div>
                     ${card.imageUrl ? `<img src="${card.imageUrl}" class="card-img" alt="${card.title}">` : '<div class="card-img"></div>'}
                     <div class="card-body">
-                        <div class="card-title">${card.title}</div>
+                        <div class="card-title">
+                            ${card.title}
+                            ${card.difficulty ? `<span class="difficulty-badge" data-level="${card.difficulty}">${getDifficultyText(card.difficulty)}</span>` : ''}
+                        </div>
                         <div class="card-desc">${card.description || ''}</div>
                         <div class="card-links">
                             ${pdfLink}

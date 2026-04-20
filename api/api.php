@@ -238,8 +238,11 @@ try {
     $id = $input['id'] ?? null;
     $title = $input['title'] ?? 'Без названия';
 
-    // Прилетает уже готовый HTML от marked.js
-    $content = $input['content'] ?? '';
+    // HTML для генерации страницы (пришел из админки)
+    $htmlForPage = $input['content'] ?? '';
+
+    // Markdown для хранения в БД
+    $markdown = $input['markdown'] ?? '';
 
     $tagsStr = $input['tags'] ?? '';
     // Обрабатываем теги (пришел массив или строка)
@@ -298,8 +301,8 @@ try {
       'id' => $id ?: uniqid(),
       'title' => $title,
       'slug' => $slug,
-      'content' => $content, // Сохраняем готовый HTML
-      'tags' => array_values($tags), // Переиндексируем массив
+      'content' => $markdown, // В БД сохраняем ТОЛЬКО Markdown
+      'tags' => array_values($tags),
       'image_url' => $currentImage,
       'created_at' => date('c'),
       'updated_at' => date('c')
@@ -318,13 +321,17 @@ try {
         }
       }
       if (!$updated)
-        $db[] = $postData; // Если ID был, но в базе нет — добавляем как новую
+        $db[] = $postData;
     } else {
       $db[] = $postData;
     }
 
     saveDB($dataFile, $db);
-    generatePost($postData, $blogDir, $templateFile);
+
+    // Для генерации страницы используем HTML из запроса
+    $tempPostData = $postData;
+    $tempPostData['content'] = $htmlForPage; // Временно подменяем для генерации
+    generatePost($tempPostData, $blogDir, $templateFile);
 
     echo json_encode(['success' => true, 'slug' => $slug]);
   }

@@ -15,6 +15,16 @@ function e($str)
 {
   return htmlspecialchars($str ?? '', ENT_QUOTES, 'UTF-8');
 }
+
+// Функция для обрезки HTML-контента без разрыва тегов
+function truncateHtml($html, $limit = 200, $ellipsis = '...')
+{
+  $text = strip_tags($html);
+  if (mb_strlen($text) <= $limit) {
+    return $html;
+  }
+  return mb_substr($text, 0, $limit) . $ellipsis;
+}
 ?>
 <!DOCTYPE html>
 <html lang="ru">
@@ -75,6 +85,8 @@ function e($str)
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
       gap: 30px;
+      align-items: start;
+      /* Выравнивание карточек по верхнему краю */
     }
 
     .post-card {
@@ -82,13 +94,16 @@ function e($str)
       border-radius: 12px;
       overflow: hidden;
       box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-      transition: transform 0.2s;
+      transition: transform 0.2s, border-color 0.2s;
       display: flex;
       flex-direction: column;
       border: 1px solid #e5e7eb;
       text-decoration: none;
       color: inherit;
       height: 100%;
+      /* Растягиваем карточку на всю высоту ячейки grid */
+      min-height: 450px;
+      /* Минимальная высота для единообразия */
     }
 
     .post-card:hover {
@@ -101,6 +116,8 @@ function e($str)
       height: 200px;
       background-color: #e5e7eb;
       object-fit: cover;
+      flex-shrink: 0;
+      /* Запрещаем сжатие изображения */
     }
 
     .post-content {
@@ -108,6 +125,8 @@ function e($str)
       display: flex;
       flex-direction: column;
       flex: 1;
+      min-height: 0;
+      /* Важно для правильной работы flex-контейнера */
     }
 
     .post-meta {
@@ -116,6 +135,7 @@ function e($str)
       margin-bottom: 10px;
       display: flex;
       justify-content: space-between;
+      flex-shrink: 0;
     }
 
     .post-title {
@@ -124,24 +144,22 @@ function e($str)
       margin: 0 0 10px 0;
       color: #111827;
       line-height: 1.4;
+      flex-shrink: 0;
     }
 
-    /* Стили для HTML контента внутри карточки */
+    /* Стили для превью текста */
     .post-excerpt {
       font-size: 0.9rem;
       color: #6b7280;
       line-height: 1.5;
       margin-bottom: 15px;
       flex: 1;
-    }
-
-    /* Ограничиваем высоту заголовков внутри превью */
-    .post-excerpt h1,
-    .post-excerpt h2,
-    .post-excerpt h3 {
-      font-size: 1em;
-      margin: 0.5em 0;
-      font-weight: 600;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      /* Ограничиваем текст 4 строками */
+      -webkit-box-orient: vertical;
+      word-break: break-word;
     }
 
     .post-tags {
@@ -149,6 +167,7 @@ function e($str)
       flex-wrap: wrap;
       gap: 8px;
       margin-top: auto;
+      flex-shrink: 0;
     }
 
     .tag {
@@ -167,6 +186,22 @@ function e($str)
       padding: 60px 0;
     }
   </style>
+
+  <!-- Yandex.Metrika counter -->
+  <script type="text/javascript">
+    (function (m, e, t, r, i, k, a) {
+      m[i] = m[i] || function () { (m[i].a = m[i].a || []).push(arguments) };
+      m[i].l = 1 * new Date();
+      for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+      k = e.createElement(t), a = e.getElementsByTagName(t)[0], k.async = 1, k.src = r, a.parentNode.insertBefore(k, a)
+    })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js?id=108280737', 'ym');
+
+    ym(108280737, 'init', { ssr: true, webvisor: true, clickmap: true, ecommerce: "dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce: true, trackLinks: true });
+  </script>
+  <noscript>
+    <div><img src="https://mc.yandex.ru/watch/108280737" style="position:absolute; left:-9999px;" alt="" /></div>
+  </noscript>
+  <!-- /Yandex.Metrika counter -->
 </head>
 
 <body>
@@ -202,11 +237,11 @@ function e($str)
                 <?php echo e($post['title']); ?>
               </h2>
 
-              <!-- Вывод готового HTML (обрезаем для превью) -->
+              <!-- Вывод обрезанного текста без HTML-тегов -->
               <div class="post-excerpt">
                 <?php
-                // Отрезаем первые 200 символов УЖЕ ГОТОВОГО HTML
-                echo mb_substr($post['content'], 0, 200) . '...';
+                // Используем новую функцию для безопасного обрезания контента
+                echo truncateHtml($post['content'], 150);
                 ?>
               </div>
 

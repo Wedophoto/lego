@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Инструкции для WeDo 2.0 | Тренер Евгений</title>
+  <title>Инструкции для WeDo 2.0 | Mai</title>
   <link rel="stylesheet" type="text/css" href="css/st.css">
   <link rel="stylesheet" type="text/css" href="css/toast.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
@@ -4417,9 +4417,9 @@
       m[i].l=1*new Date();
       for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
       k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
-    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=106848012', 'ym');
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=108280737', 'ym');
     
-    ym(106848012, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+    ym(108280737, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
   </script>
   <script>
   // Проверяем, находимся ли мы на GitHub Pages
@@ -4429,7 +4429,7 @@
     window.location.replace('http://ведо.рф');
   }
 </script>
-  <noscript><div><img src="https://mc.yandex.ru/watch/106848012" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+  <noscript><div><img src="https://mc.yandex.ru/watch/108280737" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
   <!-- /Yandex.Metrika counter -->
 </head>
 <body>
@@ -4450,7 +4450,7 @@
       <div class="birthday-body">
         <div class="birthday-cake">🎂</div>
         <div class="birthday-message">
-          Уважаемый тренер Евгений!<br>
+          Уважаемый Mai!<br>
           Поздравляем с днем рождения!<br>
           Желаем успехов в робототехнике,<br>
           талантливых учеников и вдохновения!
@@ -4635,6 +4635,24 @@
   <div class="teleport-effect" id="teleportEffect"></div>
   
   <div class="container">
+
+        <!-- Меню сайта -->
+<nav class="site-menu">
+  <ul class="menu-list">
+    <li class="menu-item">
+      <a href="/blog" class="menu-link">
+        <i class="fas fa-pen-fancy"></i>
+        <span>Блог</span>
+      </a>
+    </li>
+    <li class="menu-item">
+      <a href="/audio" class="menu-link">
+        <i class="fas fa-music"></i>
+        <span>Робомузыка</span>
+      </a>
+    </li>
+  </ul>
+</nav>
     <header class="header">
       <!-- Цифровые часы в стиле Lego -->
       <div class="lego-clock" id="legoClock">
@@ -5082,150 +5100,90 @@
       </div>
     </section>
     
-    <section class="section books-section">
-      <h2 class="section-title">Книги по WeDo 2.0</h2>
-      
-      <!-- Измененный блок для первых 8 книг в симметричную сетку -->
-      <div class="featured-books">
-        <a href="books/WeDo2-2024-chast-1.pdf" class="featured-book-card" target="_blank">
-          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-          <div class="featured-book-info">
-            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-            <div class="featured-book-author">Часть 1: секретные задания</div>
-            <span class="featured-pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
+   <section class="section books-section restricted-books" id="restrictedBooks">
+    <h2 class="section-title">📚 Книги по WeDo 2.0</h2>
+    
+    <!-- 8 КНИГ - ДОСТУП ПО ЗАПРОСУ -->
+    <div class="featured-books">
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 1">
+            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+            <div class="featured-book-info">
+                <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+                <div class="featured-book-author">Часть 1: секретные задания</div>
+                <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+            </div>
+        </div>
         
-        <a href="books/WeDo2-2024-chast-2.pdf" class="featured-book-card" target="_blank">
-          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-          <div class="featured-book-info">
-            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-            <div class="featured-book-author">Часть 2: секретные задания</div>
-            <span class="featured-pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 2">
+            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+            <div class="featured-book-info">
+                <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+                <div class="featured-book-author">Часть 2: секретные задания</div>
+                <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+            </div>
+        </div>
         
-        <a href="books/WeDo2-2024-chast-3.pdf" class="featured-book-card" target="_blank">
-          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-          <div class="featured-book-info">
-            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-            <div class="featured-book-author">Часть 3: секретные задания</div>
-            <span class="featured-pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 3">
+            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+            <div class="featured-book-info">
+                <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+                <div class="featured-book-author">Часть 3: секретные задания</div>
+                <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+            </div>
+        </div>
         
-        <a href="books/WeDo2-2024-chast-4.pdf" class="featured-book-card" target="_blank">
-          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-          <div class="featured-book-info">
-            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-            <div class="featured-book-author">Часть 4: проекты, проекты</div>
-            <span class="featured-pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 4">
+            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+            <div class="featured-book-info">
+                <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+                <div class="featured-book-author">Часть 4: проекты, проекты</div>
+                <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+            </div>
+        </div>
         
-        <a href="books/WeDo2-2024-chast-5.pdf" class="featured-book-card" target="_blank">
-          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-          <div class="featured-book-info">
-            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-            <div class="featured-book-author">Часть 5: кегельринг, линия</div>
-            <span class="featured-pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 5">
+            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+            <div class="featured-book-info">
+                <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+                <div class="featured-book-author">Часть 5: кегельринг, линия</div>
+                <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+            </div>
+        </div>
         
-        <a href="books/WeDo2-2024-chast-6.pdf" class="featured-book-card" target="_blank">
-          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-          <div class="featured-book-info">
-            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-            <div class="featured-book-author">Часть 6: Миссия на Марс</div>
-            <span class="featured-pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 6">
+            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+            <div class="featured-book-info">
+                <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+                <div class="featured-book-author">Часть 6: Миссия на Марс</div>
+                <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+            </div>
+        </div>
         
-        <a href="books/WeDo2-2024-chast-7.pdf" class="featured-book-card" target="_blank">
-          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-          <div class="featured-book-info">
-            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-            <div class="featured-book-author">Часть 7: Миссия на Марс</div>
-            <span class="featured-pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 7">
+            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+            <div class="featured-book-info">
+                <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+                <div class="featured-book-author">Часть 7: Миссия на Марс</div>
+                <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+            </div>
+        </div>
         
-        <a href="books/WeDo2-2024-chast-8.pdf" class="featured-book-card" target="_blank">
-          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-          <div class="featured-book-info">
-            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-            <div class="featured-book-author">Часть 8: Ты можешь больше</div>
-            <span class="featured-pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
-      </div>
-      
-      <!-- <div class="books-grid">
-        Остальные книги с обычным стилем -->
-        <!-- <a href="books/wedo-2-0-proekty-maker-dlya-nachalnoi-shkoly.pdf" class="book-card" target="_blank">
-          <div class="book-icon"><i class="fas fa-book-open"></i></div>
-          <div class="book-info">
-            <div class="book-title">WeDo 2.0 Проекты MAKER</div>
-            <div class="book-author">Обучающее пособие</div>
-            <span class="pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
-        
-        <a href="books/komplekt-uchebnyh-proektov-lego-education-wedo-2-0.pdf" class="book-card" target="_blank">
-          <div class="book-icon"><i class="fas fa-book"></i></div>
-          <div class="book-info">
-            <div class="book-title">Комплект проектов WeDo 2.0</div>
-            <div class="book-author">LEGO Education</div>
-            <span class="pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
-        
-        <a href="books/o-a-lifanova-konstruiruem-robotov-kosmicheskiy-desant-2020-g.pdf" class="book-card" target="_blank">
-          <div class="book-icon"><i class="fas fa-robot"></i></div>
-          <div class="book-info">
-            <div class="book-title">Конструируем роботов. Космический десант</div>
-            <div class="book-author">О. А. Лифанова, 2020</div>
-            <span class="pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
-        
-        <a href="books/o-a-lifanova-konstruiruem-robotov-mificheskie-suschestva-2020-g.pdf" class="book-card" target="_blank">
-          <div class="book-icon"><i class="fas fa-book"></i></div>
-          <div class="book-info">
-            <div class="book-title">Конструируем роботов. Мифические существа</div>
-            <div class="book-author">О. А. Лифанова, 2020</div>
-            <span class="pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
-        
-        <a href="books/o-a-lifanova-konstruiruem-robotov-robodinopark-2019-g.pdf" class="book-card" target="_blank">
-          <div class="book-icon"><i class="fas fa-dinosaur"></i></div>
-          <div class="book-info">
-            <div class="book-title">Конструируем роботов. Рободинопарк</div>
-            <div class="book-author">О. А. Лифанова, 2019</div>
-            <span class="pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
-        
-        <a href="books/uchebno-metodicheskoe-posobie-k-dopolnitelnoi-obscherazvivauschei-obscheobrazovatelnoi-programme-zanimatelnaya-robototehnika.pdf" class="book-card" target="_blank">
-          <div class="book-icon"><i class="fas fa-graduation-cap"></i></div>
-          <div class="book-info">
-            <div class="book-title">Занимательная робототехника</div>
-            <div class="book-author">Общеобразовательная программа</div>
-            <span class="pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a>
-        
-        <a href="books/Scratch.pdf" class="book-card" target="_blank">
-          <div class="book-icon"><i class="fas fa-graduation-cap"></i></div>
-          <div class="book-info">
-            <div class="book-title">Scratch для юных программистов</div>
-            <div class="book-author">Обучающее пособие</div>
-            <span class="pdf-badge"><i class="fas fa-file-pdf"></i> PDF</span>
-          </div>
-        </a> -->
-      <!-- </div> --> 
-    </section>
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 8">
+            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+            <div class="featured-book-info">
+                <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+                <div class="featured-book-author">Часть 8: Ты можешь больше</div>
+                <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+            </div>
+        </div>
+    </div>
+    
+    <!-- ОВЕРЛЕЙ с запросом доступа -->
+    <div class="access-overlay">
+        <i class="fas fa-lock"></i>
+        <h4>Доступ по запросу</h4>
+    </div>
+</section>
     
     <!-- Ассистент -->
     <link rel="stylesheet" href="assistant/style.css">
@@ -5269,13 +5227,34 @@
         </div>
         <script src="assistant/script.js"></script>
         </div>
+
+              <!-- Баннер "Разработка сайтов" - фиксированный справа -->
+<div class="dev-banner" id="devBanner">
+    <div class="dev-banner-content">
+        <div class="dev-banner-header">
+            <div class="dev-banner-code-icon">&lt;/&gt;</div>
+            <h3>Разработка сайтов</h3>
+        </div>
+        <p>Создание сайтов, лендингов, интернет-магазинов и Telegram ботов</p>
+        <div class="dev-banner-stats">
+            <div class="dev-stat"><i class="fas fa-check-circle"></i> 50+ проектов</div>
+            <div class="dev-stat"><i class="fas fa-clock"></i> В срок</div>
+            <div class="dev-stat"><i class="fas fa-headset"></i> Поддержка</div>
+        </div>
+        <a href="https://t.me/kornilovsergey" target="_blank" class="dev-banner-btn">
+            <i class="fab fa-telegram"></i> Связаться
+        </a>
+    </div>
+    <!-- КНОПКА ЗАКРЫТИЯ (КРЕСТИК) -->
+    <button class="dev-banner-close" id="devBannerClose" aria-label="Закрыть">&times;</button>
+</div>
         
         <footer class="footer">
           <p>Библиотека инструкций <span id="wedo20-toggle">WeDo 2.0</span>. Все материалы предназначены для образовательных целей.</p>
           <div class="footer-links">
-            <a href="https://t.me/trenerwedo" target="_blank" class="telegram-link">
+            <!-- <a href="https://t.me/trenerwedo" target="_blank" class="telegram-link">
               <i class="fab fa-telegram-plane"></i> Связаться с тренером
-            </a>
+            </a> -->
           </div>
           <a href="https://t.me/kornilovsergey" target="_blank" rel="noopener noreferrer" class="creation-link">
             Создание сайтов и телеграм ботов под ключ
@@ -5298,6 +5277,31 @@
           </div>
         </footer>
       </div>
+
+      <!-- Модальное окно для карточек (улучшенное) -->
+<div class="modal-card" id="cardModal">
+    <div class="modal-card-content">
+        <button class="modal-close-btn" id="modalCloseBtn">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="18" y1="6" x2="6" y2="18"></line>
+                <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+        </button>
+        
+        <div class="modal-card-img-wrapper">
+            <img class="modal-card-img" id="modalImg" src="" alt="">
+            
+        </div>
+        
+        <div class="modal-card-body">
+            <h3 class="modal-card-title" id="modalTitle"></h3>
+            <p class="modal-card-description" id="modalDesc"></p>         
+            
+            
+            <div class="modal-card-actions" id="modalActions"></div>
+        </div>
+    </div>
+</div>
       
       <script>
         // Функция для определения времени года по месяцу
@@ -6340,6 +6344,38 @@
           loadModels();
         });
       </script>
+      <script>
+// Блокировка 8 книг - доступ по запросу
+document.addEventListener('DOMContentLoaded', function() {
+    const restrictedBooks = document.querySelectorAll('.restricted-book');
+    
+    restrictedBooks.forEach(book => {
+        book.style.cursor = 'pointer';
+        
+        book.addEventListener('click', function(e) {
+            e.preventDefault();
+            const title = this.getAttribute('data-title') || 'книге';
+            alert(`📩 Доступ к "${title}" по запросу.`);
+        });
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    const banner = document.getElementById('devBanner');
+    const closeBtn = document.getElementById('devBannerClose');
+    
+    if (banner && closeBtn) {
+        closeBtn.addEventListener('click', function() {
+            banner.classList.add('hide');
+            
+            // Опционально: удалить баннер из DOM после анимации
+            setTimeout(() => {
+                banner.style.display = 'none';
+            }, 300);
+        });
+    }
+});
+</script>
       <script src="uploadCards.js"></script>
       <script src="gscript.js"></script>
     </body>

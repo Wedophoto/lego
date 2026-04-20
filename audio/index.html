@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Локальный Аудиоплеер</title>
+    <title>Аудиоплеер</title>
     <!-- Подключаем иконки -->
     <script src="https://unpkg.com/@phosphor-icons/web"></script>
     <style>
@@ -381,7 +381,7 @@
             .controls {
                 margin-top: auto; /* Кнопки внизу */
                 margin-bottom: 20px;
-                gap: 15px;
+                margin-bottom: 50px;
             }
 
             .btn-main { width: 50px; height: 50px; }
@@ -394,6 +394,7 @@
                 display: flex;
                 align-items: center;
                 gap: 8px;
+                margin-bottom: 100px;
             }
 
             /* --- СТИЛИ ДЛЯ ВЫЕЗДАЮЩЕГО МЕНЮ --- */
@@ -460,6 +461,61 @@
             z-index: 200; /* Поверх плейлиста */
         }
         .toast.show { opacity: 1; }
+
+        /* Кнопка "На главную" - на одном уровне с содержимым плеера */
+.back-home-btn {
+    position: absolute;
+    top: 20px;
+    left: 40px;  /* Синхронизировано с padding: 40px у .player-section */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 40px;
+    text-decoration: none;
+    color: var(--text-main);
+    font-size: 0.9rem;
+    font-weight: 500;
+    transition: all 0.3s ease;
+    z-index: 50;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    cursor: pointer;
+}
+
+.back-home-btn i {
+    font-size: 1.2rem;
+    transition: transform 0.3s ease;
+}
+
+.back-home-btn:hover {
+    background: rgba(139, 92, 246, 0.2);
+    border-color: rgba(139, 92, 246, 0.3);
+    transform: translateX(-3px);
+}
+
+.back-home-btn:hover i {
+    transform: translateX(-3px);
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+    .back-home-btn span {
+        display: none;
+    }
+    
+    .back-home-btn {
+        padding: 8px 12px;
+        top: 15px;
+        left: 20px;  /* Синхронизировано с padding: 20px у .player-section на мобильных */
+    }
+    
+    .back-home-btn i {
+        font-size: 1.2rem;
+        margin: 0;
+    }
+}
     </style>
 </head>
 <body>
@@ -527,6 +583,12 @@
     <div class="toast" id="toast">Сообщение</div>
 </div>
 
+<!-- Кнопка "На главную" -->
+<a href="/" class="back-home-btn" title="На главную">
+    <i class="ph-fill ph-arrow-left"></i>
+    <span>На главную</span>
+</a>
+
 <script>
     // ==========================================
     // НАСТРОЙКИ
@@ -534,55 +596,55 @@
     
         let songs = [
         {
-            title: "Хулиганы",
-            artist: "Тренер Евгений",
-            file: "Хулиганы.mp3"
-        },
-        {
             title: "Робототехника круче, чем потеха",
-            artist: "Тренер Евгений",
+            artist: "Mai",
             file: "Робототехника круче, чем потеха.mp3"
         },
         {
             title: "Робо-сборка",
-            artist: "Тренер Евгений",
+            artist: "Mai",
             file: "Робо-сборка.mp3"
         },
         {
             title: "Робоклуб",
-            artist: "Тренер Евгений",
+            artist: "Mai",
             file: "Робоклуб.mp3"
         },
         {
             title: "Кринж",
-            artist: "Тренер Евгений",
+            artist: "Mai",
             file: "Кринж.mp3"
         },
         {
             title: "Командный успех",
-            artist: "Тренер Евгений",
+            artist: "Mai",
             file: "Командный успех.mp3"
         },
         {
             title: "Дети будущего",
-            artist: "Тренер Евгений",
+            artist: "Mai",
             file: "Дети будущего.mp3"
         },
         {
             title: "Девочка",
-            artist: "Тренер Евгений",
+            artist: "Mai",
             file: "Девочка.mp3"
         },
         {
             title: "Движ",
-            artist: "Тренер Евгений",
+            artist: "Mai",
             file: "Движ.mp3"
         },
         {
             title: "В коробке яркой детали лежат",
-            artist: "Тренер Евгений",
+            artist: "Mai",
             file: "В коробке яркой детали лежат.mp3"
-        }
+        },
+        {
+            title: "Хулиганы",
+            artist: "Mai",
+            file: "Хулиганы.mp3"
+        },
     ];
 
     const AUDIO_FOLDER = "https://wedophoto.github.io/lego/audio/files/";

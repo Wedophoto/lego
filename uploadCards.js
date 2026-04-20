@@ -224,7 +224,7 @@ const GAS_APP_URL =
     }
 
     const html = sectionCards
-      .map((card) => {
+      .map((card, index) => {
         const pdfLink =
           card.pdf && card.pdf.id
             ? `https://drive.google.com/file/d/${card.pdf.id}/preview`
@@ -232,21 +232,21 @@ const GAS_APP_URL =
         const videoLink = card.videoUrl || "#";
         const imgUrl = card.imageUrl || "";
 
+        // Сохраняем данные в data-атрибуты для модального окна
         return `
-          <div class="model-card">
-            <img src="${imgUrl}" alt="${card.title}" class="model-image">
-            
-            <!-- Заголовок -->
-            <h3 class="model-title">${card.title}</h3>
-            
-            
-              <p class="model-description">${card.description ? card.description : ""}</p>
-           
-            
+          <div class="model-card" data-card-index="${index}" 
+               data-title="${escapeHtml(card.title)}"
+               data-desc="${escapeHtml(card.description || "")}"
+               data-img="${escapeHtml(imgUrl)}"
+               data-pdf="${escapeHtml(pdfLink)}"
+               data-video="${escapeHtml(videoLink)}">
+            <img src="${imgUrl}" alt="${card.title}" class="model-image" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 150\'><rect fill=\'%23f0f0f0\' width=\'200\' height=\'150\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23999\' font-size=\'14\'>Нет фото</text></svg>'">
+            <h3 class="model-title">${escapeHtml(card.title)}</h3>
+            <p class="model-description">${escapeHtml(card.description ? card.description.substring(0, 100) : "")}${card.description && card.description.length > 100 ? "..." : ""}</p>
             <div class="model-details">
-              ${videoLink !== "#" ? `<a href="${videoLink}" target="_blank" class="video-btn"><i class="fas fa-play"></i> Видео</a>` : ""}
+              ${videoLink !== "#" ? `<a href="${videoLink}" target="_blank" class="video-btn" data-video-link><i class="fas fa-play"></i> Видео</a>` : ""}
             </div>
-            <a href="${pdfLink}" target="_blank" class="instruction-btn">
+            <a href="${pdfLink}" target="_blank" class="instruction-btn" data-pdf-link>
               <i class="fas fa-file-pdf"></i> Открыть инструкцию
             </a>
           </div>
@@ -256,6 +256,104 @@ const GAS_APP_URL =
 
     container.innerHTML = html;
     console.log(`✅ Отрисовано карточек в сетке: ${sectionCards.length}`);
+
+    // Добавляем обработчики кликов на карточки
+    attachCardClickHandlers(sectionCards);
+  }
+
+  // Функция для экранирования HTML
+  function escapeHtml(str) {
+    if (!str) return "";
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#39;");
+  }
+
+  // Функция для обработки кликов по карточкам
+  function attachCardClickHandlers(cards) {
+    const modal = document.getElementById("cardModal");
+    const modalImg = document.getElementById("modalImg");
+    const modalTitle = document.getElementById("modalTitle");
+    const modalDesc = document.getElementById("modalDesc");
+    const modalActions = document.getElementById("modalActions");
+    const modalClose = document.querySelector(".modal-close");
+
+    if (!modal) {
+      console.warn("⚠️ Модальное окно не найдено");
+      return;
+    }
+
+    // Закрытие модального окна
+    const closeModal = () => {
+      modal.classList.remove("active");
+    };
+
+    if (modalClose) modalClose.onclick = closeModal;
+    modal.onclick = (e) => {
+      if (e.target === modal) closeModal();
+    };
+
+    // Обработчики на карточки
+    const cardElements = document.querySelectorAll(".model-card");
+
+    cardElements.forEach((cardEl, idx) => {
+      // Убираем старый обработчик, если был
+      const newCard = cardEl.cloneNode(true);
+      cardEl.parentNode.replaceChild(newCard, cardEl);
+
+      newCard.addEventListener("click", (e) => {
+        // Не открываем модалку, если кликнули на кнопку
+        if (
+          e.target.closest(".video-btn") ||
+          e.target.closest(".instruction-btn")
+        ) {
+          return;
+        }
+
+        e.preventDefault();
+
+        const title = newCard.getAttribute("data-title") || "";
+        const desc = newCard.getAttribute("data-desc") || "";
+        const img = newCard.getAttribute("data-img") || "";
+        const pdfLink = newCard.getAttribute("data-pdf") || "#";
+        const videoLink = newCard.getAttribute("data-video") || "#";
+
+        // Заполняем модальное окно
+        modalTitle.textContent = title;
+        modalDesc.textContent = desc || "";
+        modalImg.src = img;
+        modalImg.alt = title;
+
+        // Формируем кнопки
+        let actionsHtml = "";
+
+        if (pdfLink !== "#") {
+          actionsHtml += `
+            <a href="${pdfLink}" target="_blank" class="modal-btn modal-btn-pdf">
+              <i class="fas fa-file-pdf"></i> Открыть инструкцию
+            </a>
+          `;
+        }
+
+        if (videoLink !== "#") {
+          actionsHtml += `
+            <a href="${videoLink}" target="_blank" class="modal-btn modal-btn-video">
+              <i class="fas fa-play"></i> Смотреть видео
+            </a>
+          `;
+        }
+
+        modalActions.innerHTML = actionsHtml;
+
+        // Показываем модальное окно
+        modal.classList.add("active");
+      });
+    });
+
+    console.log(`✅ Добавлено обработчиков на ${cardElements.length} карточек`);
   }
 
   // 7. Функция показа уведомления
@@ -413,3 +511,36 @@ if (
   // Переадресация на новый хостинг
   window.location.replace("http://ведо.рф");
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+  // Ждём появления модального окна
+  setTimeout(function () {
+    const modal = document.getElementById("cardModal");
+    const closeBtn = document.querySelector("#cardModal .modal-close-btn");
+
+    if (closeBtn) {
+      // Закрытие по крестику
+      closeBtn.onclick = function () {
+        modal.classList.remove("active");
+      };
+    }
+
+    // Закрытие по клику на фон
+    if (modal) {
+      modal.onclick = function (e) {
+        if (e.target === modal) {
+          modal.classList.remove("active");
+        }
+      };
+    }
+
+    // Закрытие по клавише ESC
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && modal && modal.classList.contains("active")) {
+        modal.classList.remove("active");
+      }
+    });
+
+    console.log("✅ Закрытие модального окна настроено");
+  }, 1000);
+});
