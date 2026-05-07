@@ -1,19 +1,6 @@
 <?php
 // /api/api.php
 
-// Подключение Parsedown (библиотека для конвертации Markdown в HTML)
-// Способ 1: через Composer (раскомментировать если есть vendor)
-// require __DIR__ . '/vendor/autoload.php';
-
-// Способ 2: прямая загрузка файла Parsedown.php
-// Скачайте Parsedown.php с https://github.com/erusev/parsedown/releases
-// и положите в папку /api/libs/Parsedown.php
-if (file_exists(__DIR__ . '/libs/Parsedown.php')) {
-  require __DIR__ . '/libs/Parsedown.php';
-} elseif (file_exists(__DIR__ . '/vendor/autoload.php')) {
-  require __DIR__ . '/vendor/autoload.php';
-}
-
 // Настройки
 ini_set('display_errors', 0);
 ini_set('log_errors', 1);
@@ -159,7 +146,7 @@ function slugify($text)
 
 function generatePost($postData, $blogDir, $templateFile)
 {
-  // Мы получаем уже готовый HTML от marked.js или от Parsedown
+  // Мы получаем уже готовый HTML от marked.js
   $contentHtml = $postData['content'];
 
   $title = htmlspecialchars($postData['title']);
@@ -189,52 +176,6 @@ function generatePost($postData, $blogDir, $templateFile)
     throw new Exception("Ошибка записи HTML");
   }
   return $filePath;
-}
-
-// --- НОВАЯ ФУНКЦИЯ: создание страницы из Markdown ---
-function createPageFromMarkdown($markdown, $title, $tags = [], $imageUrl = '', $blogDir, $templateFile, $dataFile, &$db)
-{
-  // Проверяем наличие библиотеки Parsedown
-  if (!class_exists('Parsedown')) {
-    throw new Exception("Parsedown library not found. Please install it in /api/libs/Parsedown.php or via Composer");
-  }
-
-  $parsedown = new Parsedown();
-  $htmlContent = $parsedown->text($markdown);
-
-  $slug = slugify($title);
-  if (empty($slug)) {
-    $slug = 'post-' . uniqid();
-  }
-
-  // Проверка уникальности slug
-  $i = 1;
-  $originalSlug = $slug;
-  while (file_exists($blogDir . $slug . '.html')) {
-    $slug = $originalSlug . '-' . $i++;
-  }
-
-  $postData = [
-    'id' => uniqid(),
-    'title' => $title,
-    'slug' => $slug,
-    'content' => $markdown, // В БД сохраняем Markdown
-    'tags' => array_values($tags),
-    'image_url' => $imageUrl,
-    'created_at' => date('c'),
-    'updated_at' => date('c')
-  ];
-
-  // Сохраняем в БД
-  $db[] = $postData;
-  saveDB($dataFile, $db);
-
-  // Генерируем HTML страницу (подменяем content на HTML)
-  $postForHtml = $postData;
-  $postForHtml['content'] = $htmlContent;
-  generatePost($postForHtml, $blogDir, $templateFile);
-
-  return ['slug' => $slug, 'id' => $postData['id']];
 }
 
 // --- ОБРАБОТКА ЗАПРОСА ---
@@ -278,7 +219,7 @@ try {
 
   $db = loadDB($dataFile);
 
-  // --- GET TAGS (СТАРЫЙ) ---
+  // --- GET TAGS ---
   if ($action === 'getTags') {
     $allTags = [];
     foreach ($db as $post) {
@@ -292,52 +233,7 @@ try {
     exit;
   }
 
-  // --- НОВЫЙ API: конвертация Markdown в HTML (без сохранения) ---
-  if ($action === 'markdownToHtml') {
-    $markdown = $input['markdown'] ?? '';
-    if (empty($markdown)) {
-      throw new Exception("Markdown is required");
-    }
-
-    // Проверяем наличие библиотеки Parsedown
-    if (!class_exists('Parsedown')) {
-      throw new Exception("Parsedown library not found. Please install it in /api/libs/Parsedown.php or via Composer");
-    }
-
-    $parsedown = new Parsedown();
-    $html = $parsedown->text($markdown);
-
-    echo json_encode(['success' => true, 'html' => $html]);
-    exit;
-  }
-
-  // --- НОВЫЙ API: создание страницы из Markdown с автоматической публикацией ---
-  if ($action === 'createPageFromMarkdown') {
-    $title = $input['title'] ?? '';
-    $markdown = $input['markdown'] ?? '';
-    $tags = $input['tags'] ?? [];
-    $imageUrl = $input['image_url'] ?? '';
-
-    if (empty($title)) {
-      throw new Exception("Title is required");
-    }
-    if (empty($markdown)) {
-      throw new Exception("Markdown is required");
-    }
-
-    // Обрабатываем теги
-    if (!is_array($tags)) {
-      $tags = array_map('trim', explode(',', $tags));
-      $tags = array_filter($tags);
-    }
-
-    $result = createPageFromMarkdown($markdown, $title, $tags, $imageUrl, $blogDir, $templateFile, $dataFile, $db);
-
-    echo json_encode(['success' => true, 'slug' => $result['slug'], 'id' => $result['id']]);
-    exit;
-  }
-
-  // --- SAVE / UPDATE (СТАРЫЙ, ИСПРАВЛЕННЫЙ) ---
+  // --- SAVE / UPDATE (ИСПРАВЛЕННЫЙ) ---
   if ($action === 'savePost' || $action === 'updatePost') {
     $id = $input['id'] ?? null;
     $title = $input['title'] ?? 'Без названия';
@@ -438,10 +334,9 @@ try {
     generatePost($tempPostData, $blogDir, $templateFile);
 
     echo json_encode(['success' => true, 'slug' => $slug]);
-    exit;
   }
 
-  // --- DELETE (СТАРЫЙ) ---
+  // --- DELETE ---
   elseif ($action === 'deletePost') {
     $id = $input['id'] ?? '';
     $found = false;
@@ -463,13 +358,11 @@ try {
     } else {
       throw new Exception("Пост не найден");
     }
-    exit;
   }
 
-  // --- GET POSTS (СТАРЫЙ) ---
+  // --- GET POSTS ---
   elseif ($action === 'getPosts') {
     echo json_encode(['posts' => array_values($db)]);
-    exit;
   } else {
     throw new Exception("Неизвестное действие: " . $action);
   }

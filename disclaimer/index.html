@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Отказ от ответственности | WeDo 2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e8eff5 0%, #d4e1f0 100%);
+            font-family: 'Roboto', sans-serif;
+            color: #2c3e50;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #001f3f, #0074D9, #39CCCC);
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            font-size: 1rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .content h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #0074D9;
+        }
+
+        .content h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .content h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0074D9;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .content p {
+            margin-bottom: 12px;
+            color: #34495e;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 30px;
+        }
+
+        .content li {
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+
+        .content .highlight {
+            background: #f0f7ff;
+            padding: 15px;
+            border-left: 4px solid #0074D9;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .contact-email {
+            background: #e8f4f8;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 25px 0 0;
+        }
+
+        .contact-email a {
+            color: #0074D9;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-email a:hover {
+            text-decoration: underline;
+        }
+
+        .effective-date {
+            text-align: right;
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+        }
+
+        .footer p {
+            color: rgba(44, 62, 80, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #0074D9;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .content {
+                padding: 25px;
+            }
+            .content h2 {
+                font-size: 1.3rem;
+            }
+            .content h3 {
+                font-size: 1.1rem;
+            }
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            .back-link {
+                position: static;
+                display: inline-flex;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">
+                <i class="fas fa-arrow-left"></i> На главную
+            </a>
+            <h1>Отказ от ответственности</h1>
+            <p>сайта www.ведо.рф</p>
+        </div>
+
+        <div class="content">
+            <div class="effective-date">
+                <i class="fas fa-calendar-alt"></i> Дата последнего обновления: 01.05.2026
+            </div>
+
+            <h2>1. Общие положения</h2>
+            <p>1.1. Настоящий Отказ от ответственности (далее – Отказ) регулирует порядок использования материалов, размещённых на сайте www.ведо.рф (далее – Сайт).</p>
+            <p>1.2. Использование Сайта означает полное и безоговорочное согласие пользователя с условиями настоящего Отказа.</p>
+            <p>1.3. Контактный адрес для обращений правообладателей: <strong>admwedo@mail.ru</strong></p>
+
+            <h2>2. Источники материалов</h2>
+            <p>2.1. Все пошаговые инструкции, изображения, видео, схемы сборки и иные материалы, размещённые на Сайте, получены из открытых источников сети Интернет либо предоставлены пользователями.</p>
+            <p>2.2. Материалы публикуются исключительно в информационных и образовательных целях – для ознакомления с принципами робототехники и конструкторами WeDo 2.0.</p>
+            <p>2.3. Администрация Сайта не заявляет авторских прав на указанные материалы и уважает права законных правообладателей.</p>
+
+            <h2>3. Авторские права</h2>
+            <p>3.1. Если вы являетесь правообладателем и считаете, что размещение каких-либо материалов нарушает ваши авторские или смежные права, пожалуйста, свяжитесь с администрацией Сайта по электронной почте: <strong>admwedo@mail.ru</strong></p>
+            <p>3.2. В обращении необходимо указать:</p>
+            <ul>
+                <li>точную ссылку на страницу Сайта с нарушающим материалом;</li>
+                <li>подтверждение ваших прав на объект интеллектуальной собственности;</li>
+                <li>контактные данные для обратной связи.</li>
+            </ul>
+            <p>3.3. Администрация обязуется рассмотреть обращение в течение <strong>5 рабочих дней</strong> и принять меры: удалить материал, добавить указанное правообладателем имя либо урегулировать вопрос иным способом.</p>
+
+            <h2>4. Точность и актуальность информации</h2>
+            <p>4.1. Администрация Сайта прилагает разумные усилия для обеспечения точности и актуальности размещаемых инструкций, однако не гарантирует:</p>
+            <ul>
+                <li>отсутствие ошибок, неточностей или опечаток;</li>
+                <li>работоспособность описанных моделей в конкретных условиях;</li>
+                <li>совместимость с разными версиями программного обеспечения или деталей конструктора.</li>
+            </ul>
+            <p>4.2. Пользователь самостоятельно несёт ответственность за проверку пригодности любой инструкции для своих целей.</p>
+
+            <h2>5. Ответственность</h2>
+            <p>5.1. Администрация Сайта <strong>не несёт ответственности</strong> за:</p>
+            <ul>
+                <li>любые прямые или косвенные убытки, возникшие в результате использования или невозможности использования материалов Сайта;</li>
+                <li>повреждения деталей конструктора, техники или иного оборудования при сборке моделей;</li>
+                <li>последствия, связанные с использованием инструкций не по назначению или с нарушением техники безопасности.</li>
+            </ul>
+            <p>5.2. Все модели собираются пользователем на свой страх и риск. Рекомендуется соблюдать осторожность при работе с движущимися механизмами и электронными компонентами.</p>
+
+            <h2>6. Ссылки на сторонние ресурсы</h2>
+            <p>6.1. Сайт может содержать ссылки на внешние сайты и файлообменники. Администрация не контролирует содержание и политику конфиденциальности таких ресурсов и не несёт ответственности за информацию, размещённую на них.</p>
+            <p>6.2. Переход по внешним ссылкам осуществляется пользователем на добровольной основе.</p>
+
+            <h2>7. Изменение Отказа</h2>
+            <p>7.1. Администрация оставляет за собой право изменять настоящий Отказ без предварительного уведомления пользователей.</p>
+            <p>7.2. Новая версия вступает в силу с момента публикации на Сайте.</p>
+
+            <h2>8. Заключительные положения</h2>
+            <p>8.1. Если какое-либо положение настоящего Отказа признаётся недействительным или не имеющим исковой силы, остальные положения сохраняют полную силу и действие.</p>
+            <p>8.2. Настоящий Отказ регулируется законодательством Российской Федерации.</p>
+
+            <div class="contact-email">
+                <i class="fas fa-envelope"></i> По всем вопросам, связанным с авторскими правами, обращайтесь по e‑mail: 
+                <a href="mailto:admwedo@mail.ru">admwedo@mail.ru</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 Библиотека инструкций WeDo 2.0</p>
+            <div class="footer-links">
+                <a href="/">
+                    <i class="fas fa-home"></i> На главную
+                </a>
+                <a href="/privacy">
+                    <i class="fas fa-shield-alt"></i> Политика конфиденциальности
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

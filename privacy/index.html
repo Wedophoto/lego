@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Политика конфиденциальности | WeDo 2.0</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: linear-gradient(135deg, #e8eff5 0%, #d4e1f0 100%);
+            font-family: 'Roboto', sans-serif;
+            color: #2c3e50;
+            line-height: 1.6;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: linear-gradient(135deg, #001f3f, #0074D9, #39CCCC);
+            border-radius: 16px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15);
+            position: relative;
+        }
+
+        .header h1 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 800;
+            font-size: 1.8rem;
+            color: white;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 0.9rem;
+        }
+
+        .back-link {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateX(-3px);
+        }
+
+        .content {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .content h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.5rem;
+            color: #2c3e50;
+            margin-top: 25px;
+            margin-bottom: 15px;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #0074D9;
+        }
+
+        .content h2:first-of-type {
+            margin-top: 0;
+        }
+
+        .content h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            font-size: 1.2rem;
+            color: #0074D9;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .content p {
+            margin-bottom: 12px;
+            color: #34495e;
+        }
+
+        .content ul, .content ol {
+            margin-bottom: 15px;
+            padding-left: 30px;
+        }
+
+        .content li {
+            margin-bottom: 5px;
+            color: #34495e;
+        }
+
+        .content .highlight {
+            background: #f0f7ff;
+            padding: 15px;
+            border-left: 4px solid #0074D9;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+
+        .contact-email {
+            background: #e8f4f8;
+            padding: 15px 20px;
+            border-radius: 12px;
+            text-align: center;
+            margin: 25px 0 0;
+        }
+
+        .contact-email a {
+            color: #0074D9;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .contact-email a:hover {
+            text-decoration: underline;
+        }
+
+        .effective-date {
+            text-align: right;
+            font-size: 0.85rem;
+            color: #7f8c8d;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 16px;
+        }
+
+        .footer p {
+            color: rgba(44, 62, 80, 0.7);
+            font-size: 0.85rem;
+        }
+
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            color: #2c3e50;
+            text-decoration: none;
+            font-size: 0.85rem;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #0074D9;
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 15px;
+            }
+            .content {
+                padding: 25px;
+            }
+            .content h2 {
+                font-size: 1.3rem;
+            }
+            .content h3 {
+                font-size: 1.1rem;
+            }
+            .header h1 {
+                font-size: 1.4rem;
+            }
+            .back-link {
+                position: static;
+                display: inline-flex;
+                margin-bottom: 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <a href="/" class="back-link">
+                <i class="fas fa-arrow-left"></i> На главную
+            </a>
+            <h1>Политика конфиденциальности</h1>
+            <p>сайта www.ведо.рф</p>
+        </div>
+
+        <div class="content">
+            <div class="effective-date">
+                <i class="fas fa-calendar-alt"></i> Дата вступления в силу: 01.05.2026
+            </div>
+
+            <h2>1. Общие положения</h2>
+            <p>1.1. Настоящая Политика конфиденциальности (далее – Политика) определяет порядок обработки и защиты информации о пользователях при использовании сайта www.ведо.рф (далее – Сайт).</p>
+            <p>1.2. Оператором персональных данных является физическое лицо – владелец и администратор Сайта.</p>
+            <p>1.3. Контактный адрес электронной почты для обращений по вопросам обработки персональных данных: <strong>admwedo@mail.ru</strong></p>
+
+            <h2>2. Какие персональные данные собираются</h2>
+            <p>2.1. При регистрации на Сайте (только для лиц старше 18 лет):</p>
+            <ul>
+                <li>адрес электронной почты;</li>
+                <li>имя (логин / никнейм);</li>
+                <li>пароль (в зашифрованном виде).</li>
+            </ul>
+            <p>2.2. Автоматически при использовании Сайта (через файлы cookie и Яндекс.Метрику):</p>
+            <ul>
+                <li>IP-адрес;</li>
+                <li>тип браузера и операционной системы;</li>
+                <li>посещённые страницы, время визита, источник перехода;</li>
+                <li>файлы cookie.</li>
+            </ul>
+            <p>2.3. При отдельной подписке на рассылку (только с явного согласия):</p>
+            <ul>
+                <li>адрес электронной почты.</li>
+            </ul>
+            <p>2.4. Оператор не собирает и не обрабатывает:</p>
+            <ul>
+                <li>паспортные данные, СНИЛС, ИНН;</li>
+                <li>адреса регистрации или проживания;</li>
+                <li>биометрические данные;</li>
+                <li>платёжные данные.</li>
+            </ul>
+
+            <h2>3. Цели обработки персональных данных</h2>
+            <p>3.1. Персональные данные обрабатываются исключительно для следующих целей:</p>
+            <ul>
+                <li>регистрация и авторизация на Сайте;</li>
+                <li>предоставление доступа к контенту Сайта;</li>
+                <li>обратная связь с пользователем;</li>
+                <li>улучшение работы Сайта (аналитика через Яндекс.Метрику);</li>
+                <li>рассылка информационных материалов – только при наличии отдельного согласия пользователя.</li>
+            </ul>
+
+            <h2>4. Правовые основания обработки</h2>
+            <p>4.1. Обработка персональных данных осуществляется на основании согласия пользователя, которое выражается одним из следующих способов:</p>
+            <ul>
+                <li>проставление галочки «Я принимаю условия Политики конфиденциальности» при регистрации;</li>
+                <li>проставление отдельной галочки «Я согласен на получение информационных рассылок»;</li>
+                <li>продолжение использования Сайта после показа уведомления о файлах cookie.</li>
+            </ul>
+            <p>4.2. Все галочки являются добровольными и не могут быть предустановлены автоматически.</p>
+
+            <h2>5. Регистрация и возрастные ограничения</h2>
+            <p>5.1. Регистрация на Сайте разрешена только лицам, достигшим 18 лет.</p>
+            <p>5.2. При регистрации пользователь обязан проставить галочку «Мне есть 18 лет». Указание заведомо ложных сведений о возрасте является нарушением настоящей Политики.</p>
+            <p>5.3. Если Оператору становится известно о регистрации лица младше 18 лет, учётная запись подлежит немедленному удалению вместе со всеми персональными данными.</p>
+
+            <h2>6. Обработка данных несовершеннолетних</h2>
+            <p>6.1. Оператор намеренно не собирает, не хранит и не использует персональные данные детей.</p>
+            <p>6.2. В случае обнаружения таких данных, Оператор удаляет их в течение 3 рабочих дней.</p>
+
+            <h2>7. Файлы cookie и Яндекс.Метрика</h2>
+            <p>7.1. Сайт использует файлы cookie для авторизации и сбора статистики.</p>
+            <p>7.2. Пользователь может ограничить использование cookie в настройках своего браузера.</p>
+            <p>7.3. Яндекс.Метрика обрабатывает обезличенные данные. Политика конфиденциальности Яндекса доступна по адресу: <a href="https://yandex.ru/legal/confidential/" target="_blank">https://yandex.ru/legal/confidential/</a></p>
+
+            <div class="highlight">
+                <i class="fas fa-envelope" style="margin-right: 10px; color: #0074D9;"></i>
+                <strong>Важно:</strong> Факт регистрации на Сайте не является автоматическим согласием на рассылку.
+            </div>
+
+            <h2>8. Рассылки</h2>
+            <p>8.1. Факт регистрации на Сайте не является автоматическим согласием на рассылку.</p>
+            <p>8.2. Согласие на получение информационных рассылок даётся отдельной галочкой.</p>
+            <p>8.3. В каждом письме присутствует ссылка для отписки.</p>
+            <p>8.4. Транзакционные письма отправляются без отдельного согласия.</p>
+
+            <h2>9. Хранение и передача персональных данных</h2>
+            <p>9.1. Персональные данные хранятся на серверах на территории Российской Федерации.</p>
+            <p>9.2. Срок хранения – в течение всего времени использования Сайта пользователем плюс 1 год после последнего входа.</p>
+            <p>9.3. Оператор не передаёт персональные данные третьим лицам, за исключением случаев, предусмотренных законом, а также передачи обезличенных статистических данных в Яндекс.Метрику.</p>
+
+            <h2>10. Права пользователей</h2>
+            <p>10.1. Пользователь имеет право:</p>
+            <ul>
+                <li>получить информацию о хранящихся персональных данных;</li>
+                <li>потребовать исправления, блокировки или удаления своих персональных данных;</li>
+                <li>отозвать согласие на обработку персональных данных;</li>
+                <li>отказаться от получения рассылок.</li>
+            </ul>
+            <p>10.2. Для реализации этих прав достаточно написать на e‑mail: <strong>admwedo@mail.ru</strong> с пометкой «Персональные данные».</p>
+
+            <h2>11. Меры защиты персональных данных</h2>
+            <p>11.1. Оператор принимает меры для защиты данных: HTTPS, шифрование паролей, регулярное обновление ПО, ограничение доступа к базе данных.</p>
+            <p>11.2. В случае утечки данных Оператор уведомляет пользователей по e‑mail в течение 3 рабочих дней.</p>
+
+            <h2>12. Изменение Политики конфиденциальности</h2>
+            <p>12.1. Оператор может изменять настоящую Политику. Новая версия вступает в силу с момента публикации.</p>
+            <p>12.2. При существенных изменениях Оператор уведомляет пользователей по e‑mail не менее чем за 7 дней.</p>
+
+            <h2>13. Заключительные положения</h2>
+            <p>13.1. Настоящая Политика регулируется законодательством Российской Федерации.</p>
+            <p>13.2. Если пользователь не согласен с условиями Политики, он должен прекратить использование Сайта.</p>
+
+            <div class="contact-email">
+                <i class="fas fa-envelope"></i> По вопросам обработки персональных данных: 
+                <a href="mailto:admwedo@mail.ru">admwedo@mail.ru</a>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>© 2026 Библиотека инструкций WeDo 2.0</p>
+            <div class="footer-links">
+                <a href="/">
+                    <i class="fas fa-home"></i> На главную
+                </a>
+                <a href="/disclaimer">
+                    <i class="fas fa-exclamation-triangle"></i> Отказ от ответственности
+                </a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

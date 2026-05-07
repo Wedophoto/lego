@@ -1,0 +1,380 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Контакты — WeDo 2.0 | Mai</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: linear-gradient(135deg, #e8eff5 0%, #d4e1f0 100%);
+      font-family: 'Roboto', sans-serif;
+      color: #1e2f3e;
+      min-height: 100vh;
+      line-height: 1.5;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* плавающие LEGO-элементы */
+    .lego-bg {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .lego-piece {
+      position: absolute;
+      opacity: 0.08;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.1));
+    }
+
+    .lego-1 { top: 12%; left: 5%; width: 80px; height: 40px; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><rect x="0" y="10" width="100" height="30" fill="%23FF7700" rx="5"/><rect x="10" y="0" width="20" height="20" fill="%23FF7700" rx="3"/><rect x="40" y="0" width="20" height="20" fill="%23FF7700" rx="3"/><rect x="70" y="0" width="20" height="20" fill="%23FF7700" rx="3"/></svg>') center/contain no-repeat; animation: float1 25s infinite ease-in-out; }
+    .lego-2 { top: 25%; right: 8%; width: 70px; height: 70px; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><rect x="0" y="20" width="100" height="60" fill="%2300AA00" rx="5"/><rect x="15" y="5" width="25" height="25" fill="%2300AA00" rx="3"/><rect x="60" y="5" width="25" height="25" fill="%2300AA00" rx="3"/><rect x="15" y="70" width="25" height="25" fill="%2300AA00" rx="3"/><rect x="60" y="70" width="25" height="25" fill="%2300AA00" rx="3"/></svg>') center/contain no-repeat; animation: float2 30s infinite ease-in-out; }
+    .lego-3 { bottom: 12%; left: 7%; width: 65px; height: 50px; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 70"><rect x="0" y="10" width="100" height="50" fill="%230077FF" rx="5"/><rect x="10" y="0" width="20" height="20" fill="%230077FF" rx="3"/><rect x="40" y="0" width="20" height="20" fill="%230077FF" rx="3"/><rect x="70" y="0" width="20" height="20" fill="%230077FF" rx="3"/><rect x="10" y="50" width="20" height="20" fill="%230077FF" rx="3"/><rect x="40" y="50" width="20" height="20" fill="%230077FF" rx="3"/><rect x="70" y="50" width="20" height="20" fill="%230077FF" rx="3"/></svg>') center/contain no-repeat; animation: float3 28s infinite ease-in-out; }
+    .lego-4 { top: 45%; right: 12%; width: 80px; height: 40px; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 50"><rect x="0" y="10" width="100" height="30" fill="%23FF0000" rx="5"/><rect x="10" y="0" width="15" height="15" fill="%23FF0000" rx="3"/><rect x="30" y="0" width="15" height="15" fill="%23FF0000" rx="3"/><rect x="50" y="0" width="15" height="15" fill="%23FF0000" rx="3"/><rect x="70" y="0" width="15" height="15" fill="%23FF0000" rx="3"/><rect x="10" y="35" width="15" height="15" fill="%23FF0000" rx="3"/><rect x="30" y="35" width="15" height="15" fill="%23FF0000" rx="3"/><rect x="50" y="35" width="15" height="15" fill="%23FF0000" rx="3"/><rect x="70" y="35" width="15" height="15" fill="%23FF0000" rx="3"/></svg>') center/contain no-repeat; animation: float4 32s infinite ease-in-out; }
+    .lego-5 { bottom: 20%; right: 18%; width: 60px; height: 60px; background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><circle cx="50" cy="50" r="40" fill="%23FFFF00"/><circle cx="30" cy="30" r="10" fill="%23FFFF00"/><circle cx="70" cy="30" r="10" fill="%23FFFF00"/><circle cx="30" cy="70" r="10" fill="%23FFFF00"/><circle cx="70" cy="70" r="10" fill="%23FFFF00"/></svg>') center/contain no-repeat; animation: float5 27s infinite ease-in-out; }
+
+    @keyframes float1 { 0%,100% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(30px,-20px) rotate(5deg); } 50% { transform: translate(-20px,30px) rotate(-3deg); } 75% { transform: translate(15px,15px) rotate(2deg); } }
+    @keyframes float2 { 0%,100% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(-25px,15px) rotate(-4deg); } 50% { transform: translate(20px,-25px) rotate(3deg); } 75% { transform: translate(-15px,-10px) rotate(-2deg); } }
+    @keyframes float3 { 0%,100% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(20px,25px) rotate(3deg); } 50% { transform: translate(-30px,-15px) rotate(-5deg); } 75% { transform: translate(10px,-20px) rotate(2deg); } }
+    @keyframes float4 { 0%,100% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(-15px,-25px) rotate(-3deg); } 50% { transform: translate(25px,20px) rotate(4deg); } 75% { transform: translate(-20px,10px) rotate(-2deg); } }
+    @keyframes float5 { 0%,100% { transform: translate(0,0) rotate(0deg); } 25% { transform: translate(25px,10px) rotate(2deg); } 50% { transform: translate(-15px,-20px) rotate(-4deg); } 75% { transform: translate(20px,15px) rotate(3deg); } }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 30px 24px 60px;
+      position: relative;
+      z-index: 5;
+    }
+
+    /* обложка */
+    .hero-cover {
+      background: linear-gradient(125deg, #0B2B40 0%, #1C5D7A 45%, #2D9CDB 100%);
+      border-radius: 2rem;
+      margin-bottom: 3rem;
+      padding: 3rem 2rem;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 20px 35px -12px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+      transition: transform 0.2s ease;
+    }
+    .hero-cover:hover {
+      transform: scale(1.01);
+    }
+    .hero-cover::before {
+      content: "";
+      position: absolute;
+      top: -30%;
+      left: -20%;
+      width: 140%;
+      height: 140%;
+      background: radial-gradient(circle, rgba(255,255,240,0.15) 0%, rgba(255,255,255,0) 70%);
+      pointer-events: none;
+      animation: slowDrift 18s infinite alternate;
+    }
+    @keyframes slowDrift {
+      0% { transform: translate(0,0) rotate(0deg); opacity: 0.6; }
+      100% { transform: translate(5%, -3%) rotate(4deg); opacity: 1; }
+    }
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+    .hero-icon {
+      font-size: 3.5rem;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(8px);
+      width: 90px;
+      height: 90px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.4);
+    }
+    .hero-icon i {
+      color: white;
+      text-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    }
+    .hero-title {
+      font-family: 'Montserrat', sans-serif;
+      font-weight: 800;
+      font-size: 2.8rem;
+      background: linear-gradient(135deg, #FFFFFF, #FFE6B0);
+      background-clip: text;
+      -webkit-background-clip: text;
+      color: transparent;
+      margin-bottom: 0.75rem;
+      letter-spacing: -0.5px;
+    }
+    .hero-sub {
+      font-size: 1.1rem;
+      color: rgba(255,255,245,0.9);
+      max-width: 550px;
+      margin: 0 auto;
+      font-weight: 500;
+    }
+    .hero-badge {
+      margin-top: 1.5rem;
+      display: inline-block;
+      background: rgba(0,0,0,0.3);
+      backdrop-filter: blur(4px);
+      padding: 0.3rem 1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #feeed6;
+    }
+
+    /* карточка контактов */
+    .contacts-card {
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(2px);
+      border-radius: 2rem;
+      padding: 2rem 2rem 2.5rem;
+      box-shadow: 0 20px 40px -12px rgba(0,0,0,0.15);
+      border: 1px solid rgba(255,255,255,0.6);
+    }
+    .contacts-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2rem;
+      margin-top: 1.5rem;
+    }
+    .contact-btn {
+      flex: 1;
+      min-width: 220px;
+      background: #f8fafc;
+      border-radius: 1.5rem;
+      padding: 1.6rem 1rem;
+      text-align: center;
+      text-decoration: none;
+      transition: all 0.25s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: 0 5px 12px rgba(0,0,0,0.03);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.8rem;
+    }
+    .contact-btn i {
+      font-size: 2.8rem;
+    }
+    .contact-btn .btn-label {
+      font-weight: 700;
+      font-size: 1.3rem;
+      font-family: 'Montserrat', sans-serif;
+      letter-spacing: -0.2px;
+    }
+    /* почта */
+    .contact-btn.email {
+      background: linear-gradient(135deg, #ffffff, #f1f5f9);
+      border-bottom: 4px solid #3b82f6;
+    }
+    .contact-btn.email i {
+      color: #3b82f6;
+    }
+    .contact-btn.email .btn-label {
+      color: #1e3a8a;
+    }
+    /* telegram */
+    .contact-btn.telegram {
+      background: linear-gradient(135deg, #ffffff, #eef2ff);
+      border-bottom: 4px solid #2ba0e0;
+    }
+    .contact-btn.telegram i {
+      color: #2ba0e0;
+    }
+    .contact-btn.telegram .btn-label {
+      color: #0c4e6e;
+    }
+    /* max */
+    .contact-btn.max {
+      background: linear-gradient(135deg, #ffffff, #fef9e6);
+      border-bottom: 4px solid #f5a623;
+    }
+    .contact-btn.max i {
+      color: #e67e22;
+    }
+    .contact-btn.max .btn-label {
+      color: #b85c00;
+    }
+
+    .contact-btn:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 20px 30px -12px rgba(0,0,0,0.2);
+      background: white;
+    }
+
+    /* лаконичная заметка */
+    .info-note {
+      margin-top: 2.2rem;
+      background: #eef3fc;
+      border-radius: 1.5rem;
+      padding: 0.9rem 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: #2c5282;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .info-note i {
+      font-size: 1rem;
+      opacity: 0.8;
+    }
+
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      margin-top: 2rem;
+      padding: 0.8rem 1.6rem;
+      background: rgba(0,0,0,0.05);
+      border-radius: 60px;
+      color: #2c3e50;
+      text-decoration: none;
+      font-weight: 500;
+      transition: 0.2s;
+      backdrop-filter: blur(4px);
+    }
+    .back-link:hover {
+      background: rgba(0,0,0,0.12);
+      gap: 14px;
+      color: #0f2b3b;
+    }
+
+    footer {
+      margin-top: 3rem;
+      text-align: center;
+      font-size: 0.8rem;
+      color: #5a6e7c;
+    }
+
+    @media (max-width: 700px) {
+      .container { padding: 20px 16px 40px; }
+      .hero-title { font-size: 2rem; }
+      .hero-cover { padding: 2rem 1rem; }
+      .contact-btn { min-width: 100%; }
+      .contacts-grid { gap: 1.2rem; }
+    }
+    @media (max-width: 480px) {
+      .hero-icon { width: 70px; height: 70px; font-size: 2.5rem; }
+      .hero-sub { font-size: 1rem; }
+    }
+  </style>
+</head>
+<body>
+  <div class="lego-bg">
+    <div class="lego-piece lego-1"></div>
+    <div class="lego-piece lego-2"></div>
+    <div class="lego-piece lego-3"></div>
+    <div class="lego-piece lego-4"></div>
+    <div class="lego-piece lego-5"></div>
+  </div>
+
+  <div class="container">
+    <!-- ОБЛОЖКА (текст подчищен) -->
+    <div class="hero-cover">
+      <div class="hero-content">
+        <div class="hero-icon">
+          <i class="fas fa-robot"></i>
+        </div>
+        <h1 class="hero-title">WeDo 2.0 | Контакты</h1>
+        <p class="hero-sub">Связь с тренером и полезные ресурсы</p>
+        <div class="hero-badge">
+          <i class="fas fa-microchip"></i> Робототехника. Инструкции.
+        </div>
+      </div>
+    </div>
+
+    <!-- ГЛАВНЫЙ БЛОК С КНОПКАМИ (убраны лишние надписи) -->
+    <div class="contacts-card">
+      <div style="text-align: center; margin-bottom: 0.5rem;">
+        <i class="fas fa-comments" style="font-size: 2rem; color: #3080b0; opacity: 0.7;"></i>
+        <h2 style="font-family: 'Montserrat', sans-serif; font-weight: 700; margin-top: 6px;">Напишите нам</h2>
+        <p style="color: #476b7c;">Выберите удобный способ связи</p>
+      </div>
+
+      <div class="contacts-grid">
+        <!-- Почта -->
+        <a href="mailto:admwedo@mail.ru" class="contact-btn email" target="_blank">
+          <i class="fas fa-envelope-open-text"></i>
+          <span class="btn-label">Электронная почта</span>
+        </a>
+
+        <!-- Telegram -->
+        <a href="https://t.me/robotwedo" class="contact-btn telegram" target="_blank" rel="noopener noreferrer">
+          <i class="fab fa-telegram-plane"></i>
+          <span class="btn-label">Telegram</span>
+        </a>
+
+        <!-- MAX сообщество -->
+        <a href="https://max.ru/join/QHKi9hyBa3EWyeRurS3L5f6NgNED1kHWgje1gEclLK0" class="contact-btn max" target="_blank" rel="noopener noreferrer">
+          <i class="fas fa-users"></i>
+          <span class="btn-label">MAX</span>
+        </a>
+      </div>
+
+      <!-- чистая заметка без лишних обещаний -->
+      <div class="info-note">
+        <i class="fas fa-info-circle"></i>
+        <span>По вопросам инструкций WeDo 2.0, сотрудничества — пишите на почту или в Telegram.</span>
+      </div>
+    </div>
+
+    <!-- кнопка назад на главную -->
+    <div style="display: flex; justify-content: center; margin-top: 2rem;">
+      <a href="/" class="back-link" id="homeLink">
+        <i class="fas fa-arrow-left"></i> Вернуться на главную
+      </a>
+    </div>
+
+    <footer>
+      <p>Библиотека инструкций WeDo 2.0 — для педагогов, родителей и юных инженеров</p>
+      <p style="margin-top: 0.5rem; opacity: 0.7;">© 2025 | Контакты</p>
+    </footer>
+  </div>
+
+  <script>
+    // корректный переход на главную (учитывает подкаталог при публикации на GitHub Pages)
+    const base = (() => {
+      const host = window.location.hostname;
+      if (host.includes('github.io')) {
+        const path = window.location.pathname;
+        const match = path.match(/^\/[^\/]+\//);
+        if (match) return match[0];
+        return '/';
+      }
+      return '/';
+    })();
+    const homeLink = document.getElementById('homeLink');
+    if (homeLink) {
+      homeLink.href = base;
+    }
+  </script>
+</body>
+</html>

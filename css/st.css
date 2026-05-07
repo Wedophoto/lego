@@ -827,7 +827,7 @@ h1 {
   font-size: 0.9rem;
 }
 
-@media (max-width: 1200px) {
+@media (max-width: 1700px) {
   .models-grid {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -999,7 +999,7 @@ h1 {
    ============================================ */
 
 .dev-banner {
-  position: fixed;
+  /* position: fixed; */
   right: 20px;
   top: 90px;
   z-index: 100;
@@ -1605,4 +1605,309 @@ body:has(.assistant-container.hidden) .dev-banner {
   .modal-card-title {
     font-size: 1.2rem;
   }
+}
+
+/* --- ИЗМЕНЁННЫЙ БЛОК: Главный контейнер и сайдбар --- */
+
+/* Главный контейнер — убираем flex, делаем обычный блок */
+.main-layout {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+/* Основной контент — занимает всю ширину */
+.container {
+  width: 100%;
+  padding: 20px;
+  margin: 0;
+}
+
+/* Сайдбар с рекламой — сетка 4 колонки, фиксированная высота */
+.floating-blocks {
+  width: 100%;
+  margin: 20px 0 30px 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  flex-shrink: 0;
+}
+
+/* Каждый блок рекламы — фиксированная высота 4 * 3 = 12rem (192px) */
+.floating-blocks > * {
+  width: 100%;
+  height: 192px; /* 4 * 3rem = 12rem = 192px */
+  background: transparent;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Картинка внутри блока — подстраивается под размер */
+.floating-blocks img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Картинка заполняет блок, обрезая лишнее */
+  border-radius: 16px;
+  display: block;
+}
+
+/* Ссылка-обёртка — тоже фиксированной высоты */
+.floating-blocks a {
+  display: block;
+  width: 100%;
+  height: 100%;
+  text-decoration: none;
+}
+
+/* Адаптив: на мобильных (ширина меньше 768px) — 2 колонки */
+@media (max-width: 768px) {
+  .floating-blocks {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+  }
+
+  .floating-blocks > * {
+    height: 180px; /* Чуть меньше на мобильных */
+  }
+}
+
+/* На маленьких телефонах (меньше 480px) */
+@media (max-width: 480px) {
+  .floating-blocks {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
+
+  .floating-blocks > * {
+    height: 160px; /* Ещё чуть меньше */
+  }
+}
+
+/* Плавная смена рекламных блоков */
+.ad-block {
+  transition: opacity 0.3s ease-in-out;
+}
+
+.ad-block.fade-out {
+  opacity: 0;
+}
+
+/* Чтобы картинки не выходили за границы блока */
+.floating-blocks div {
+  cursor: pointer;
+  width: 100%;
+  height: 100%;
+  box-shadow: 4px 4px 4px rgb(0 0 0 / 30%);
+  transition: all 0.3s ease;
+  position: relative;
+  top: 0;
+  right: 0;
+  border-radius: 8px;
+}
+
+.floating-blocks div:hover {
+  top: -4px;
+  /* right: 1px; */
+  box-shadow: 6px 6px 8px rgb(0 0 0 / 35%);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Стили для видео в рекламных блоках */
+.floating-blocks video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Видео заполняет весь блок */
+  border-radius: 16px;
+  display: block;
+}
+
+/* Без звука по умолчанию */
+.floating-blocks video::-webkit-media-controls {
+  display: none; /* Скрываем стандартные контролы (опционально) */
+}
+
+.floating-blocks video::-webkit-media-controls-enclosure {
+  display: none;
+}
+
+/* Media Type Switch Buttons */
+.media-type-switch {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+.media-type-btn {
+  flex: 1;
+  padding: 8px;
+  border: 1px solid var(--border);
+  background: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s;
+}
+.media-type-btn.active {
+  background: var(--primary);
+  color: white;
+  border-color: var(--primary);
+}
+
+.contact-email {
+  margin: 10px 0;
+  font-size: 0.9rem;
+}
+
+.contact-email a {
+  color: #0088cc;
+  text-decoration: none;
+  transition: color 0.3s ease;
+}
+
+.contact-email a:hover {
+  color: #005a8e;
+  text-decoration: underline;
+}
+
+.contact-email i {
+  margin-right: 5px;
+  color: #0088cc;
+}
+
+/* Хедер с кнопкой скрытия рекламы */
+.ads-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 10px 0 15px 0;
+  padding: 0 5px;
+}
+
+.ads-title {
+  font-family: "Montserrat", sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #666;
+  margin: 0;
+}
+
+.hide-all-ads-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.1);
+  border: none;
+  padding: 6px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: #666;
+  transition: all 0.2s ease;
+}
+
+.hide-all-ads-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+.hide-all-ads-btn i {
+  font-size: 0.7rem;
+}
+
+/* Сообщение о скрытой рекламе */
+.restore-ads-message {
+  margin: 5px 0;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 16px;
+  text-align: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.restore-ads-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  color: #666;
+}
+
+.restore-ads-content i {
+  font-size: 1.2rem;
+  color: #999;
+}
+
+.restore-ads-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #4ecdc4;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 20px;
+  color: white;
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}
+
+.restore-ads-btn:hover {
+  background: #3db9b0;
+  transform: translateY(-1px);
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Стили для ссылок в футере */
+.footer-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(44, 62, 80, 0.8);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: all 0.3s ease;
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.footer-link:hover {
+  color: #0074d9;
+  background-color: rgba(0, 116, 217, 0.1);
+  transform: translateY(-2px);
+}
+
+.footer-link i {
+  font-size: 0.9rem;
+}
+
+/* Адаптив для мобильных */
+@media (max-width: 768px) {
+  .footer-links {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 12px;
+  }
+
+  .footer-link {
+    font-size: 0.75rem;
+    padding: 4px 10px;
+  }
+}
+
+.model-card .segments {
+  width: 100%;
+  min-width: 150px;
 }

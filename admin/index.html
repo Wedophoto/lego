@@ -48,7 +48,7 @@
             z-index: 20;
             border-right: 1px solid #374151;
         }
-
+        
         .icon-btn {
             width: 48px;
             height: 48px;
@@ -62,9 +62,9 @@
             transition: all 0.2s ease;
             position: relative;
         }
-
+        
         .icon-btn svg { width: 24px; height: 24px; }
-
+        
         .icon-btn:hover { background: rgba(255,255,255,0.05); color: white; }
         
         .icon-btn.active {
@@ -72,7 +72,7 @@
             color: white;
             box-shadow: 0 4px 12px rgba(79, 70, 229, 0.4);
         }
-
+        
         /* Tooltip simple */
         .icon-btn::after {
             content: attr(data-tooltip);
@@ -89,7 +89,7 @@
             white-space: nowrap;
         }
         .icon-btn:hover::after { opacity: 1; }
-
+        
         /* Inner Navigation Bar */
         .nav-bar {
             width: 240px;
@@ -99,7 +99,7 @@
             flex-shrink: 0;
             border-right: 1px solid #374151;
         }
-
+        
         .brand { 
             padding: 20px; 
             font-size: 1.1rem; 
@@ -128,7 +128,7 @@
         .view-mode { display: none; max-width: 1200px; margin: 0 auto; }
         .view-mode.active { display: block; animation: fadeIn 0.3s; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
-
+        
         header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px; }
         h2 { margin: 0; font-size: 1.5rem; font-weight: 700; color: #1f2937; }
         
@@ -142,7 +142,7 @@
         .btn-secondary:hover { background: #f9fafb; border-color: #d1d5db; }
         .btn-danger { background: #fee2e2; color: #dc2626; }
         .btn-danger:hover { background: #fecaca; }
-
+        
         /* --- CARDS GRID --- */
         .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 24px; }
         .card {
@@ -178,7 +178,7 @@
         }
         .form-control:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1); }
         textarea.form-control { resize: vertical; min-height: 80px; line-height: 1.5; }
-
+        
         .modal-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 30px; padding-top: 20px; border-top: 1px solid var(--border); }
         
         .tabs { display: flex; gap: 10px; margin-bottom: 10px; border-bottom: 1px solid #e5e7eb; padding-bottom: 8px; }
@@ -187,7 +187,7 @@
         
         /* Spinner */
         #loader { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); background: rgba(255,255,255,0.9); padding: 30px; border-radius: 12px; display: none; z-index: 3000; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); font-weight: 500; color: #374151; }
-
+        
         /* --- BLOG STYLES (STYLISH) --- */
         .blog-header-controls { display: flex; gap: 10px; margin-bottom: 20px; align-items: center; }
         .search-input { 
@@ -241,12 +241,12 @@
         .suggested-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 8px; }
         .s-tag { font-size: 0.75rem; padding: 3px 8px; background: #e5e7eb; border-radius: 4px; cursor: pointer; color: #374151; }
         .s-tag:hover { background: var(--primary); color: white; }
-
+        
         /* Markdown Split View */
         .be-split { display: flex; height: 500px; border-top: 1px solid var(--border); }
         .be-editor-area { flex: 1; padding: 20px; resize: none; border: none; border-right: 1px solid var(--border); font-family: 'Menlo', 'Monaco', 'Courier New', monospace; font-size: 14px; line-height: 1.6; outline: none; background: #fafafa; color: #374151; }
         .be-preview-area { flex: 1; padding: 30px; overflow-y: auto; background: white; color: #1f2937; line-height: 1.7; }
-
+        
         /* Preview Styling */
         .be-preview-area h1, .be-preview-area h2, .be-preview-area h3 { margin-top: 0; color: #111827; font-weight: 700; }
         .be-preview-area h1 { font-size: 2rem; border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; margin-bottom: 20px; }
@@ -254,8 +254,8 @@
         .be-preview-area p { margin-bottom: 1rem; }
         .be-preview-area ul, .be-preview-area ol { margin-bottom: 1rem; padding-left: 1.5rem; }
         .be-preview-area blockquote { border-left: 4px solid var(--primary); padding-left: 1rem; color: #6b7280; font-style: italic; }
-
-                /* Difficulty Badge */
+        
+        /* Difficulty Badge */
         .difficulty-badge {
             font-size: 0.7rem;
             font-weight: 600;
@@ -271,13 +271,41 @@
         .difficulty-badge[data-level="easy"] { background: #dbeafe; color: #1e40af; }
         .difficulty-badge[data-level="hard"] { background: #fee2e2; color: #991b1b; }
         .difficulty-badge[data-level="pro"] { background: #ede9fe; color: #5b21b6; }
-
+        
         @media (max-width: 900px) {
             .be-header { flex-direction: column; }
             .be-meta-inputs { width: 100%; }
             .be-split { flex-direction: column; height: auto; }
             .be-editor-area { height: 300px; border-right: none; border-bottom: 1px solid var(--border); }
         }
+        
+        /* --- ADS STYLES --- */
+        .ads-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 24px; }
+        
+        @media (max-width: 1300px) { .ads-grid { grid-template-columns: repeat(3, 1fr); } }
+        @media (max-width: 900px) { .ads-grid { grid-template-columns: repeat(2, 1fr); } }
+        @media (max-width: 600px) { .ads-grid { grid-template-columns: 1fr; } }
+        
+        .ads-card {
+            background: var(--card-bg); border-radius: 12px; overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1); border: 1px solid var(--border);
+            transition: transform 0.2s, box-shadow 0.2s; position: relative;
+        }
+        .ads-card:hover { transform: translateY(-4px); box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); }
+        .ads-card-img { width: 100%; height: 180px; object-fit: cover; background: #f3f4f6; }
+        .ads-card-video { width: 100%; height: 180px; object-fit: cover; background: #1a1a2e; }
+        .ads-card-body { padding: 16px; }
+        .ads-card-title { font-weight: 600; margin-bottom: 8px; color: #111827; }
+        .ads-card-link { color: var(--primary); text-decoration: none; word-break: break-all; font-size: 0.85rem; display: block; margin-top: 8px; }
+        .ads-card-link:hover { text-decoration: underline; }
+        .ads-card-actions { position: absolute; top: 12px; right: 12px; display: flex; gap: 6px; opacity: 0; transition: opacity 0.2s; }
+        .ads-card:hover .ads-card-actions { opacity: 1; }
+        .ads-badge { position: absolute; top: 12px; left: 12px; background: rgba(0,0,0,0.6); color: white; padding: 4px 8px; border-radius: 4px; font-size: 0.7rem; }
+        
+        /* Media Type Switch Buttons */
+        .media-type-switch { display: flex; gap: 10px; margin-bottom: 15px; }
+        .media-type-btn { flex: 1; padding: 8px; border: 1px solid var(--border); background: white; border-radius: 8px; cursor: pointer; font-weight: 500; transition: all 0.2s; }
+        .media-type-btn.active { background: var(--primary); color: white; border-color: var(--primary); }
     </style>
     <!-- Yandex.Metrika counter -->
     <script type="text/javascript">
@@ -318,8 +346,16 @@
             <div class="icon-btn" data-tooltip="Блог и статьи" onclick="App.switchGlobalMode('blog')" id="icon-blog">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
             </div>
+            <!-- Добавить после icon-blog -->
+            <div class="icon-btn" data-tooltip="Рекламные блоки" onclick="App.switchGlobalMode('ads')" id="icon-ads">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="2" y="2" width="20" height="16" rx="2" ry="2"></rect>
+                    <path d="M9 22h6M12 18v4"></path>
+                    <line x1="8" y1="10" x2="16" y2="10"></line>
+                </svg>
+            </div>
         </div>
-
+        
         <!-- 2. NAVIGATION BAR (Dynamic based on mode) -->
         <div class="nav-bar" id="main-nav">
             <div class="brand">
@@ -330,7 +366,7 @@
             <nav id="sections-nav" style="display:block;">
                 <!-- JS Generated -->
             </nav>
-
+            
             <!-- Blog Navigation (Visible in Blog Mode) -->
             <nav id="blog-nav" style="display:none;">
                 <button class="active" onclick="BlogManager.switchTab('list')">
@@ -342,7 +378,7 @@
                     Написать статью
                 </button>
             </nav>
-
+            
             <button class="logout-btn" onclick="Auth.logout()">Выход</button>
         </div>
         
@@ -362,7 +398,7 @@
                 </header>
                 <div id="cards-grid" class="grid"></div>
             </div>
-
+            
             <!-- BLOG VIEW -->
             <div id="view-blog" class="view-mode">
                 
@@ -376,7 +412,7 @@
                     </div>
                     <div id="blog-posts-grid" class="blog-grid"></div>
                 </div>
-
+                
                 <!-- Blog Editor -->
                 <div id="blog-editor-tab-content" style="display:none;">
                     <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
@@ -386,7 +422,7 @@
                             <button class="btn btn-primary" onclick="BlogManager.savePost()">Опубликовать</button>
                         </div>
                     </div>
-
+                    
                     <div class="blog-editor-wrapper">
                         <div class="be-header">
                             <div class="be-main-inputs">
@@ -414,11 +450,22 @@
                         </div>
                     </div>
                 </div>
-
+                
+            </div>
+            
+            <!-- ADS VIEW -->
+            <div id="view-ads" class="view-mode">
+                <header>
+                    <h2>Рекламные блоки</h2>
+                    <div style="display: flex; gap: 10px;">
+                        <button class="btn btn-primary" onclick="AdsManager.openModal()">+ Добавить блок</button>
+                    </div>
+                </header>
+                <div id="ads-grid" class="ads-grid"></div>
             </div>
         </main>
     </div>
-        
+    
     <!-- Modal Form for Cards -->
     <div class="modal-overlay" id="card-modal">
         <div class="modal">
@@ -435,14 +482,14 @@
                     <label>Название</label>
                     <input type="text" id="card-title" class="form-control" required>
                 </div>
-
+                
                 <div class="form-group">
                     <label>Уровень сложности</label>
                     <select id="card-difficulty" class="form-control">
-                        <option value="very_easy">⭐ Очень простой</option>
-                        <option value="easy">★★ Простой</option>
-                        <option value="hard">★★★ Сложный</option>
-                        <option value="pro">★★★★ Профи</option>
+                        <option value="" selected disabled>— Выберите уровень —</option>
+                        <option value="easy">★ Начальный</option>
+                        <option value="hard">★★ Средний</option>
+                        <option value="pro">★★★ Сложный</option>
                     </select>
                 </div>
                 
@@ -487,14 +534,64 @@
             </form>
         </div>
     </div>
+    
+    <!-- Modal for Ads -->
+    <div class="modal-overlay" id="ads-modal">
+        <div class="modal">
+            <h3 id="ads-modal-title" style="margin-top:0;">Рекламный блок</h3>
+            <form id="ads-form" onsubmit="event.preventDefault(); AdsManager.save();">
+                <input type="hidden" id="ads-id">
+                
+                <div class="form-group">
+                    <label>Название</label>
+                    <input type="text" id="ads-title" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label>Тип медиа</label>
+                    <div class="media-type-switch">
+                        <button type="button" class="media-type-btn active" onclick="AdsManager.switchMediaType('image')">Изображение</button>
+                        <button type="button" class="media-type-btn" onclick="AdsManager.switchMediaType('video')">Видео (YouTube/Vimeo)</button>
+                    </div>
+                </div>
+                
+                <div class="form-group" id="ads-image-group">
+                    <label>Изображение</label>
+                    <input type="file" id="ads-image-file" accept="image/*" onchange="AdsManager.handleImagePreview(this)">
+                    <input type="hidden" id="ads-image-url-current">
+                    <div id="ads-image-preview" style="margin-top:10px; max-height: 150px; overflow:hidden; border-radius:8px; display:none;"></div>
+                </div>
 
+                <div class="form-group" id="ads-video-group" style="display:none;">
+                    <label>Видео файл (MP4)</label>
+                    <input type="file" id="ads-video-file" accept="video/mp4" onchange="AdsManager.handleVideoPreview(this)">
+                    <input type="hidden" id="ads-video-url-current">
+                    <div id="ads-video-preview" style="margin-top:10px; display:none;">
+                        <video width="100%" height="150" controls muted style="border-radius:8px;"></video>
+                    </div>
+                    <small style="color:#666; display:block; margin-top:5px;">Видео будет воспроизводиться без звука, зациклено</small>
+                </div>
+                
+                <div class="form-group">
+                    <label>Ссылка для перехода</label>
+                    <input type="url" id="ads-link-url" class="form-control" placeholder="https://...">
+                </div>
+                
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" onclick="AdsManager.closeModal()">Отмена</button>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
     <script>
         // --- CONFIG ---
         const CREDENTIALS = { login: 'admin', pass: '12345' }; 
         const GAS_APP_URL = 'https://script.google.com/macros/s/AKfycbyQBWZZRrIGT6HIy78uvYqNqqo2CDISHIqOPMPTEG1mCvH4gxEn9QJXqlYaHVAV0zBu/exec';
         const MAIN_PAGE_URL = 'https://wedophoto.github.io/lego/'; 
         const BLOG_API_URL = '../api/api.php'; 
-
+        
         // --- STATE ---
         let state = {
             cards: [],
@@ -549,7 +646,7 @@
             },
             logout: () => { location.reload(); }
         };
-
+        
         // --- PARSER ---
         const SectionParser = {
             parse: async () => {
@@ -579,7 +676,7 @@
                 } catch (e) { console.error('Parse error:', e); }
             }
         };
-
+        
         // --- BLOG MANAGER ---
         const BlogManager = {
             posts: [],
@@ -590,16 +687,16 @@
                 await BlogManager.loadPosts();
                 await BlogManager.loadTags();
             },
-
+            
             loadPosts: async () => {
                 try {
                     // MOCK DATA FOR LOCAL DEMO
                     if (BLOG_API_URL === 'api.php' && location.protocol === 'file:') {
-                         BlogManager.posts = [
-                             { id: '1', title: 'Будущее технологий', tags: ['tech', 'ai'], date: Date.now(), content: '# Тренды 2024\n\nИнтересные вещи происходят в мире IT.', imageUrl: 'https://picsum.photos/seed/tech/600/300' }
-                         ];
-                         BlogManager.renderPosts();
-                         return;
+                        BlogManager.posts = [
+                        { id: '1', title: 'Будущее технологий', tags: ['tech', 'ai'], date: Date.now(), content: '# Тренды 2024\n\nИнтересные вещи происходят в мире IT.', imageUrl: 'https://picsum.photos/seed/tech/600/300' }
+                        ];
+                        BlogManager.renderPosts();
+                        return;
                     }
                     const res = await fetch(BLOG_API_URL + '?action=getPosts');
                     if (res.ok) {
@@ -609,7 +706,7 @@
                     }
                 } catch (e) { console.error(e); }
             },
-
+            
             loadTags: async () => {
                 try {
                     const res = await fetch(BLOG_API_URL + '?action=getTags');
@@ -617,12 +714,12 @@
                         const data = await res.json();
                         BlogManager.allTags = data.tags || [];
                         document.getElementById('blog-popular-tags').innerHTML = BlogManager.allTags.slice(0, 5).map(t => 
-                            `<span class="s-tag" onclick="BlogManager.addTagInput('${t}')">#${t}</span>`
+                        `<span class="s-tag" onclick="BlogManager.addTagInput('${t}')">#${t}</span>`
                         ).join('');
                     }
                 } catch (e) { console.error(e); }
             },
-
+            
             renderPosts: () => {
                 const grid = document.getElementById('blog-posts-grid');
                 if (BlogManager.posts.length === 0) {
@@ -646,18 +743,18 @@
                     </div>
                 `).join('');
             },
-
+            
             switchTab: (tab) => {
                 // Simple navigation logic for inner blog nav
                 document.getElementById('blog-nav').querySelectorAll('button').forEach(b => b.classList.remove('active'));
                 event.currentTarget.classList.add('active');
-
+                
                 if (tab === 'list') {
                     document.getElementById('blog-list-tab-content').style.display = 'block';
                     document.getElementById('blog-editor-tab-content').style.display = 'none';
                 }
             },
-
+            
             newPost: () => {
                 // Clear form
                 document.getElementById('blog-post-id').value = '';
@@ -678,7 +775,7 @@
                 // Deactivate nav buttons
                 document.getElementById('blog-nav').querySelectorAll('button').forEach(b => b.classList.remove('active'));
             },
-
+            
             editPost: (id) => {
                 const post = BlogManager.posts.find(p => p.id === id);
                 if (!post) return;
@@ -698,7 +795,7 @@
                 document.getElementById('blog-editor-tab-content').style.display = 'block';
                 BlogManager.updatePreview();
             },
-
+            
             cancelEdit: () => {
                 if(confirm('Закрыть редактор без сохранения?')) {
                     document.getElementById('blog-list-tab-content').style.display = 'block';
@@ -706,7 +803,7 @@
                     document.getElementById('blog-nav').querySelector('button').classList.add('active');
                 }
             },
-
+            
             handleImagePreview: (input) => {
                 if (input.files && input.files[0]) {
                     const reader = new FileReader();
@@ -719,7 +816,7 @@
                     reader.readAsDataURL(input.files[0]);
                 }
             },
-
+            
             addTagInput: (tag) => {
                 const input = document.getElementById('blog-tags');
                 const current = input.value.split(',').map(t=>t.trim()).filter(t=>t);
@@ -728,16 +825,16 @@
                     input.value = current.join(', ');
                 }
             },
-
+            
             updatePreview: () => {
                 const title = document.getElementById('blog-title').value;
                 const content = document.getElementById('blog-content').value;
                 
                 // ИСПОЛЬЗУЕМ БИБЛИОТЕКУ MARKED.JS ДЛЯ ПРЕВЬЮ
                 const htmlContent = marked.parse(content);
-
+                
                 const imgHtml = BlogManager.currentImage ? `<img src="${BlogManager.currentImage}" alt="Cover" style="width:100%; border-radius:8px; margin-bottom:20px;">` : '';
-
+                
                 // Генерация ссылки
                 let linkButton = '';
                 const id = document.getElementById('blog-post-id').value;
@@ -754,7 +851,7 @@
                         </div>
                     `;
                 }
-
+                
                 // Теги
                 const tagsInput = document.getElementById('blog-tags').value;
                 const tagsArray = tagsInput.split(',').map(t => t.trim()).filter(t => t);
@@ -767,7 +864,7 @@
                         </div>
                     `;
                 }
-
+                
                 document.getElementById('blog-md-preview').innerHTML = `
                     ${imgHtml}
                     <h1>${title || 'Заголовок статьи'}</h1>
@@ -778,7 +875,7 @@
                     ${linkButton}
                 `;
             },
-
+            
             savePost: async () => {
                 UI.showLoader(true);
                 try {
@@ -790,7 +887,7 @@
                     
                     // Готовим HTML с помощью marked.js
                     const renderedHtml = marked.parse(rawContent);
-
+                    
                     const payloadData = {
                         action: id ? 'updatePost' : 'savePost',
                         id: id || null,
@@ -803,7 +900,7 @@
                     };
                     
                     let res;
-
+                    
                     if (imageFile) {
                         const formData = new FormData();
                         formData.append('json_data', JSON.stringify(payloadData));
@@ -816,7 +913,7 @@
                             body: JSON.stringify(payloadData)
                         });
                     }
-
+                    
                     const result = await res.json();
                     
                     if (result.success) {
@@ -832,7 +929,7 @@
                     UI.showLoader(false);
                 }
             },
-
+            
             finishSave: () => {
                 // 1. Находим данные только что сохраненной статьи
                 // Мы берем их из БД (state.posts), которая обновилась после savePost
@@ -848,7 +945,7 @@
                     // Если это была новая статья, она последняя в списке
                     post = BlogManager.posts[BlogManager.posts.length - 1];
                 }
-
+                
                 // 2. Формируем ссылку
                 // Путь: ../blog/slug.html (выходим из admin, заходим в blog)
                 if (post && post.slug) {
@@ -865,21 +962,21 @@
                     // Резервный вариант, если slug почему-то не найден
                     alert('Статья сохранена! (Slug не определен)');
                 }
-
+                
                 // 3. Возвращаемся к списку
                 document.getElementById('blog-list-tab-content').style.display = 'block';
                 document.getElementById('blog-editor-tab-content').style.display = 'none';
                 BlogManager.loadPosts();
                 document.getElementById('blog-nav').querySelector('button').classList.add('active');
             },
-
+            
             deletePost: async (id) => {
                 if(!confirm('Удалить статью?')) return;
                 try {
                     if (BLOG_API_URL === 'api.php' && location.protocol === 'file:') {
-                         BlogManager.posts = BlogManager.posts.filter(p => p.id !== id);
-                         BlogManager.renderPosts();
-                         return;
+                        BlogManager.posts = BlogManager.posts.filter(p => p.id !== id);
+                        BlogManager.renderPosts();
+                        return;
                     }
                     const res = await fetch(BLOG_API_URL, {
                         method: 'POST',
@@ -889,12 +986,12 @@
                     if(res.ok) BlogManager.loadPosts();
                 } catch(e) { console.error(e); }
             },
-
+            
             searchPosts: (query) => {
                 if(!query) { BlogManager.renderPosts(); return; }
                 const q = query.toLowerCase();
                 const filtered = BlogManager.posts.filter(p => 
-                    p.title.toLowerCase().includes(q) || p.tags.some(t => t.toLowerCase().includes(q))
+                p.title.toLowerCase().includes(q) || p.tags.some(t => t.toLowerCase().includes(q))
                 );
                 // Reuse renderPosts logic but with filtered array (simplified for this snippet)
                 const grid = document.getElementById('blog-posts-grid');
@@ -918,7 +1015,7 @@
                 `).join('');
             }
         };
-
+        
         // --- APP LOGIC ---
         const App = {
             init: async () => {
@@ -946,6 +1043,7 @@
                 await Promise.all([App.loadCards(), App.loadPdfList()]);
                 UI.renderCards(state.currentSection);
                 BlogManager.init();
+                AdsManager.init();
             },
             
             switchGlobalMode: (mode) => {
@@ -954,26 +1052,35 @@
                 // Icon Bar Active State
                 document.getElementById('icon-cards').classList.toggle('active', mode === 'cards');
                 document.getElementById('icon-blog').classList.toggle('active', mode === 'blog');
+                document.getElementById('icon-ads').classList.toggle('active', mode === 'ads');
                 
                 // View Switching
                 if (mode === 'cards') {
                     document.getElementById('view-cards').classList.add('active');
                     document.getElementById('view-blog').classList.remove('active');
+                    document.getElementById('view-ads').classList.remove('active');
                     document.getElementById('sections-nav').style.display = 'block';
                     document.getElementById('blog-nav').style.display = 'none';
                     document.getElementById('brand-text').innerText = 'Material Base';
-                    // Reset active section in sidebar
                     document.getElementById('sections-nav').querySelectorAll('button').forEach(b => b.classList.remove('active'));
                     const activeBtn = document.querySelector(`button[onclick="UI.changeSection('${state.currentSection}')"]`);
                     if(activeBtn) activeBtn.classList.add('active');
-
-                } else {
+                } else if (mode === 'blog') {
                     document.getElementById('view-cards').classList.remove('active');
                     document.getElementById('view-blog').classList.add('active');
+                    document.getElementById('view-ads').classList.remove('active');
                     document.getElementById('sections-nav').style.display = 'none';
                     document.getElementById('blog-nav').style.display = 'block';
                     document.getElementById('brand-text').innerText = 'Blog Manager';
                     document.getElementById('blog-nav').querySelector('button').classList.add('active');
+                } else if (mode === 'ads') {
+                    document.getElementById('view-cards').classList.remove('active');
+                    document.getElementById('view-blog').classList.remove('active');
+                    document.getElementById('view-ads').classList.add('active');
+                    document.getElementById('sections-nav').style.display = 'none';
+                    document.getElementById('blog-nav').style.display = 'none';
+                    document.getElementById('brand-text').innerText = 'Рекламные блоки';
+                    AdsManager.init();
                 }
             },
             
@@ -1204,10 +1311,9 @@
         
         function getDifficultyText(level) {
             const map = {
-                'very_easy': '⭐ Очень простой',
-                'easy': '★★ Простой',
-                'hard': '★★★ Сложный',
-                'pro': '★★★★ Профи'
+                'easy': '★ Простой',
+                'hard': '★★ Средний',
+                'pro': '★★★ Сложный'
             };
             return map[level] || level;
         }
@@ -1294,6 +1400,252 @@
                 document.getElementById('loader').style.display = show ? 'block' : 'none';
             }
         };
+        
+        // --- ADS MANAGER ---
+        // --- ADS MANAGER (АДМИН-ПАНЕЛЬ) ---
+const AdsManager = {
+    ads: [],
+    currentMediaType: 'image',
+    
+    init: async () => {
+        await AdsManager.loadAds();
+    },
+    
+    loadAds: async () => {
+        try {
+            const res = await fetch(GAS_APP_URL + '?action=getAds&t=' + Date.now());
+            if (res.ok) {
+                const data = await res.json();
+                AdsManager.ads = Array.isArray(data) ? data : [];
+                AdsManager.renderAds();
+            }
+        } catch (e) { console.error('Load ads error:', e); }
+    },
+    
+    renderAds: () => {
+        const grid = document.getElementById('ads-grid');
+        if (!grid) return;
+        
+        if (AdsManager.ads.length === 0) {
+            grid.innerHTML = '<p style="color:#6b7280; grid-column:1/-1; text-align:center; padding:40px;">Нет рекламных блоков</p>';
+            return;
+        }
+        
+        grid.innerHTML = AdsManager.ads.map(ad => `
+            <div class="ads-card">
+                <div class="ads-card-actions">
+                    <button class="action-btn" onclick="AdsManager.openModal('${ad.id}')">✎</button>
+                    <button class="action-btn" style="color: #ef4444;" onclick="AdsManager.deleteAd('${ad.id}')">🗑️</button>
+                </div>
+                ${ad.mediaType === 'video' && ad.videoUrl ? 
+                    `<video src="${ad.videoUrl}" class="ads-card-video" muted autoplay loop playsinline style="width:100%; height:180px; object-fit:cover;"></video>` : 
+                    (ad.imageUrl ? `<img src="${ad.imageUrl}" class="ads-card-img" alt="${ad.title}">` : '<div class="ads-card-img"></div>')
+                }
+                <div class="ads-card-body">
+                    <div class="ads-card-title">${ad.title || 'Без названия'}</div>
+                    ${ad.linkUrl ? `<a href="${ad.linkUrl}" target="_blank" class="ads-card-link">${ad.linkUrl}</a>` : ''}
+                </div>
+                <div class="ads-badge">${ad.mediaType === 'video' ? '🎬 Видео' : '🖼️ Изображение'}</div>
+            </div>
+        `).join('');
+        
+        // Запускаем видео в карточках
+        document.querySelectorAll('.ads-card-video').forEach(video => {
+            video.play().catch(e => console.log('Автовоспроизведение заблокировано'));
+        });
+    },
+    
+    openModal: (editId = null) => {
+        const modal = document.getElementById('ads-modal');
+        if (!modal) return;
+        
+        document.getElementById('ads-form').reset();
+        document.getElementById('ads-image-preview').innerHTML = '';
+        document.getElementById('ads-image-preview').style.display = 'none';
+        document.getElementById('ads-video-preview').style.display = 'none';
+        document.getElementById('ads-image-url-current').value = '';
+        document.getElementById('ads-video-url-current').value = '';
+        
+        if (editId) {
+            const ad = AdsManager.ads.find(a => a.id === editId);
+            if (ad) {
+                document.getElementById('ads-modal-title').textContent = 'Редактировать блок';
+                document.getElementById('ads-id').value = ad.id;
+                document.getElementById('ads-title').value = ad.title || '';
+                document.getElementById('ads-link-url').value = ad.linkUrl || '';
+                
+                if (ad.mediaType === 'video' && ad.videoUrl) {
+                    AdsManager.switchMediaType('video');
+                    document.getElementById('ads-video-url-current').value = ad.videoUrl;
+                    document.getElementById('ads-video-preview').style.display = 'block';
+                    const video = document.querySelector('#ads-video-preview video');
+                    if (video) video.src = ad.videoUrl;
+                } else if (ad.imageUrl) {
+                    AdsManager.switchMediaType('image');
+                    document.getElementById('ads-image-url-current').value = ad.imageUrl;
+                    document.getElementById('ads-image-preview').innerHTML = `<img src="${ad.imageUrl}" style="width:100%; height:auto; border-radius:8px;">`;
+                    document.getElementById('ads-image-preview').style.display = 'block';
+                }
+            }
+        } else {
+            document.getElementById('ads-modal-title').textContent = 'Новый рекламный блок';
+            document.getElementById('ads-id').value = '';
+            AdsManager.switchMediaType('image');
+        }
+        modal.classList.add('open');
+    },
+    
+    closeModal: () => {
+        const modal = document.getElementById('ads-modal');
+        if (modal) modal.classList.remove('open');
+    },
+    
+    switchMediaType: (type) => {
+        AdsManager.currentMediaType = type;
+        const btns = document.querySelectorAll('.media-type-btn');
+        btns.forEach(btn => {
+            const btnType = btn.textContent.trim() === 'Изображение' ? 'image' : 'video';
+            btn.classList.toggle('active', btnType === type);
+        });
+        
+        const imageGroup = document.getElementById('ads-image-group');
+        const videoGroup = document.getElementById('ads-video-group');
+        
+        if (imageGroup) imageGroup.style.display = type === 'image' ? 'block' : 'none';
+        if (videoGroup) videoGroup.style.display = type === 'video' ? 'block' : 'none';
+    },
+    
+    handleImagePreview: (input) => {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('ads-image-preview');
+                preview.innerHTML = `<img src="${e.target.result}" style="width:100%; height:auto; border-radius:8px;">`;
+                preview.style.display = 'block';
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    },
+    
+    handleVideoPreview: (input) => {
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const preview = document.getElementById('ads-video-preview');
+                const video = preview.querySelector('video');
+                if (video) {
+                    video.src = e.target.result;
+                    preview.style.display = 'block';
+                }
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    },
+    
+    fileToBase64: (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(file);
+            reader.onload = () => resolve({
+                base64: reader.result.split(',')[1],
+                mime: file.type,
+                name: file.name
+            });
+            reader.onerror = error => reject(error);
+        });
+    },
+    
+    save: async () => {
+        UI.showLoader(true);
+        try {
+            const id = document.getElementById('ads-id').value;
+            const title = document.getElementById('ads-title').value;
+            const linkUrl = document.getElementById('ads-link-url').value;
+            const mediaType = AdsManager.currentMediaType;
+            
+            let imagePayload = {};
+            let videoPayload = {};
+            
+            if (mediaType === 'image') {
+                const imageFile = document.getElementById('ads-image-file').files[0];
+                if (imageFile) {
+                    imagePayload = await AdsManager.fileToBase64(imageFile);
+                } else if (document.getElementById('ads-image-url-current').value) {
+                    imagePayload = { existingUrl: document.getElementById('ads-image-url-current').value };
+                }
+            } else {
+                const videoFile = document.getElementById('ads-video-file').files[0];
+                if (videoFile) {
+                    videoPayload = await AdsManager.fileToBase64(videoFile);
+                } else if (document.getElementById('ads-video-url-current').value) {
+                    videoPayload = { existingUrl: document.getElementById('ads-video-url-current').value };
+                }
+            }
+            
+            const payload = {
+                action: 'saveAd',
+                ad: {
+                    id: id || null,
+                    title: title,
+                    linkUrl: linkUrl,
+                    mediaType: mediaType,
+                    imageBase64: imagePayload.base64 || null,
+                    imageMimeType: imagePayload.mime || null,
+                    imageName: imagePayload.name || null,
+                    imageUrl: imagePayload.existingUrl || null,
+                    videoBase64: videoPayload.base64 || null,
+                    videoMimeType: videoPayload.mime || null,
+                    videoName: videoPayload.name || null,
+                    videoUrl: videoPayload.existingUrl || null
+                }
+            };
+            
+            const response = await fetch(GAS_APP_URL, {
+                method: 'POST',
+                body: JSON.stringify(payload)
+            });
+            
+            const result = await response.json();
+            
+            if (result.status === 'success') {
+                AdsManager.ads = result.data;
+                AdsManager.renderAds();
+                AdsManager.closeModal();
+                alert('Рекламный блок сохранён!');
+            } else {
+                alert('Ошибка: ' + result.message);
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Ошибка при сохранении.');
+        } finally {
+            UI.showLoader(false);
+        }
+    },
+    
+    deleteAd: async (id) => {
+        if (!confirm('Удалить рекламный блок?')) return;
+        UI.showLoader(true);
+        try {
+            const res = await fetch(GAS_APP_URL, {
+                method: 'POST',
+                body: JSON.stringify({ action: 'deleteAd', id: id })
+            });
+            const result = await res.json();
+            if (result.status === 'success') {
+                AdsManager.ads = result.data;
+                AdsManager.renderAds();
+            } else {
+                alert('Ошибка удаления: ' + result.message);
+            }
+        } catch (e) {
+            console.error(e);
+            alert('Ошибка сети при удалении.');
+        } finally {
+            UI.showLoader(false);
+        }
+    }
+};
     </script>
     <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
