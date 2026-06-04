@@ -948,4 +948,4 @@ window.addEventListener("load", function () {
 });
 
 // Запускаем рекламу после загрузки страницы
-// Добавить в window.addEventListener('load', ...) или в конец DOMContentLoaded
+// Добавить в window.addEventListener('load', ...) или в конец DOMContentLoaded  .

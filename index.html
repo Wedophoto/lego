@@ -5,13 +5,19 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Инструкции для WeDo 2.0 | Mai</title>
-  <link rel="stylesheet" type="text/css" href="css/st.css?v=1">
-  <link rel="stylesheet" type="text/css" href="css/toast.css">
+  <link rel="stylesheet" type="text/css" href="/css/st.css?v=1">
+  <link rel="stylesheet" type="text/css" href="/css/toast.css">
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700;800&family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500&family=Baloo+2:wght@400;500;600&family=Bubblegum+Sans&family=Kalam:wght@400;700&family=Comic+Neue:wght@400;700&family=Luckiest+Guy&family=Quicksand:wght@400;500;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <link rel="icon" href="../favicon.ico" type="image/x-icon">
   <link rel="icon" href="favicon.ico" type="image/x-icon">
+  <link rel="manifest" href="/manifest.json">
+  <meta name="theme-color" content="#0074D9">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="WeDo 2.0">
+  <link rel="apple-touch-icon" href="images/icon-192x192.png">
   <style>
     * {
       margin: 0;
@@ -1413,6 +1419,7 @@
       display: flex;
       flex-direction: column;
       justify-content: center;
+     
     }
     
     .category-card:hover {
@@ -1449,6 +1456,12 @@
       position: relative;
       z-index: 10;
     }
+    /* Скрываем category-count на телефонах */
+@media (max-width: 768px) {
+    .category-count {
+        display: none;
+    }
+}
     
     .category-card.lucky-card {
       background: linear-gradient(135deg, rgba(255, 107, 107, 0.25) 0%, rgba(255, 214, 102, 0.2) 25%, rgba(78, 205, 196, 0.2) 50%, rgba(69, 183, 209, 0.2) 75%, rgba(150, 111, 214, 0.25) 100%);
@@ -4947,10 +4960,11 @@
       }
       .category-card {
         padding: 16px;
+        padding-left: 6px;
         min-height: 90px;
       }
       .category-name {
-        font-size: 1rem;
+        font-size: 0.9rem;
       }
       .books-grid {
         grid-template-columns: 1fr;
@@ -6235,6 +6249,218 @@
         gap: 10px;
       }
     }
+    
+    /* Стили для модального окна изображений */
+    .image-modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.95);
+      cursor: pointer;
+    }
+    
+    .image-modal-content {
+      display: block;
+      max-width: 90%;
+      max-height: 90%;
+      margin: auto;
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border-radius: 8px;
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
+      animation: zoomIn 0.3s ease;
+    }
+    
+    @keyframes zoomIn {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+      }
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+    
+    .image-modal-close {
+      position: absolute;
+      top: 20px;
+      right: 35px;
+      color: #f1f1f1;
+      font-size: 40px;
+      font-weight: bold;
+      transition: 0.3s;
+      z-index: 10001;
+      cursor: pointer;
+    }
+    
+    .image-modal-close:hover {
+      color: #bbb;
+    }
+    
+    .image-modal-caption {
+      position: absolute;
+      bottom: 20px;
+      left: 0;
+      right: 0;
+      text-align: center;
+      color: white;
+      font-size: 16px;
+      padding: 10px;
+      background: rgba(0, 0, 0, 0.7);
+      margin: 0 auto;
+      width: fit-content;
+      border-radius: 8px;
+      font-family: Arial, sans-serif;
+    }
+    
+    .model-image {
+      cursor: pointer;
+      transition: transform 0.2s ease, opacity 0.2s ease;
+    }
+    
+    .model-image:hover {
+      opacity: 0.95;
+      transform: scale(1.02);
+    }
+    
+    /* Индикатор что картинку можно увеличить */
+    #modalImg {
+      position: relative;
+      cursor: pointer;
+    }
+    
+    #modalImg::after {
+      content: '🔍';
+      position: absolute;
+      bottom: 10px;
+      right: 10px;
+      background: rgba(0,0,0,0.6);
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 14px;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+      pointer-events: none;
+    }
+    
+    #modalImg:hover::after {
+      opacity: 1;
+    }
+
+    /* Сетка водяных знаков по всему изображению */
+.fullscreen-image-modal {
+    position: relative;
+    overflow: hidden;
+}
+
+.fullscreen-image-modal::before,
+.fullscreen-image-modal::after {
+    content: "ВЕДО.РФ";
+    position: absolute;
+    color: rgba(255, 255, 255, 0.08);
+    font-size: 60px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    white-space: nowrap;
+    z-index: 20002;
+    pointer-events: none;
+    letter-spacing: 8px;
+}
+
+/* Первый знак - диагональ */
+.fullscreen-image-modal::before {
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+/* Второй знак */
+.fullscreen-image-modal::after {
+    bottom: 30%;
+    right: 50%;
+    transform: translate(50%, 50%) rotate(-45deg);
+}
+
+/* Добавляем еще через дополнительные элементы если нужно */
+.watermark-repeat {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 20002;
+    background-image: repeating-linear-gradient(
+        -45deg,
+        transparent,
+        transparent 150px,
+        rgba(255, 255, 255, 0.05) 150px,
+        rgba(255, 255, 255, 0.05) 300px
+    );
+}
+
+.watermark-repeat::before {
+    content: "ВЕДО.РФ";
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    color: rgba(255, 255, 255, 0.1);
+    font-size: 50px;
+    font-weight: bold;
+    white-space: nowrap;
+}
+
+/* Стили для водяных знаков */
+.watermark-diagonal {
+    position: absolute;
+    color: rgba(255, 255, 255, 0.08);
+    font-size: 60px;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    white-space: nowrap;
+    pointer-events: none;
+    z-index: 20002;
+    transform: rotate(-45deg);
+    letter-spacing: 5px;
+}
+
+.watermark-diagonal {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+
+.watermark-diagonal.second {
+    top: 20%;
+    left: 70%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 40px;
+    opacity: 0.5;
+}
+
+.watermark-diagonal.third {
+    top: 80%;
+    left: 30%;
+    transform: translate(-50%, -50%) rotate(-45deg);
+    font-size: 40px;
+    opacity: 0.5;
+}
+
+/* Скрыть робота на мобильных устройствах */
+@media (max-width: 768px) {
+    .robot-container {
+        display: none !important;
+    }
+}
   </style>
   <!-- Yandex.Metrika counter -->
   <script type="text/javascript">
@@ -6496,11 +6722,11 @@
             </a>
           </li>
           <li class="menu-item">
-          <a href="/contacts" class="menu-link">
-            <i class="fas fa-address-card"></i>
-            <span>Контакты</span>
-          </a>
-        </li>
+            <a href="/contacts" class="menu-link">
+              <i class="fas fa-address-card"></i>
+              <span>Контакты</span>
+            </a>
+          </li>
         </ul>
       </nav>
       <header class="header">
@@ -6560,1461 +6786,1461 @@
       <!-- Кнопка для скрытия всей рекламной секции -->
       <div class="ads-header">
         <div class="ads-header-content"></div>
-          <button class="hide-all-ads-btn" id="hideAllAdsBtn" title="Скрыть рекламный блок">
-            <i class="fas fa-times"></i> Скрыть
+        <button class="hide-all-ads-btn" id="hideAllAdsBtn" title="Скрыть рекламный блок">
+          <i class="fas fa-times"></i> Скрыть
+        </button>
+      </div>
+      
+      <div class="floating-blocks" id="floatingBlocks">
+        <div id="block1"></div>
+        <div id="block2"></div>
+        <div id="block3"></div>
+        <div id="block4"></div>
+      </div>
+    </div>
+    
+    <section class="section">
+      <h2 class="section-title">Выберите тематику</h2>
+      
+      <!-- БЛОК ПОИСКА (Вставить после h2) -->
+      <div class="search-wrapper">
+        <div class="search-box">
+          <i class="fas fa-search search-icon"></i>
+          <input type="text" id="modelSearchInput" placeholder="Поиск модели (например: автомобиль, робот, танк)..." autocomplete="off">
+          <button class="search-clear" id="searchClearBtn" title="Очистить">
+            <i class="fas fa-times"></i>
           </button>
         </div>
-        
-        <div class="floating-blocks" id="floatingBlocks">
-          <div id="block1"></div>
-          <div id="block2"></div>
-          <div id="block3"></div>
-          <div id="block4"></div>
-        </div>
+        <div class="search-stats" id="searchStats">Введите запрос для поиска</div>
       </div>
       
-      <section class="section">
-        <h2 class="section-title">Выберите тематику</h2>
+      <div class="categories-grid" id="categoriesGrid">
+        <!-- <div class="category-card lucky-card" id="luckyCard">
+          <div class="category-name">🎲 На удачу</div>
+          <div class="category-count">Случайная тематика</div>
+        </div> -->
         
-        <!-- БЛОК ПОИСКА (Вставить после h2) -->
-        <div class="search-wrapper">
-          <div class="search-box">
-            <i class="fas fa-search search-icon"></i>
-            <input type="text" id="modelSearchInput" placeholder="Поиск модели (например: автомобиль, робот, танк)..." autocomplete="off">
-            <button class="search-clear" id="searchClearBtn" title="Очистить">
-              <i class="fas fa-times"></i>
-            </button>
-          </div>
-          <div class="search-stats" id="searchStats">Введите запрос для поиска</div>
-        </div>
-        
-        <div class="categories-grid" id="categoriesGrid">
-          <!-- <div class="category-card lucky-card" id="luckyCard">
-            <div class="category-name">🎲 На удачу</div>
-            <div class="category-count">Случайная тематика</div>
+        <a href="teams/random-cards.htm" class="category-card lucky-card" id="cars-card">
+          <div class="category-name">На удачу</div>
+          <div class="category-count">Случайная тематика</div>
+          <!-- <div class="car-wheel">
+            <div class="car-wheel-inner"></div>
           </div> -->
-          
-          <a href="teams/random-cards.htm" class="category-card lucky-card" id="cars-card">
-            <div class="category-name">На удачу</div>
-            <div class="category-count">Случайная тематика</div>
-            <!-- <div class="car-wheel">
-              <div class="car-wheel-inner"></div>
-            </div> -->
-          </a>
-          
-          <a href="teams/avtomobili-mototsikly-2.htm" class="category-card" id="cars-card">
-            <div class="category-name">Автомобили, мотоциклы</div>
-            <div class="category-count">Разнообразные транспортные средства</div>
-            <div class="car-wheel">
-              <div class="car-wheel-inner"></div>
-            </div>
-          </a>
-          
-          <a href="teams/voennaya-tehnika-20.htm" class="category-card" id="military-card">
-            <div class="category-name">Военная техника</div>
-            <div class="category-count">Танки, бронемашины, техника</div>
-            <div class="military-tank-container">
-              <div class="tank-body"></div>
-              <div class="tank-turret">
-                <div class="tank-cannon"></div>
-              </div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Динозавры" с анимацией следов -->
-          <a href="teams/dinozavry-15.htm" class="category-card" id="dino-card">
-            <div class="category-name">Динозавры</div>
-            <div class="category-count">Древние ящеры и рептилии</div>
-            
-            <div class="dino-ornaments">
-              <div class="dino-footprint" style="top: 20%; left: 15%; font-size: 1.2rem; transform: rotate(15deg); animation-delay: 0.1s; color: #A0522D;"><i class="fas fa-paw"></i></div>
-              <div class="dino-footprint" style="top: 60%; left: 40%; font-size: 1.8rem; transform: rotate(-20deg); animation-delay: 0.3s; color: #8B4513;"><i class="fas fa-paw"></i></div>
-              <div class="dino-footprint" style="top: 35%; left: 70%; font-size: 1.5rem; transform: rotate(45deg); animation-delay: 0.5s; color: #6F4E37;"><i class="fas fa-paw"></i></div>
-              <div class="dino-footprint" style="top: 70%; left: 25%; font-size: 1rem; transform: rotate(-10deg); animation-delay: 0.7s; color: #8B4513;"><i class="fas fa-paw"></i></div>
-              <div class="dino-footprint" style="top: 15%; left: 55%; font-size: 1.4rem; transform: rotate(30deg); animation-delay: 0.9s; color: #A0522D;"><i class="fas fa-paw"></i></div>
-              <div class="dino-footprint" style="top: 50%; left: 80%; font-size: 1.1rem; transform: rotate(-45deg); animation-delay: 1.1s; color: #6F4E37;"><i class="fas fa-paw"></i></div>
-              <div class="dino-footprint" style="top: 80%; left: 60%; font-size: 1.6rem; transform: rotate(10deg); animation-delay: 1.3s; color: #8B4513;"><i class="fas fa-paw"></i></div>
-              <div class="dino-footprint" style="top: 40%; left: 10%; font-size: 1.3rem; transform: rotate(-35deg); animation-delay: 1.5s; color: #A0522D;"><i class="fas fa-paw"></i></div>
-              <div class="dino-footprint" style="top: 25%; left: 85%; font-size: 1rem; transform: rotate(60deg); animation-delay: 1.7s; color: #6F4E37;"><i class="fas fa-paw"></i></div>
-              <div class="dino-footprint" style="top: 65%; left: 50%; font-size: 1.7rem; transform: rotate(-60deg); animation-delay: 1.9s; color: #A0522D;"><i class="fas fa-paw"></i></div>
-              <div class="dino-footprint" style="top: 10%; left: 30%; font-size: 1.2rem; transform: rotate(80deg); animation-delay: 2.1s; color: #8B4513;"><i class="fas fa-paw"></i></div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Животные" с новой анимацией животных -->
-          <a href="teams/zhivotnye-6.htm" class="category-card" id="animals-card">
-            <div class="category-name">Животные</div>
-            <div class="category-count">Разнообразные представители фауны</div>
-            
-            <div class="animals-container">
-              <div class="animal">🐘</div>
-              <div class="animal">🦁</div>
-              <div class="animal">🦒</div>
-              <div class="animal">🦓</div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Звездные войны" с анимацией космического корабля -->
-          <a href="teams/zvezdnye-voiny-18.htm" class="category-card" id="starwars-card">
-            <div class="category-name">Звездные войны</div>
-            <div class="category-count">Галактические модели</div>
-            
-            <div class="starwars-spaceship-container">
-              <div class="starwars-spaceship"></div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Корабли" с анимацией морских волн -->
-          <a href="teams/korabli-19.htm" class="category-card" id="ships-card">
-            <div class="category-name">Корабли</div>
-            <div class="category-count">Морские и речные суда</div>
-            
-            <div class="sea-waves">
-              <div class="wave">
-                <div class="wave-foam"></div>
-              </div>
-              <div class="wave">
-                <div class="wave-foam"></div>
-              </div>
-              <div class="wave">
-                <div class="wave-foam"></div>
-              </div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Космос" с анимацией звездного неба и кометы -->
-          <a href="teams/kosmos-4.htm" class="category-card" id="space-card">
-            <div class="category-name">Космос</div>
-            <div class="category-count">Ракеты, спутники, станции</div>
-            
-            <div class="space-background">
-              <div class="stars">
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-                <div class="star"></div>
-              </div>
-              <div class="comet"></div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Люди" с анимацией человечков -->
-          <a href="teams/ludi-8.htm" class="category-card" id="people-card">
-            <div class="category-name">Люди</div>
-            <div class="category-count">Антропоморфные модели</div>
-            
-            <div class="people-container">
-              <div class="person"><i class="fas fa-walking"></i></div>
-              <div class="person"><i class="fas fa-walking"></i></div>
-              <div class="person"><i class="fas fa-walking"></i></div>
-              <div class="person"><i class="fas fa-walking"></i></div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Механизмы" с анимацией шестерёнок -->
-          <a href="teams/mehanizmy-9.htm" class="category-card" id="mechanisms-card">
-            <div class="category-name">Механизмы</div>
-            <div class="category-count">Технические устройства</div>
-            
-            <div class="mechanisms-container">
-              <div class="gear"><i class="fas fa-cog"></i></div>
-              <div class="gear"><i class="fas fa-cog"></i></div>
-              <div class="gear"><i class="fas fa-cog"></i></div>
-              <div class="gear"><i class="fas fa-cog"></i></div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Мини-модели" с анимацией панды -->
-          <a href="teams/mini-modeli-25.htm" class="category-card" id="mini-modeli-card">
-            <div class="category-name">Мини-модели</div>
-            <div class="category-count">Компактные конструкции</div>
-            
-            <div class="panda-container">
-              <div class="panda-body">
-                <div class="panda-ear-left"></div>
-                <div class="panda-ear-right"></div>
-                <div class="panda-eyes-container">
-                  <div class="panda-eye"></div>
-                  <div class="panda-eye"></div>
-                </div>
-                <div class="panda-nose"></div>
-                <div class="panda-mouth"></div>
-                <div class="panda-hand-left"></div>
-                <div class="panda-hand-right"></div>
-              </div>
-            </div>
-          </a>
-          
-          <a href="teams/modeli-bez-smarthaba-1.htm" class="category-card" id="no-smart-hub-card">
-            <div class="category-name">Модели без <span class="strikethrough-text">смартхаба</span></div>
-            <div class="category-count">Простые сборки</div>
-          </a>
-          
-          <!-- Карточка "Модели для соревнований" с анимацией соревнований -->
-          <a href="teams/modeli-dlya-sorevnovaniy-17.htm" class="category-card" id="competition-card">
-            <div class="category-name">Модели для соревнований</div>
-            <div class="category-count">Соревновательные проекты</div>
-            
-            <div class="competition-animation">
-              <div class="competition-team team-red"></div>
-              <div class="competition-team team-blue"></div>
-              <div class="competition-line"></div>
-              <div class="competition-trophy">🏆</div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Насекомые" с анимацией ползающих насекомых -->
-          <a href="teams/nasekomye-22.htm" class="category-card" id="insects-card">
-            <div class="category-name">Насекомые</div>
-            <div class="category-count">Букашки и жучки</div>
-            
-            <div class="insects-container">
-              <div class="insect">🪰</div>
-              <div class="insect">🐞</div>
-              <div class="insect">🦋</div>
-            </div>
-          </a>
-          
-          <a href="teams/novogodnie-16.htm" class="category-card" id="newyear-card">
-            <div class="category-name">Новогодние</div>
-            <div class="category-count">Праздничные модели</div>
-            
-            <div class="christmas-ornaments">
-              <div class="christmas-garland">
-                <div class="garland-light"></div>
-                <div class="garland-light"></div>
-                <div class="garland-light"></div>
-                <div class="garland-light"></div>
-                <div class="garland-light"></div>
-                <div class="garland-light"></div>
-                <div class="garland-light"></div>
-                <div class="garland-light"></div>
-                <div class="garland-light"></div>
-                <div class="garland-light"></div>
-              </div>
-              
-              <div class="snowflake flake1">❄</div>
-              <div class="snowflake flake2">❅</div>
-              <div class="snowflake flake3">❄</div>
-              <div class="snowflake flake4">❅</div>
-              <div class="snowflake flake5">❄</div>
-              <div class="snowflake flake6">❅</div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Официальные инструкции LEGO" с новым эффектом слова LEGO -->
-          <a href="teams/ofitsialnye-instruktsii-lego-24.htm" class="category-card" id="lego-instructions-card">
-            <div class="category-name">Официальные инструкции LEGO</div>
-            <div class="category-count">Оригинальные руководства</div>
-            
-            <!-- 3D слово LEGO с переливающимся градиентом -->
-            <div class="lego-word">LEGO</div>
-          </a>
-          
-          <!-- Карточка "Птицы" с анимацией совы -->
-          <a href="teams/ptitsy-21.htm" class="category-card" id="birds-card">
-            <div class="category-name">Птицы</div>
-            <div class="category-count">Пернатые друзья</div>
-            
-            <div class="owl-container">
-              <div class="owl-image"></div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Растения" с анимацией изображения flower.png -->
-          <a href="teams/rasteniya-23.htm" class="category-card" id="plants-card">
-            <div class="category-name">Растения</div>
-            <div class="category-count">Флора и растительность</div>
-            
-            <div class="flower-container">
-              <div class="flower-image"></div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Роботы" с анимацией изображения wally.png -->
-          <a href="teams/roboty-3.htm" class="category-card" id="robots-card">
-            <div class="category-name">Роботы</div>
-            <div class="category-count">Автоматизированные модели</div>
-            
-            <div class="wally-container">
-              <div class="wally-image"></div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Самолёты, вертолёты" с анимацией самолета -->
-          <a href="teams/samolety-vertolety-11.htm" class="category-card" id="airplanes-card">
-            <div class="category-name">Самолёты, вертолёты</div>
-            <div class="category-count">Авиационная техника</div>
-            
-            <div class="airplane-container">
-              <div class="airplane"></div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Спецтехника" с анимацией трактора -->
-          <a href="teams/spetstehnika-10.htm" class="category-card" id="special-equipment-card">
-            <div class="category-name">Спецтехника</div>
-            <div class="category-count">Специализированные машины</div>
-            
-            <div class="tractor-container">
-              <div class="tractor-body"></div>
-              <div class="tractor-cabin"></div>
-              <div class="tractor-wheel front"></div>
-              <div class="tractor-wheel rear"></div>
-              <div class="tractor-exhaust"></div>
-              <div class="tractor-smoke"></div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Спорт" с анимацией спортивных мячей и бегунов -->
-          <a href="teams/sport-14.htm" class="category-card" id="sport-card">
-            <div class="category-name">Спорт</div>
-            <div class="category-count">Спортивные модели</div>
-            
-            <div class="sport-container">
-              <div class="sport-ball">⚽</div>
-              <div class="sport-ball">🏀</div>
-              <div class="sport-ball">🏈</div>
-              <div class="sport-ball">🎾</div>
-              <div class="sport-runner"><i class="fas fa-running"></i></div>
-              <div class="sport-runner"><i class="fas fa-running"></i></div>
-              <div class="sport-runner"><i class="fas fa-running"></i></div>
-            </div>
-          </a>
-          
-          <a href="teams/transport-12.htm" class="category-card" id="transport-card">
-            <div class="category-name">Транспорт</div>
-            <div class="category-count">Различные средства передвижения</div>
-            
-            <!-- Анимация паровоза в карточке "Транспорт" -->
-            <div class="train-container">
-              <div class="train-body"></div>
-              <div class="train-cabin"></div>
-              <div class="train-chimney"></div>
-              <div class="train-smoke"></div>
-              <div class="train-wheel front"></div>
-              <div class="train-wheel middle"></div>
-              <div class="train-wheel rear"></div>
-            </div>
-          </a>
-          
-          <!-- Карточка "Шагающие" с анимацией шагающего робота -->
-          <a href="teams/shagauschie-7.htm" class="category-card" id="walking-card">
-            <div class="category-name">Шагающие</div>
-            <div class="category-count">Модели с шагающим механизмом</div>
-            
-            <div class="walk-bot-container">
-              <div class="walk-bot-wrapper">
-                <div class="walk-bot-head">
-                  <div class="walk-bot-antenna"></div>
-                  <div class="walk-bot-eye left"></div>
-                  <div class="walk-bot-eye right"></div>
-                </div>
-                <div class="walk-bot-body"></div>
-                <div class="walk-bot-leg front-left"></div>
-                <div class="walk-bot-leg front-right"></div>
-              </div>
-            </div>
-          </a>
-          
-          <a href="teams/novye-instruktsii-new.htm" class="category-card">
-            <div class="category-name">Новые инструкции</div>
-            <div class="category-count">Самые свежие модели</div>
-          </a>
-        </div>
+        </a>
         
-        <!-- Сетка результатов поиска (Скрыта по умолчанию) -->
-        <div class="models-grid" id="modelsGrid" style="display: none;"></div>
+        <a href="teams/avtomobili-mototsikly-2.htm" class="category-card" id="cars-card">
+          <div class="category-name">Автомобили, мотоциклы</div>
+          <div class="category-count">Разнообразные транспортные средства</div>
+          <div class="car-wheel">
+            <div class="car-wheel-inner"></div>
+          </div>
+        </a>
         
-        <!-- Пагинация (Скрыта по умолчанию) -->
-        <div class="pagination" id="pagination" style="display: none;"></div>
-      </section>
-      
-      <!-- Секция скачивания приложений -->
-      <section class="section apps-section">
-        <h2 class="section-title">📱 Приложения для WeDo 2.0</h2>
-        <div class="apps-download-grid">
-          <div class="app-download-card">
-            <div class="app-icon android-icon">
-              <i class="fab fa-android"></i>
+        <a href="teams/voennaya-tehnika-20.htm" class="category-card" id="military-card">
+          <div class="category-name">Военная техника</div>
+          <div class="category-count">Танки, бронемашины, техника</div>
+          <div class="military-tank-container">
+            <div class="tank-body"></div>
+            <div class="tank-turret">
+              <div class="tank-cannon"></div>
             </div>
-            <h3 class="app-title">Для Android</h3>
-            <p class="app-desc">Мобильное приложение для программирования роботов</p>
-            <a href="https://drive.google.com/uc?export=download&id=1BDXpw0PaXRHu88R_D3_Bi0oRFW5AmOVH" class="app-download-btn apk-btn" target="_blank">
-              <i class="fas fa-download"></i> Скачать APK
-            </a>
           </div>
-          <div class="app-download-card">
-            <div class="app-icon windows-icon">
-              <i class="fab fa-windows"></i>
-            </div>
-            <h3 class="app-title">Для Windows</h3>
-            <p class="app-desc">Десктопное приложение для ПК и ноутбуков</p>
-            <a href="https://drive.google.com/uc?export=download&id=1s23eXHnnSGf-J7yfXOxEI9lRq0NB1BwM" class="app-download-btn exe-btn" target="_blank">
-              <i class="fas fa-download"></i> Скачать EXE
-            </a>
-          </div>
-        </div>
-      </section>
-      
-      <section class="section books-section restricted-books" id="restrictedBooks">
-        <h2 class="section-title">📚 Книги по WeDo 2.0</h2>
+        </a>
         
-        <!-- 8 КНИГ - ДОСТУП ПО ЗАПРОСУ -->
-        <div class="featured-books">
-          <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 1">
-            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-            <div class="featured-book-info">
-              <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-              <div class="featured-book-author">Часть 1: секретные задания</div>
-              <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
-            </div>
-          </div>
+        <!-- Карточка "Динозавры" с анимацией следов -->
+        <a href="teams/dinozavry-15.htm" class="category-card" id="dino-card">
+          <div class="category-name">Динозавры</div>
+          <div class="category-count">Древние ящеры и рептилии</div>
           
-          <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 2">
-            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-            <div class="featured-book-info">
-              <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-              <div class="featured-book-author">Часть 2: секретные задания</div>
-              <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
-            </div>
+          <div class="dino-ornaments">
+            <div class="dino-footprint" style="top: 20%; left: 15%; font-size: 1.2rem; transform: rotate(15deg); animation-delay: 0.1s; color: #A0522D;"><i class="fas fa-paw"></i></div>
+            <div class="dino-footprint" style="top: 60%; left: 40%; font-size: 1.8rem; transform: rotate(-20deg); animation-delay: 0.3s; color: #8B4513;"><i class="fas fa-paw"></i></div>
+            <div class="dino-footprint" style="top: 35%; left: 70%; font-size: 1.5rem; transform: rotate(45deg); animation-delay: 0.5s; color: #6F4E37;"><i class="fas fa-paw"></i></div>
+            <div class="dino-footprint" style="top: 70%; left: 25%; font-size: 1rem; transform: rotate(-10deg); animation-delay: 0.7s; color: #8B4513;"><i class="fas fa-paw"></i></div>
+            <div class="dino-footprint" style="top: 15%; left: 55%; font-size: 1.4rem; transform: rotate(30deg); animation-delay: 0.9s; color: #A0522D;"><i class="fas fa-paw"></i></div>
+            <div class="dino-footprint" style="top: 50%; left: 80%; font-size: 1.1rem; transform: rotate(-45deg); animation-delay: 1.1s; color: #6F4E37;"><i class="fas fa-paw"></i></div>
+            <div class="dino-footprint" style="top: 80%; left: 60%; font-size: 1.6rem; transform: rotate(10deg); animation-delay: 1.3s; color: #8B4513;"><i class="fas fa-paw"></i></div>
+            <div class="dino-footprint" style="top: 40%; left: 10%; font-size: 1.3rem; transform: rotate(-35deg); animation-delay: 1.5s; color: #A0522D;"><i class="fas fa-paw"></i></div>
+            <div class="dino-footprint" style="top: 25%; left: 85%; font-size: 1rem; transform: rotate(60deg); animation-delay: 1.7s; color: #6F4E37;"><i class="fas fa-paw"></i></div>
+            <div class="dino-footprint" style="top: 65%; left: 50%; font-size: 1.7rem; transform: rotate(-60deg); animation-delay: 1.9s; color: #A0522D;"><i class="fas fa-paw"></i></div>
+            <div class="dino-footprint" style="top: 10%; left: 30%; font-size: 1.2rem; transform: rotate(80deg); animation-delay: 2.1s; color: #8B4513;"><i class="fas fa-paw"></i></div>
           </div>
-          
-          <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 3">
-            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-            <div class="featured-book-info">
-              <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-              <div class="featured-book-author">Часть 3: секретные задания</div>
-              <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
-            </div>
-          </div>
-          
-          <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 4">
-            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-            <div class="featured-book-info">
-              <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-              <div class="featured-book-author">Часть 4: проекты, проекты</div>
-              <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
-            </div>
-          </div>
-          
-          <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 5">
-            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-            <div class="featured-book-info">
-              <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-              <div class="featured-book-author">Часть 5: кегельринг, линия</div>
-              <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
-            </div>
-          </div>
-          
-          <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 6">
-            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-            <div class="featured-book-info">
-              <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-              <div class="featured-book-author">Часть 6: Миссия на Марс</div>
-              <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
-            </div>
-          </div>
-          
-          <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 7">
-            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-            <div class="featured-book-info">
-              <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-              <div class="featured-book-author">Часть 7: Миссия на Марс</div>
-              <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
-            </div>
-          </div>
-          
-          <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 8">
-            <div class="featured-book-icon"><i class="fas fa-book"></i></div>
-            <div class="featured-book-info">
-              <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
-              <div class="featured-book-author">Часть 8: Ты можешь больше</div>
-              <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
-            </div>
-          </div>
-        </div>
+        </a>
         
-        <!-- ОВЕРЛЕЙ с запросом доступа -->
-        <div class="access-overlay">
-          <i class="fas fa-lock"></i>
-          <h4>Доступ по запросу</h4>
-        </div>
-      </section>
-      
-      <!-- Ассистент -->
-      <link rel="stylesheet" href="assistant/style.css">
-      <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
-      <div class="modal-overlay" id="modalOverlay"></div>
-      
-      <div class="chat-icon" id="chatIcon" role="button" tabindex="0" aria-label="Открыть чат">
-        <i class="fas fa-comment-dots"></i>
+        <!-- Карточка "Животные" с новой анимацией животных -->
+        <a href="teams/zhivotnye-6.htm" class="category-card" id="animals-card">
+          <div class="category-name">Животные</div>
+          <div class="category-count">Разнообразные представители фауны</div>
+          
+          <div class="animals-container">
+            <div class="animal">🐘</div>
+            <div class="animal">🦁</div>
+            <div class="animal">🦒</div>
+            <div class="animal">🦓</div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Звездные войны" с анимацией космического корабля -->
+        <a href="teams/zvezdnye-voiny-18.htm" class="category-card" id="starwars-card">
+          <div class="category-name">Звездные войны</div>
+          <div class="category-count">Галактические модели</div>
+          
+          <div class="starwars-spaceship-container">
+            <div class="starwars-spaceship"></div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Корабли" с анимацией морских волн -->
+        <a href="teams/korabli-19.htm" class="category-card" id="ships-card">
+          <div class="category-name">Корабли</div>
+          <div class="category-count">Морские и речные суда</div>
+          
+          <div class="sea-waves">
+            <div class="wave">
+              <div class="wave-foam"></div>
+            </div>
+            <div class="wave">
+              <div class="wave-foam"></div>
+            </div>
+            <div class="wave">
+              <div class="wave-foam"></div>
+            </div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Космос" с анимацией звездного неба и кометы -->
+        <a href="teams/kosmos-4.htm" class="category-card" id="space-card">
+          <div class="category-name">Космос</div>
+          <div class="category-count">Ракеты, спутники, станции</div>
+          
+          <div class="space-background">
+            <div class="stars">
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+              <div class="star"></div>
+            </div>
+            <div class="comet"></div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Люди" с анимацией человечков -->
+        <a href="teams/ludi-8.htm" class="category-card" id="people-card">
+          <div class="category-name">Люди</div>
+          <div class="category-count">Антропоморфные модели</div>
+          
+          <div class="people-container">
+            <div class="person"><i class="fas fa-walking"></i></div>
+            <div class="person"><i class="fas fa-walking"></i></div>
+            <div class="person"><i class="fas fa-walking"></i></div>
+            <div class="person"><i class="fas fa-walking"></i></div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Механизмы" с анимацией шестерёнок -->
+        <a href="teams/mehanizmy-9.htm" class="category-card" id="mechanisms-card">
+          <div class="category-name">Механизмы</div>
+          <div class="category-count">Технические устройства</div>
+          
+          <div class="mechanisms-container">
+            <div class="gear"><i class="fas fa-cog"></i></div>
+            <div class="gear"><i class="fas fa-cog"></i></div>
+            <div class="gear"><i class="fas fa-cog"></i></div>
+            <div class="gear"><i class="fas fa-cog"></i></div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Мини-модели" с анимацией панды -->
+        <a href="teams/mini-modeli-25.htm" class="category-card" id="mini-modeli-card">
+          <div class="category-name">Мини-модели</div>
+          <div class="category-count">Компактные конструкции</div>
+          
+          <div class="panda-container">
+            <div class="panda-body">
+              <div class="panda-ear-left"></div>
+              <div class="panda-ear-right"></div>
+              <div class="panda-eyes-container">
+                <div class="panda-eye"></div>
+                <div class="panda-eye"></div>
+              </div>
+              <div class="panda-nose"></div>
+              <div class="panda-mouth"></div>
+              <div class="panda-hand-left"></div>
+              <div class="panda-hand-right"></div>
+            </div>
+          </div>
+        </a>
+        
+        <a href="teams/modeli-bez-smarthaba-1.htm" class="category-card" id="no-smart-hub-card">
+          <div class="category-name">Модели без <span class="strikethrough-text">смартхаба</span></div>
+          <div class="category-count">Простые сборки</div>
+        </a>
+        
+        <!-- Карточка "Модели для соревнований" с анимацией соревнований -->
+        <a href="teams/modeli-dlya-sorevnovaniy-17.htm" class="category-card" id="competition-card">
+          <div class="category-name">Модели для соревнований</div>
+          <div class="category-count">Соревновательные проекты</div>
+          
+          <div class="competition-animation">
+            <div class="competition-team team-red"></div>
+            <div class="competition-team team-blue"></div>
+            <div class="competition-line"></div>
+            <div class="competition-trophy">🏆</div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Насекомые" с анимацией ползающих насекомых -->
+        <a href="teams/nasekomye-22.htm" class="category-card" id="insects-card">
+          <div class="category-name">Насекомые</div>
+          <div class="category-count">Букашки и жучки</div>
+          
+          <div class="insects-container">
+            <div class="insect">🪰</div>
+            <div class="insect">🐞</div>
+            <div class="insect">🦋</div>
+          </div>
+        </a>
+        
+        <a href="teams/novogodnie-16.htm" class="category-card" id="newyear-card">
+          <div class="category-name">Новогодние</div>
+          <div class="category-count">Праздничные модели</div>
+          
+          <div class="christmas-ornaments">
+            <div class="christmas-garland">
+              <div class="garland-light"></div>
+              <div class="garland-light"></div>
+              <div class="garland-light"></div>
+              <div class="garland-light"></div>
+              <div class="garland-light"></div>
+              <div class="garland-light"></div>
+              <div class="garland-light"></div>
+              <div class="garland-light"></div>
+              <div class="garland-light"></div>
+              <div class="garland-light"></div>
+            </div>
+            
+            <div class="snowflake flake1">❄</div>
+            <div class="snowflake flake2">❅</div>
+            <div class="snowflake flake3">❄</div>
+            <div class="snowflake flake4">❅</div>
+            <div class="snowflake flake5">❄</div>
+            <div class="snowflake flake6">❅</div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Официальные инструкции LEGO" с новым эффектом слова LEGO -->
+        <a href="teams/ofitsialnye-instruktsii-lego-24.htm" class="category-card" id="lego-instructions-card">
+          <div class="category-name">Официальные инструкции LEGO</div>
+          <div class="category-count">Оригинальные руководства</div>
+          
+          <!-- 3D слово LEGO с переливающимся градиентом -->
+          <div class="lego-word">LEGO</div>
+        </a>
+        
+        <!-- Карточка "Птицы" с анимацией совы -->
+        <a href="teams/ptitsy-21.htm" class="category-card" id="birds-card">
+          <div class="category-name">Птицы</div>
+          <div class="category-count">Пернатые друзья</div>
+          
+          <div class="owl-container">
+            <div class="owl-image"></div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Растения" с анимацией изображения flower.png -->
+        <a href="teams/rasteniya-23.htm" class="category-card" id="plants-card">
+          <div class="category-name">Растения</div>
+          <div class="category-count">Флора и растительность</div>
+          
+          <div class="flower-container">
+            <div class="flower-image"></div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Роботы" с анимацией изображения wally.png -->
+        <a href="teams/roboty-3.htm" class="category-card" id="robots-card">
+          <div class="category-name">Роботы</div>
+          <div class="category-count">Автоматизированные модели</div>
+          
+          <div class="wally-container">
+            <div class="wally-image"></div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Самолёты, вертолёты" с анимацией самолета -->
+        <a href="teams/samolety-vertolety-11.htm" class="category-card" id="airplanes-card">
+          <div class="category-name">Самолёты, вертолёты</div>
+          <div class="category-count">Авиационная техника</div>
+          
+          <div class="airplane-container">
+            <div class="airplane"></div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Спецтехника" с анимацией трактора -->
+        <a href="teams/spetstehnika-10.htm" class="category-card" id="special-equipment-card">
+          <div class="category-name">Спецтехника</div>
+          <div class="category-count">Специализированные машины</div>
+          
+          <div class="tractor-container">
+            <div class="tractor-body"></div>
+            <div class="tractor-cabin"></div>
+            <div class="tractor-wheel front"></div>
+            <div class="tractor-wheel rear"></div>
+            <div class="tractor-exhaust"></div>
+            <div class="tractor-smoke"></div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Спорт" с анимацией спортивных мячей и бегунов -->
+        <a href="teams/sport-14.htm" class="category-card" id="sport-card">
+          <div class="category-name">Спорт</div>
+          <div class="category-count">Спортивные модели</div>
+          
+          <div class="sport-container">
+            <div class="sport-ball">⚽</div>
+            <div class="sport-ball">🏀</div>
+            <div class="sport-ball">🏈</div>
+            <div class="sport-ball">🎾</div>
+            <div class="sport-runner"><i class="fas fa-running"></i></div>
+            <div class="sport-runner"><i class="fas fa-running"></i></div>
+            <div class="sport-runner"><i class="fas fa-running"></i></div>
+          </div>
+        </a>
+        
+        <a href="teams/transport-12.htm" class="category-card" id="transport-card">
+          <div class="category-name">Транспорт</div>
+          <div class="category-count">Различные средства передвижения</div>
+          
+          <!-- Анимация паровоза в карточке "Транспорт" -->
+          <div class="train-container">
+            <div class="train-body"></div>
+            <div class="train-cabin"></div>
+            <div class="train-chimney"></div>
+            <div class="train-smoke"></div>
+            <div class="train-wheel front"></div>
+            <div class="train-wheel middle"></div>
+            <div class="train-wheel rear"></div>
+          </div>
+        </a>
+        
+        <!-- Карточка "Шагающие" с анимацией шагающего робота -->
+        <a href="teams/shagauschie-7.htm" class="category-card" id="walking-card">
+          <div class="category-name">Шагающие</div>
+          <div class="category-count">Модели с шагающим механизмом</div>
+          
+          <div class="walk-bot-container">
+            <div class="walk-bot-wrapper">
+              <div class="walk-bot-head">
+                <div class="walk-bot-antenna"></div>
+                <div class="walk-bot-eye left"></div>
+                <div class="walk-bot-eye right"></div>
+              </div>
+              <div class="walk-bot-body"></div>
+              <div class="walk-bot-leg front-left"></div>
+              <div class="walk-bot-leg front-right"></div>
+            </div>
+          </div>
+        </a>
+        
+        <a href="teams/novye-instruktsii-new.htm" class="category-card">
+          <div class="category-name">Новые инструкции</div>
+          <div class="category-count">Самые свежие модели</div>
+        </a>
       </div>
       
-      <div class="assistant-container hidden" id="assistantContainer">
-        <div class="resize-handle" id="resizeHandle"></div>
-        
-        <div class="assistant-header" id="assistantHeader">
-          <div class="assistant-title">
-            <i class="fas fa-brain"></i>
-            <span>AI Chat</span>
+      <!-- Сетка результатов поиска (Скрыта по умолчанию) -->
+      <div class="models-grid" id="modelsGrid" style="display: none;"></div>
+      
+      <!-- Пагинация (Скрыта по умолчанию) -->
+      <div class="pagination" id="pagination" style="display: none;"></div>
+    </section>
+    
+    <!-- Секция скачивания приложений -->
+    <section class="section apps-section">
+      <h2 class="section-title">📱 Приложения для WeDo 2.0</h2>
+      <div class="apps-download-grid">
+        <div class="app-download-card">
+          <div class="app-icon android-icon">
+            <i class="fab fa-android"></i>
           </div>
-          <div class="header-controls">
-            <button class="header-btn clear-btn" id="clearHistoryBtn" title="Очистить историю">
-              <i class="fas fa-trash-alt"></i>
-            </button>
-            <button class="header-btn" id="modalBtn" title="Развернуть">
-              <i class="fas fa-expand"></i>
-            </button>
-            <button class="header-btn" id="closeBtn" title="Закрыть">
-              <i class="fas fa-times"></i>
-            </button>
+          <h3 class="app-title">Для Android</h3>
+          <p class="app-desc">Мобильное приложение для программирования роботов</p>
+          <a href="https://drive.google.com/uc?export=download&id=1BDXpw0PaXRHu88R_D3_Bi0oRFW5AmOVH" class="app-download-btn apk-btn" target="_blank">
+            <i class="fas fa-download"></i> Скачать APK
+          </a>
+        </div>
+        <div class="app-download-card">
+          <div class="app-icon windows-icon">
+            <i class="fab fa-windows"></i>
+          </div>
+          <h3 class="app-title">Для Windows</h3>
+          <p class="app-desc">Десктопное приложение для ПК и ноутбуков</p>
+          <a href="https://drive.google.com/uc?export=download&id=1s23eXHnnSGf-J7yfXOxEI9lRq0NB1BwM" class="app-download-btn exe-btn" target="_blank">
+            <i class="fas fa-download"></i> Скачать EXE
+          </a>
+        </div>
+      </div>
+    </section>
+    
+    <section class="section books-section restricted-books" id="restrictedBooks">
+      <h2 class="section-title">📚 Книги по WeDo 2.0</h2>
+      
+      <!-- 8 КНИГ - ДОСТУП ПО ЗАПРОСУ -->
+      <div class="featured-books">
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 1">
+          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+          <div class="featured-book-info">
+            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+            <div class="featured-book-author">Часть 1: секретные задания</div>
+            <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
           </div>
         </div>
         
-        <div class="chat-messages" id="chatMessages" role="log"></div>
-        
-        <div class="input-area-wrapper">
-          <div class="chat-input-area">
-            <input type="text" id="questionInput" placeholder="Введите сообщение..." autocomplete="off">
-            <button id="sendButton" aria-label="Отправить">
-              <i class="fas fa-arrow-up"></i>
-            </button>
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 2">
+          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+          <div class="featured-book-info">
+            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+            <div class="featured-book-author">Часть 2: секретные задания</div>
+            <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
           </div>
         </div>
-        <script src="assistant/script.js"></script>
+        
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 3">
+          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+          <div class="featured-book-info">
+            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+            <div class="featured-book-author">Часть 3: секретные задания</div>
+            <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+          </div>
+        </div>
+        
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 4">
+          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+          <div class="featured-book-info">
+            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+            <div class="featured-book-author">Часть 4: проекты, проекты</div>
+            <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+          </div>
+        </div>
+        
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 5">
+          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+          <div class="featured-book-info">
+            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+            <div class="featured-book-author">Часть 5: кегельринг, линия</div>
+            <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+          </div>
+        </div>
+        
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 6">
+          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+          <div class="featured-book-info">
+            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+            <div class="featured-book-author">Часть 6: Миссия на Марс</div>
+            <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+          </div>
+        </div>
+        
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 7">
+          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+          <div class="featured-book-info">
+            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+            <div class="featured-book-author">Часть 7: Миссия на Марс</div>
+            <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+          </div>
+        </div>
+        
+        <div class="featured-book-card restricted-book" data-title="РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ. Часть 8">
+          <div class="featured-book-icon"><i class="fas fa-book"></i></div>
+          <div class="featured-book-info">
+            <div class="featured-book-title">РОБОТОТЕХНИКА. ПЕРВЫЕ ШАГИ</div>
+            <div class="featured-book-author">Часть 8: Ты можешь больше</div>
+            <span class="featured-pdf-badge restricted-badge"><i class="fas fa-lock"></i> Доступ по запросу</span>
+          </div>
+        </div>
       </div>
       
-      <footer class="footer">
-  <p>Библиотека инструкций <span id="wedo20-toggle">WeDo 2.0</span>. Все материалы предназначены для ознакомительных целей.</p>
-  
-  <!-- ДОБАВЬТЕ ЭТУ СТРОКУ С ПОЧТОЙ -->
-  <p class="contact-email">
-    <i class="fas fa-envelope"></i> Контакт: <a href="mailto:admwedo@mail.ru">admwedo@mail.ru</a>
-  </p>
-  
-  <div class="footer-links">
-    <!-- Ссылка на политику конфиденциальности -->
-    <a href="/privacy" class="footer-link" id="privacyPolicyLink">
-      <i class="fas fa-shield-alt"></i> Политика конфиденциальности
-    </a>
+      <!-- ОВЕРЛЕЙ с запросом доступа -->
+      <div class="access-overlay">
+        <i class="fas fa-lock"></i>
+        <h4>Доступ по запросу</h4>
+      </div>
+    </section>
     
-    <!-- Ссылка на отказ от ответственности -->
-    <a href="/disclaimer" class="footer-link" id="disclaimerLink">
-      <i class="fas fa-exclamation-triangle"></i> Отказ от ответственности
-    </a>
+    <!-- Ассистент -->
+    <link rel="stylesheet" href="assistant/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+    <div class="modal-overlay" id="modalOverlay"></div>
     
-    <!-- Оставляем Telegram ссылку (закомментирована, при необходимости раскомментировать) -->
-    <!-- <a href="https://t.me/trenerwedo" target="_blank" class="telegram-link">
-      <i class="fab fa-telegram-plane"></i> Связаться с тренером
-    </a> -->
-  </div>
-
-  <!-- <a href="https://t.me/kornilovsergey" target="_blank" rel="noopener noreferrer" class="creation-link">
-    Создание сайтов и телеграм ботов под ключ
-    <span class="arrow">↗</span>
-  </a> -->
-  
-  <!-- Кнопка переключения новогодних украшений -->
-  <div class="christmas-toggle off" id="christmasToggle">
-    <i class="fas fa-tree"></i>
-  </div>
-  
-  <!-- Кнопка переключения украшений ко Дню защитника Отечества -->
-  <div class="defender-toggle off" id="defenderToggle">
-    <i class="fas fa-shield-alt"></i>
-  </div>
-  
-  <!-- Кнопка переключения украшений к 8 марта -->
-  <div class="march8-toggle off" id="march8Toggle">
-    8
-  </div>
-</footer>
-      <!-- Сайдбар с рекламой -->
+    <div class="chat-icon" id="chatIcon" role="button" tabindex="0" aria-label="Открыть чат">
+      <i class="fas fa-comment-dots"></i>
     </div>
     
-    <!-- Модальное окно для карточек (улучшенное) -->
-    <div class="modal-card" id="cardModal">
-      <div class="modal-card-content">
-        <button class="modal-close-btn" id="modalCloseBtn">
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="18" y1="6" x2="6" y2="18"></line>
-            <line x1="6" y1="6" x2="18" y2="18"></line>
-          </svg>
-        </button>
-        
-        <div class="modal-card-img-wrapper">
-          <img class="modal-card-img" id="modalImg" src="" alt="">
-          
+    <div class="assistant-container hidden" id="assistantContainer">
+      <div class="resize-handle" id="resizeHandle"></div>
+      
+      <div class="assistant-header" id="assistantHeader">
+        <div class="assistant-title">
+          <i class="fas fa-brain"></i>
+          <span>AI Chat</span>
         </div>
-        
-        <div class="modal-card-body">
-          <h3 class="modal-card-title" id="modalTitle"></h3>
-          <p class="modal-card-description" id="modalDesc"></p>
-          
-          <div class="modal-card-actions" id="modalActions"></div>
+        <div class="header-controls">
+          <button class="header-btn clear-btn" id="clearHistoryBtn" title="Очистить историю">
+            <i class="fas fa-trash-alt"></i>
+          </button>
+          <button class="header-btn" id="modalBtn" title="Развернуть">
+            <i class="fas fa-expand"></i>
+          </button>
+          <button class="header-btn" id="closeBtn" title="Закрыть">
+            <i class="fas fa-times"></i>
+          </button>
         </div>
       </div>
+      
+      <div class="chat-messages" id="chatMessages" role="log"></div>
+      
+      <div class="input-area-wrapper">
+        <div class="chat-input-area">
+          <input type="text" id="questionInput" placeholder="Введите сообщение..." autocomplete="off">
+          <button id="sendButton" aria-label="Отправить">
+            <i class="fas fa-arrow-up"></i>
+          </button>
+        </div>
+      </div>
+      <script src="assistant/script.js"></script>
     </div>
     
-    <script>
-      // Функция для определения времени года по месяцу
-      function getSeasonByMonth(month) {
-        if (month >= 3 && month <= 5) return 'spring';
-        if (month >= 6 && month <= 8) return 'summer';
-        if (month >= 9 && month <= 11) return 'autumn';
-        return 'winter';
-      }
-      // Функция для определения времени года по IP
-      async function getSeasonByIP() {
-        try {
-          // Используем бесплатный API для определения геолокации
-          const response = await fetch('https://ipapi.co/json/');
-          const data = await response.json();
-          if (data && data.timezone) {
-            // Получаем текущую дату и время в часовом поясе пользователя
-            const now = new Date();
-            const localTime = new Date(now.toLocaleString("en-US", {
-              timeZone: data.timezone
-            }));
-            const month = localTime.getMonth() + 1; // Месяцы от 0 до 11
-            return getSeasonByMonth(month);
-          }
-        } catch (error) {
-          console.error('Ошибка при определении геолокации:', error);
-        }
-        // Если не удалось определить геолокацию, используем локальное время
-        const month = new Date().getMonth() + 1;
-        return getSeasonByMonth(month);
-      }
-      // Функция для обновления фона в зависимости от времени года
-      async function updateSeasonBackground() {
-        const season = await getSeasonByIP();
-        const seasonsBg = document.getElementById('seasonsBg');
-        // Скрываем все иконки времен года
-        document.querySelectorAll('.season-icon').forEach(icon => {
-          icon.style.display = 'none';
-        });
-        // Показываем только иконку текущего времени года
-        const currentSeasonIcon = document.getElementById(season + 'Icon');
-        if (currentSeasonIcon) {
-          currentSeasonIcon.style.display = 'block';
-        }
-        // Обновляем фон в зависимости от времени года
-        switch (season) {
-          case 'spring':
-          document.body.style.background = 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)';
-          break;
-          case 'summer':
-          document.body.style.background = 'linear-gradient(135deg, #fff9c4 0%, #ffeb3b 100%)';
-          break;
-          case 'autumn':
-          document.body.style.background = 'linear-gradient(135deg, #ffccbc 0%, #ffab91 100%)';
-          break;
-          case 'winter':
-          document.body.style.background = 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)';
-          break;
-        }
-      }
+    <footer class="footer">
+      <p>Библиотека инструкций <span id="wedo20-toggle">WeDo 2.0</span>. Все материалы предназначены для ознакомительных целей.</p>
       
-      function createQuestionParticles(event) {
-        const robot = document.getElementById('robot');
-        const rect = robot.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-        for (let i = 0; i < 30; i++) {
-          const particle = document.createElement('div');
-          particle.className = 'question-particle';
-          particle.textContent = '?';
-          const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffd166', '#966fd6', '#ee7752'];
-          particle.style.color = colors[Math.floor(Math.random() * colors.length)];
-          particle.style.left = centerX + 'px';
-          particle.style.top = centerY + 'px';
-          const angle = (Math.PI * 2 * i) / 30;
-          const velocity = 100 + Math.random() * 200;
-          const tx = Math.cos(angle) * velocity;
-          const ty = Math.sin(angle) * velocity;
-          const tx2 = Math.cos(angle) * (velocity * 2);
-          const ty2 = Math.sin(angle) * (velocity * 2);
-          particle.style.setProperty('--tx', `${tx}px`);
-          particle.style.setProperty('--ty', `${ty}px`);
-          particle.style.setProperty('--tx2', `${tx2}px`);
-          particle.style.setProperty('--ty2', `${ty2}px`);
-          document.body.appendChild(particle);
-          setTimeout(() => {
-            particle.remove();
-          }, 2000);
-        }
-      }
+      <!-- ДОБАВЬТЕ ЭТУ СТРОКУ С ПОЧТОЙ -->
+      <p class="contact-email">
+        <i class="fas fa-envelope"></i> Контакт: <a href="mailto:admwedo@mail.ru">admwedo@mail.ru</a>
+      </p>
       
-      function getRandomPosition() {
-        const margin = 100;
-        const x = margin + Math.random() * (window.innerWidth - margin * 2);
-        const y = margin + Math.random() * (window.innerHeight - margin * 2);
+      <div class="footer-links">
+        <!-- Ссылка на политику конфиденциальности -->
+        <a href="/privacy" class="footer-link" id="privacyPolicyLink">
+          <i class="fas fa-shield-alt"></i> Политика конфиденциальности
+        </a>
+        
+        <!-- Ссылка на отказ от ответственности -->
+        <a href="/disclaimer" class="footer-link" id="disclaimerLink">
+          <i class="fas fa-exclamation-triangle"></i> Отказ от ответственности
+        </a>
+        
+        <!-- Оставляем Telegram ссылку (закомментирована, при необходимости раскомментировать) -->
+        <!-- <a href="https://t.me/trenerwedo" target="_blank" class="telegram-link">
+          <i class="fab fa-telegram-plane"></i> Связаться с тренером
+        </a> -->
+      </div>
+      
+      <!-- <a href="https://t.me/kornilovsergey" target="_blank" rel="noopener noreferrer" class="creation-link">
+        Создание сайтов и телеграм ботов под ключ
+        <span class="arrow">↗</span>
+      </a> -->
+      
+      <!-- Кнопка переключения новогодних украшений -->
+      <div class="christmas-toggle off" id="christmasToggle">
+        <i class="fas fa-tree"></i>
+      </div>
+      
+      <!-- Кнопка переключения украшений ко Дню защитника Отечества -->
+      <div class="defender-toggle off" id="defenderToggle">
+        <i class="fas fa-shield-alt"></i>
+      </div>
+      
+      <!-- Кнопка переключения украшений к 8 марта -->
+      <div class="march8-toggle off" id="march8Toggle">
+        8
+      </div>
+    </footer>
+    <!-- Сайдбар с рекламой -->
+  </div>
+  
+  <!-- Модальное окно для карточек (улучшенное) -->
+  <div class="modal-card" id="cardModal">
+    <div class="modal-card-content">
+      <button class="modal-close-btn" id="modalCloseBtn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <line x1="18" y1="6" x2="6" y2="18"></line>
+          <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>
+      </button>
+      
+      <div class="modal-card-img-wrapper">
+        <img class="modal-card-img" id="modalImg" src="" alt="">
+        
+      </div>
+      
+      <div class="modal-card-body">
+        <h3 class="modal-card-title" id="modalTitle"></h3>
+        <p class="modal-card-description" id="modalDesc"></p>
+        
+        <div class="modal-card-actions" id="modalActions"></div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- <script>
+    // Функция для определения времени года по месяцу
+    function getSeasonByMonth(month) {
+      if (month >= 3 && month <= 5) return 'spring';
+      if (month >= 6 && month <= 8) return 'summer';
+      if (month >= 9 && month <= 11) return 'autumn';
+      return 'winter';
+    }
+    // Функция для определения времени года по IP
+    async function getSeasonByIP() {
+      try {
+        // Используем бесплатный API для определения геолокации
+        const response = await fetch('https://ipapi.co/json/');
+        const data = await response.json();
+        if (data && data.timezone) {
+          // Получаем текущую дату и время в часовом поясе пользователя
+          const now = new Date();
+          const localTime = new Date(now.toLocaleString("en-US", {
+            timeZone: data.timezone
+          }));
+          const month = localTime.getMonth() + 1; // Месяцы от 0 до 11
+          return getSeasonByMonth(month);
+        }
+      } catch (error) {
+        console.error('Ошибка при определении геолокации:', error);
+      }
+      // Если не удалось определить геолокацию, используем локальное время
+      const month = new Date().getMonth() + 1;
+      return getSeasonByMonth(month);
+    }
+    // Функция для обновления фона в зависимости от времени года
+    async function updateSeasonBackground() {
+      const season = await getSeasonByIP();
+      const seasonsBg = document.getElementById('seasonsBg');
+      // Скрываем все иконки времен года
+      document.querySelectorAll('.season-icon').forEach(icon => {
+        icon.style.display = 'none';
+      });
+      // Показываем только иконку текущего времени года
+      const currentSeasonIcon = document.getElementById(season + 'Icon');
+      if (currentSeasonIcon) {
+        currentSeasonIcon.style.display = 'block';
+      }
+      // Обновляем фон в зависимости от времени года
+      switch (season) {
+        case 'spring':
+        document.body.style.background = 'linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%)';
+        break;
+        case 'summer':
+        document.body.style.background = 'linear-gradient(135deg, #fff9c4 0%, #ffeb3b 100%)';
+        break;
+        case 'autumn':
+        document.body.style.background = 'linear-gradient(135deg, #ffccbc 0%, #ffab91 100%)';
+        break;
+        case 'winter':
+        document.body.style.background = 'linear-gradient(135deg, #e3f2fd 0%, #bbdefb 100%)';
+        break;
+      }
+    }
+    
+    function createQuestionParticles(event) {
+      const robot = document.getElementById('robot');
+      const rect = robot.getBoundingClientRect();
+      const centerX = rect.left + rect.width / 2;
+      const centerY = rect.top + rect.height / 2;
+      for (let i = 0; i < 30; i++) {
+        const particle = document.createElement('div');
+        particle.className = 'question-particle';
+        particle.textContent = '?';
+        const colors = ['#ff6b6b', '#4ecdc4', '#45b7d1', '#ffd166', '#966fd6', '#ee7752'];
+        particle.style.color = colors[Math.floor(Math.random() * colors.length)];
+        particle.style.left = centerX + 'px';
+        particle.style.top = centerY + 'px';
+        const angle = (Math.PI * 2 * i) / 30;
+        const velocity = 100 + Math.random() * 200;
+        const tx = Math.cos(angle) * velocity;
+        const ty = Math.sin(angle) * velocity;
+        const tx2 = Math.cos(angle) * (velocity * 2);
+        const ty2 = Math.sin(angle) * (velocity * 2);
+        particle.style.setProperty('--tx', `${tx}px`);
+        particle.style.setProperty('--ty', `${ty}px`);
+        particle.style.setProperty('--tx2', `${tx2}px`);
+        particle.style.setProperty('--ty2', `${ty2}px`);
+        document.body.appendChild(particle);
+        setTimeout(() => {
+          particle.remove();
+        }, 2000);
+      }
+    }
+    
+    function getRandomPosition() {
+      const margin = 100;
+      const x = margin + Math.random() * (window.innerWidth - margin * 2);
+      const y = margin + Math.random() * (window.innerHeight - margin * 2);
+      return {
+        x,
+        y
+      };
+    }
+    
+    function teleportRobot() {
+      const robot = document.getElementById('robot');
+      const teleportEffect = document.getElementById('teleportEffect');
+      const currentX = robot.offsetLeft + robot.offsetWidth / 2;
+      const currentY = robot.offsetTop + robot.offsetHeight / 2;
+      teleportEffect.style.left = currentX + 'px';
+      teleportEffect.style.top = currentY + 'px';
+      teleportEffect.classList.add('active');
+      robot.classList.add('teleport-out');
+      robot.classList.remove('visible');
+      const randomDelay = 2000 + Math.random() * 4000;
+      setTimeout(() => {
+        const newPosition = getRandomPosition();
+        robot.style.left = newPosition.x - robot.offsetWidth / 2 + 'px';
+        robot.style.top = newPosition.y - robot.offsetHeight / 2 + 'px';
+        teleportEffect.style.left = newPosition.x + 'px';
+        teleportEffect.style.top = newPosition.y + 'px';
+        teleportEffect.classList.add('active');
+        robot.classList.remove('teleport-out');
+        robot.classList.add('teleport-in');
+        robot.classList.add('visible');
+        setTimeout(() => {
+          robot.classList.remove('teleport-in');
+          teleportEffect.classList.remove('active');
+        }, 500);
+      }, randomDelay);
+      setTimeout(() => {
+        teleportEffect.classList.remove('active');
+      }, 600);
+    }
+    
+    function goToRandomCategory() {
+      const categoryLinks = document.querySelectorAll('.categories-grid a.category-card');
+      if (categoryLinks.length === 0) return;
+      const randomIndex = Math.floor(Math.random() * categoryLinks.length);
+      const randomCategory = categoryLinks[randomIndex];
+      const luckyCard = document.getElementById('luckyCard');
+      luckyCard.style.transform = 'scale(0.95)';
+      luckyCard.style.background = 'linear-gradient(135deg, rgba(76, 175, 80, 0.3) 0%, rgba(139, 195, 74, 0.2) 100%)';
+      setTimeout(() => {
+        luckyCard.style.transform = '';
+        luckyCard.style.background = '';
+      }, 300);
+      setTimeout(() => {
+        window.location.href = randomCategory.href;
+      }, 500);
+    }
+    
+    function updateClock() {
+      const now = new Date();
+      const hours = String(now.getHours()).padStart(2, '0');
+      const minutes = String(now.getMinutes()).padStart(2, '0');
+      const seconds = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('hour1').textContent = hours[0];
+      document.getElementById('hour2').textContent = hours[1];
+      document.getElementById('minute1').textContent = minutes[0];
+      document.getElementById('minute2').textContent = minutes[1];
+      document.getElementById('second1').textContent = seconds[0];
+      document.getElementById('second2').textContent = seconds[1];
+    }
+    
+    function initRobot() {
+      const robot = document.getElementById('robot');
+      const startPosition = getRandomPosition();
+      robot.style.left = startPosition.x - robot.offsetWidth / 2 + 'px';
+      robot.style.top = startPosition.y - robot.offsetHeight / 2 + 'px';
+      setTimeout(() => {
+        robot.classList.add('visible');
+      }, 100);
+      robot.addEventListener('mouseenter', function() {
+        robot.style.cursor = 'pointer';
+      });
+      robot.addEventListener('click', function(event) {
+        createQuestionParticles(event);
+        teleportRobot();
+      });
+    }
+    
+    function initLuckyCard() {
+      const luckyCard = document.getElementById('luckyCard');
+      luckyCard.addEventListener('click', function() {
+        goToRandomCategory();
+      });
+      luckyCard.addEventListener('mouseenter', function() {
+        this.style.cursor = 'pointer';
+      });
+    }
+    
+    function initCarsCard() {
+      const carsCard = document.getElementById('cars-card');
+      const carWheel = carsCard.querySelector('.car-wheel');
+      carsCard.addEventListener('mouseenter', function() {
+        carWheel.style.animation = 'none';
+        void carWheel.offsetWidth;
+        carWheel.style.animation = 'wheelFallAndRoll 1.5s ease-in-out';
+      });
+    }
+    
+    function initNewYearCard() {
+      const newYearCard = document.getElementById('newyear-card');
+      newYearCard.addEventListener('mouseenter', function() {
+        this.classList.add('animate-newyear');
+      });
+      newYearCard.addEventListener('mouseleave', function() {
+        this.classList.remove('animate-newyear');
+      });
+    }
+    
+    function initMilitaryCard() {
+      const militaryCard = document.getElementById('military-card');
+      militaryCard.addEventListener('mouseenter', function() {
+        this.classList.add('animate-tank');
+      });
+      militaryCard.addEventListener('mouseleave', function() {
+        this.classList.remove('animate-tank');
+      });
+    }
+    
+    function initDinoCard() {
+      const dinoCard = document.getElementById('dino-card');
+      dinoCard.addEventListener('mouseenter', function() {
+        this.classList.add('animate-dino');
+      });
+      dinoCard.addEventListener('mouseleave', function() {
+        this.classList.remove('animate-dino');
+      });
+    }
+    
+    function initAnimalsCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initStarWarsCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initShipsCard() {
+      const shipsCard = document.getElementById('ships-card');
+      shipsCard.addEventListener('mouseenter', function() {
+        // Анимация запускается автоматически через CSS при наведении
+      });
+      shipsCard.addEventListener('mouseleave', function() {
+        // Анимация останавливается автоматически через CSS
+      });
+    }
+    
+    function initSpaceCard() {
+      const spaceCard = document.getElementById('space-card');
+      spaceCard.addEventListener('mouseenter', function() {
+        // Анимация запускается автоматически через CSS при наведении
+      });
+      spaceCard.addEventListener('mouseleave', function() {
+        // Анимация останавливается автоматически через CSS
+      });
+    }
+    
+    function initPeopleCard() {
+      const peopleCard = document.getElementById('people-card');
+      peopleCard.addEventListener('mouseenter', function() {
+        // Анимация запускается автоматически через CSS при наведении
+      });
+      peopleCard.addEventListener('mouseleave', function() {
+        // Анимация останавливается автоматически через CSS
+      });
+    }
+    
+    function initMechanismsCard() {
+      const mechanismsCard = document.getElementById('mechanisms-card');
+      mechanismsCard.addEventListener('mouseenter', function() {
+        // Анимация запускается автоматически через CSS при наведении
+      });
+      mechanismsCard.addEventListener('mouseleave', function() {
+        // Анимация останавливается автоматически через CSS
+      });
+    }
+    
+    function initMiniModelsCard() {
+      const miniModelsCard = document.getElementById('mini-modeli-card');
+      miniModelsCard.addEventListener('mouseenter', function() {
+        // Анимация запускается автоматически через CSS при наведении
+      });
+      miniModelsCard.addEventListener('mouseleave', function() {
+        // Анимация останавливается автоматически через CSS
+      });
+    }
+    
+    function initCompetitionCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initInsectsCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initNoSmartHubCard() {
+      const noSmartHubCard = document.getElementById('no-smart-hub-card');
+      const strikethroughText = noSmartHubCard.querySelector('.strikethrough-text');
+      noSmartHubCard.addEventListener('mouseenter', function() {
+        strikethroughText.style.textDecoration = 'line-through';
+        strikethroughText.style.color = '#ff0000';
+      });
+      noSmartHubCard.addEventListener('mouseleave', function() {
+        strikethroughText.style.textDecoration = 'none';
+        strikethroughText.style.color = '';
+      });
+    }
+    
+    function initLegoInstructionsCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initBirdsCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initPlantsCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initRobotsCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initAirplanesCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initSpecialEquipmentCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initSportCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initTransportCard() {
+      const transportCard = document.getElementById('transport-card');
+      transportCard.addEventListener('mouseenter', function() {
+        // Анимация запускается автоматически через CSS при наведении
+      });
+      transportCard.addEventListener('mouseleave', function() {
+        // Анимация останавливается автоматически через CSS
+      });
+    }
+    
+    function initWalkingCard() {
+      // Анимация теперь полностью управляется CSS через :hover
+    }
+    
+    function initRoboticsWords() {
+      // Получаем границы основных блоков, чтобы слова не залетали на них
+      const header = document.querySelector('.header');
+      const sections = document.querySelectorAll('.section');
+      const footer = document.querySelector('.footer');
+      // Функция для проверки, находится ли точка внутри блока
+      function isInsideBlock(x, y, element) {
+        const rect = element.getBoundingClientRect();
+        return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
+      }
+      // Функция для проверки, находится ли точка внутри любого из блоков
+      function isInsideAnyBlock(x, y) {
+        if (header && isInsideBlock(x, y, header)) return true;
+        if (footer && isInsideBlock(x, y, footer)) return true;
+        for (const section of sections) {
+          if (isInsideBlock(x, y, section)) return true;
+        }
+        return false;
+      }
+      // Функция для получения случайной позиции, которая не находится внутри блоков
+      function getRandomPositionOutsideBlocks() {
+        let x, y;
+        let attempts = 0;
+        const maxAttempts = 100;
+        do {
+          x = Math.random() * window.innerWidth;
+          y = Math.random() * window.innerHeight;
+          attempts++;
+        } while (isInsideAnyBlock(x, y) && attempts < maxAttempts);
         return {
           x,
           y
         };
       }
-      
-      function teleportRobot() {
-        const robot = document.getElementById('robot');
-        const teleportEffect = document.getElementById('teleportEffect');
-        const currentX = robot.offsetLeft + robot.offsetWidth / 2;
-        const currentY = robot.offsetTop + robot.offsetHeight / 2;
-        teleportEffect.style.left = currentX + 'px';
-        teleportEffect.style.top = currentY + 'px';
-        teleportEffect.classList.add('active');
-        robot.classList.add('teleport-out');
-        robot.classList.remove('visible');
-        const randomDelay = 2000 + Math.random() * 4000;
+      // Устанавливаем начальные позиции для слов
+      const roboticsWords = document.querySelectorAll('.robotics-word');
+      roboticsWords.forEach((word, index) => {
+        const position = getRandomPositionOutsideBlocks();
+        word.style.left = position.x + 'px';
+        word.style.top = position.y + 'px';
+        // Добавляем задержку перед появлением каждого слова
         setTimeout(() => {
-          const newPosition = getRandomPosition();
-          robot.style.left = newPosition.x - robot.offsetWidth / 2 + 'px';
-          robot.style.top = newPosition.y - robot.offsetHeight / 2 + 'px';
-          teleportEffect.style.left = newPosition.x + 'px';
-          teleportEffect.style.top = newPosition.y + 'px';
-          teleportEffect.classList.add('active');
-          robot.classList.remove('teleport-out');
-          robot.classList.add('teleport-in');
-          robot.classList.add('visible');
-          setTimeout(() => {
-            robot.classList.remove('teleport-in');
-            teleportEffect.classList.remove('active');
-          }, 500);
-        }, randomDelay);
-        setTimeout(() => {
-          teleportEffect.classList.remove('active');
-        }, 600);
-      }
-      
-      function goToRandomCategory() {
-        const categoryLinks = document.querySelectorAll('.categories-grid a.category-card');
-        if (categoryLinks.length === 0) return;
-        const randomIndex = Math.floor(Math.random() * categoryLinks.length);
-        const randomCategory = categoryLinks[randomIndex];
-        const luckyCard = document.getElementById('luckyCard');
-        luckyCard.style.transform = 'scale(0.95)';
-        luckyCard.style.background = 'linear-gradient(135deg, rgba(76, 175, 80, 0.3) 0%, rgba(139, 195, 74, 0.2) 100%)';
-        setTimeout(() => {
-          luckyCard.style.transform = '';
-          luckyCard.style.background = '';
-        }, 300);
-        setTimeout(() => {
-          window.location.href = randomCategory.href;
-        }, 500);
-      }
-      
-      function updateClock() {
-        const now = new Date();
-        const hours = String(now.getHours()).padStart(2, '0');
-        const minutes = String(now.getMinutes()).padStart(2, '0');
-        const seconds = String(now.getSeconds()).padStart(2, '0');
-        document.getElementById('hour1').textContent = hours[0];
-        document.getElementById('hour2').textContent = hours[1];
-        document.getElementById('minute1').textContent = minutes[0];
-        document.getElementById('minute2').textContent = minutes[1];
-        document.getElementById('second1').textContent = seconds[0];
-        document.getElementById('second2').textContent = seconds[1];
-      }
-      
-      function initRobot() {
-        const robot = document.getElementById('robot');
-        const startPosition = getRandomPosition();
-        robot.style.left = startPosition.x - robot.offsetWidth / 2 + 'px';
-        robot.style.top = startPosition.y - robot.offsetHeight / 2 + 'px';
-        setTimeout(() => {
-          robot.classList.add('visible');
-        }, 100);
-        robot.addEventListener('mouseenter', function() {
-          robot.style.cursor = 'pointer';
-        });
-        robot.addEventListener('click', function(event) {
-          createQuestionParticles(event);
-          teleportRobot();
-        });
-      }
-      
-      function initLuckyCard() {
-        const luckyCard = document.getElementById('luckyCard');
-        luckyCard.addEventListener('click', function() {
-          goToRandomCategory();
-        });
-        luckyCard.addEventListener('mouseenter', function() {
-          this.style.cursor = 'pointer';
-        });
-      }
-      
-      function initCarsCard() {
-        const carsCard = document.getElementById('cars-card');
-        const carWheel = carsCard.querySelector('.car-wheel');
-        carsCard.addEventListener('mouseenter', function() {
-          carWheel.style.animation = 'none';
-          void carWheel.offsetWidth;
-          carWheel.style.animation = 'wheelFallAndRoll 1.5s ease-in-out';
-        });
-      }
-      
-      function initNewYearCard() {
-        const newYearCard = document.getElementById('newyear-card');
-        newYearCard.addEventListener('mouseenter', function() {
-          this.classList.add('animate-newyear');
-        });
-        newYearCard.addEventListener('mouseleave', function() {
-          this.classList.remove('animate-newyear');
-        });
-      }
-      
-      function initMilitaryCard() {
-        const militaryCard = document.getElementById('military-card');
-        militaryCard.addEventListener('mouseenter', function() {
-          this.classList.add('animate-tank');
-        });
-        militaryCard.addEventListener('mouseleave', function() {
-          this.classList.remove('animate-tank');
-        });
-      }
-      
-      function initDinoCard() {
-        const dinoCard = document.getElementById('dino-card');
-        dinoCard.addEventListener('mouseenter', function() {
-          this.classList.add('animate-dino');
-        });
-        dinoCard.addEventListener('mouseleave', function() {
-          this.classList.remove('animate-dino');
-        });
-      }
-      
-      function initAnimalsCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initStarWarsCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initShipsCard() {
-        const shipsCard = document.getElementById('ships-card');
-        shipsCard.addEventListener('mouseenter', function() {
-          // Анимация запускается автоматически через CSS при наведении
-        });
-        shipsCard.addEventListener('mouseleave', function() {
-          // Анимация останавливается автоматически через CSS
-        });
-      }
-      
-      function initSpaceCard() {
-        const spaceCard = document.getElementById('space-card');
-        spaceCard.addEventListener('mouseenter', function() {
-          // Анимация запускается автоматически через CSS при наведении
-        });
-        spaceCard.addEventListener('mouseleave', function() {
-          // Анимация останавливается автоматически через CSS
-        });
-      }
-      
-      function initPeopleCard() {
-        const peopleCard = document.getElementById('people-card');
-        peopleCard.addEventListener('mouseenter', function() {
-          // Анимация запускается автоматически через CSS при наведении
-        });
-        peopleCard.addEventListener('mouseleave', function() {
-          // Анимация останавливается автоматически через CSS
-        });
-      }
-      
-      function initMechanismsCard() {
-        const mechanismsCard = document.getElementById('mechanisms-card');
-        mechanismsCard.addEventListener('mouseenter', function() {
-          // Анимация запускается автоматически через CSS при наведении
-        });
-        mechanismsCard.addEventListener('mouseleave', function() {
-          // Анимация останавливается автоматически через CSS
-        });
-      }
-      
-      function initMiniModelsCard() {
-        const miniModelsCard = document.getElementById('mini-modeli-card');
-        miniModelsCard.addEventListener('mouseenter', function() {
-          // Анимация запускается автоматически через CSS при наведении
-        });
-        miniModelsCard.addEventListener('mouseleave', function() {
-          // Анимация останавливается автоматически через CSS
-        });
-      }
-      
-      function initCompetitionCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initInsectsCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initNoSmartHubCard() {
-        const noSmartHubCard = document.getElementById('no-smart-hub-card');
-        const strikethroughText = noSmartHubCard.querySelector('.strikethrough-text');
-        noSmartHubCard.addEventListener('mouseenter', function() {
-          strikethroughText.style.textDecoration = 'line-through';
-          strikethroughText.style.color = '#ff0000';
-        });
-        noSmartHubCard.addEventListener('mouseleave', function() {
-          strikethroughText.style.textDecoration = 'none';
-          strikethroughText.style.color = '';
-        });
-      }
-      
-      function initLegoInstructionsCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initBirdsCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initPlantsCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initRobotsCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initAirplanesCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initSpecialEquipmentCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initSportCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initTransportCard() {
-        const transportCard = document.getElementById('transport-card');
-        transportCard.addEventListener('mouseenter', function() {
-          // Анимация запускается автоматически через CSS при наведении
-        });
-        transportCard.addEventListener('mouseleave', function() {
-          // Анимация останавливается автоматически через CSS
-        });
-      }
-      
-      function initWalkingCard() {
-        // Анимация теперь полностью управляется CSS через :hover
-      }
-      
-      function initRoboticsWords() {
-        // Получаем границы основных блоков, чтобы слова не залетали на них
-        const header = document.querySelector('.header');
-        const sections = document.querySelectorAll('.section');
-        const footer = document.querySelector('.footer');
-        // Функция для проверки, находится ли точка внутри блока
-        function isInsideBlock(x, y, element) {
-          const rect = element.getBoundingClientRect();
-          return x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom;
-        }
-        // Функция для проверки, находится ли точка внутри любого из блоков
-        function isInsideAnyBlock(x, y) {
-          if (header && isInsideBlock(x, y, header)) return true;
-          if (footer && isInsideBlock(x, y, footer)) return true;
-          for (const section of sections) {
-            if (isInsideBlock(x, y, section)) return true;
-          }
-          return false;
-        }
-        // Функция для получения случайной позиции, которая не находится внутри блоков
-        function getRandomPositionOutsideBlocks() {
-          let x, y;
-          let attempts = 0;
-          const maxAttempts = 100;
-          do {
-            x = Math.random() * window.innerWidth;
-            y = Math.random() * window.innerHeight;
-            attempts++;
-          } while (isInsideAnyBlock(x, y) && attempts < maxAttempts);
-          return {
-            x,
-            y
-          };
-        }
-        // Устанавливаем начальные позиции для слов
-        const roboticsWords = document.querySelectorAll('.robotics-word');
-        roboticsWords.forEach((word, index) => {
+          word.classList.add('visible');
+        }, index * 500);
+      });
+      // Обновляем позиции слов при изменении размера окна
+      window.addEventListener('resize', () => {
+        roboticsWords.forEach(word => {
           const position = getRandomPositionOutsideBlocks();
           word.style.left = position.x + 'px';
           word.style.top = position.y + 'px';
-          // Добавляем задержку перед появлением каждого слова
-          setTimeout(() => {
-            word.classList.add('visible');
-          }, index * 500);
         });
-        // Обновляем позиции слов при изменении размера окна
-        window.addEventListener('resize', () => {
-          roboticsWords.forEach(word => {
-            const position = getRandomPositionOutsideBlocks();
-            word.style.left = position.x + 'px';
-            word.style.top = position.y + 'px';
-          });
-        });
-      }
-      // Функция для создания снежинок
-      function createSnowflakes() {
-        const snowfall = document.getElementById('snowfall');
-        const snowflakeSymbols = ['❄', '❅', '❆'];
-        for (let i = 0; i < 50; i++) {
-          const snowflake = document.createElement('div');
-          snowflake.className = 'snowflake';
-          snowflake.textContent = snowflakeSymbols[Math.floor(Math.random() * snowflakeSymbols.length)];
-          snowflake.style.left = Math.random() * 100 + '%';
-          snowflake.style.animationDuration = Math.random() * 3 + 7 + 's';
-          snowflake.style.opacity = Math.random() * 0.6 + 0.4;
-          snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
-          snowflake.style.animationDelay = Math.random() * 5 + 's';
-          snowfall.appendChild(snowflake);
-        }
-      }
-      // Функция для создания рождественских огней
-      function createChristmasLights() {
-        const christmasLights = document.getElementById('christmas-lights');
-        const lightColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
-        for (let i = 0; i < 30; i++) {
-          const light = document.createElement('div');
-          light.className = 'christmas-light';
-          light.style.backgroundColor = lightColors[Math.floor(Math.random() * lightColors.length)];
-          light.style.animationDelay = Math.random() * 2 + 's';
-          christmasLights.appendChild(light);
-        }
-      }
-      // Функция для создания новогодней гирлянды
-      function createNewYearGarland() {
-        const newYearGarland = document.getElementById('new-year-garland');
-        const bulbColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
-        for (let i = 0; i < 20; i++) {
-          const bulb = document.createElement('div');
-          bulb.className = 'garland-bulb';
-          bulb.style.backgroundColor = bulbColors[Math.floor(Math.random() * bulbColors.length)];
-          bulb.style.animationDelay = Math.random() * 2 + 's';
-          newYearGarland.appendChild(bulb);
-        }
-      }
-      // Функция для создания фейерверков
-      function createFireworks() {
-        const fireworks = document.getElementById('new-year-fireworks');
-        const fireworkColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
-        setInterval(() => {
-          const firework = document.createElement('div');
-          firework.className = 'firework';
-          firework.style.left = Math.random() * 100 + '%';
-          firework.style.bottom = '0';
-          firework.style.backgroundColor = fireworkColors[Math.floor(Math.random() * fireworkColors.length)];
-          fireworks.appendChild(firework);
-          setTimeout(() => {
-            const rect = firework.getBoundingClientRect();
-            const x = rect.left + rect.width / 2;
-            const y = rect.top + rect.height / 2;
-            for (let i = 0; i < 30; i++) {
-              const particle = document.createElement('div');
-              particle.className = 'firework-particle';
-              particle.style.left = x + 'px';
-              particle.style.top = y + 'px';
-              particle.style.backgroundColor = fireworkColors[Math.floor(Math.random() * fireworkColors.length)];
-              const angle = (Math.PI * 2 * i) / 30;
-              const velocity = 50 + Math.random() * 50;
-              const tx = Math.cos(angle) * velocity;
-              const ty = Math.sin(angle) * velocity;
-              particle.style.setProperty('--tx', `${tx}px`);
-              particle.style.setProperty('--ty', `${ty}px`);
-              fireworks.appendChild(particle);
-            }
-            firework.remove();
-          }, 1000);
-          setTimeout(() => {
-            const particles = fireworks.querySelectorAll('.firework-particle');
-            particles.forEach(particle => particle.remove());
-          }, 2000);
-        }, 3000);
-      }
-      // Функция для создания конфетти
-      function createConfetti() {
-        const confettiColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
-        setInterval(() => {
-          const confetti = document.createElement('div');
-          confetti.className = 'confetti';
-          confetti.style.left = Math.random() * 100 + '%';
-          confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-          confetti.style.animationDuration = Math.random() * 3 + 5 + 's';
-          confetti.style.animationDelay = Math.random() * 2 + 's';
-          document.querySelector('.new-year-decorations').appendChild(confetti);
-          setTimeout(() => {
-            confetti.remove();
-          }, 8000);
-        }, 500);
-      }
-      // Функция для создания салютов ко Дню защитника Отечества
-      function createDefenderSalutes() {
-        const defenderDaySalutes = document.getElementById('defenderDaySalutes');
-        const saluteColors = ['#dc3545', '#0d6efd', '#ffc107'];
-        setInterval(() => {
-          const salute = document.createElement('div');
-          salute.className = 'defender-salute';
-          salute.style.backgroundColor = saluteColors[Math.floor(Math.random() * saluteColors.length)];
-          defenderDaySalutes.appendChild(salute);
-          setTimeout(() => {
-            const rect = salute.getBoundingClientRect();
-            const x = rect.left + rect.width / 2;
-            const y = rect.top + rect.height / 2;
-            for (let i = 0; i < 20; i++) {
-              const particle = document.createElement('div');
-              particle.className = 'defender-salute-particle';
-              particle.style.left = x + 'px';
-              particle.style.top = y + 'px';
-              particle.style.backgroundColor = saluteColors[Math.floor(Math.random() * saluteColors.length)];
-              const angle = (Math.PI * 2 * i) / 20;
-              const velocity = 30 + Math.random() * 30;
-              const tx = Math.cos(angle) * velocity;
-              const ty = Math.sin(angle) * velocity;
-              particle.style.setProperty('--tx', `${tx}px`);
-              particle.style.setProperty('--ty', `${ty}px`);
-              defenderDaySalutes.appendChild(particle);
-            }
-            salute.remove();
-          }, 2000);
-          setTimeout(() => {
-            const particles = defenderDaySalutes.querySelectorAll('.defender-salute-particle');
-            particles.forEach(particle => particle.remove());
-          }, 3000);
-        }, 4000);
-      }
-      // Функция для инициализации кнопки переключения новогодних украшений
-      function initChristmasToggle() {
-        const christmasToggle = document.getElementById('christmasToggle');
-        const newYearDecorations = document.getElementById('newYearDecorations');
-        christmasToggle.addEventListener('click', function() {
-          if (newYearDecorations.classList.contains('hidden')) {
-            newYearDecorations.classList.remove('hidden');
-            christmasToggle.classList.remove('off');
-            christmasToggle.innerHTML = '<i class="fas fa-tree"></i>';
-          } else {
-            newYearDecorations.classList.add('hidden');
-            christmasToggle.classList.add('off');
-            christmasToggle.innerHTML = '<i class="fas fa-tree"></i>';
-          }
-        });
-      }
-      // Функция для инициализации кнопки переключения украшений ко Дню защитника Отечества
-      function initDefenderToggle() {
-        const defenderToggle = document.getElementById('defenderToggle');
-        const defenderDayDecorations = document.getElementById('defenderDayDecorations');
-        defenderToggle.addEventListener('click', function() {
-          if (defenderDayDecorations.classList.contains('hidden')) {
-            defenderDayDecorations.classList.remove('hidden');
-            defenderToggle.classList.remove('off');
-            defenderToggle.innerHTML = '<i class="fas fa-shield-alt"></i>';
-          } else {
-            defenderDayDecorations.classList.add('hidden');
-            defenderToggle.classList.add('off');
-            defenderToggle.innerHTML = '<i class="fas fa-shield-alt"></i>';
-          }
-        });
-      }
-      // Функция для инициализации кнопки переключения украшений к 8 марта
-      function initMarch8Toggle() {
-        const march8Toggle = document.getElementById('march8Toggle');
-        const march8Decorations = document.getElementById('march8Decorations');
-        march8Toggle.addEventListener('click', function() {
-          if (march8Decorations.classList.contains('hidden')) {
-            march8Decorations.classList.remove('hidden');
-            march8Toggle.classList.remove('off');
-          } else {
-            march8Decorations.classList.add('hidden');
-            march8Toggle.classList.add('off');
-          }
-        });
-      }
-      // Функция для создания конфетти в поздравительном окне
-      function createBirthdayConfetti() {
-        const birthdayConfetti = document.getElementById('birthdayConfetti');
-        const confettiColors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFD166', '#966FD6', '#EE7752'];
-        for (let i = 0; i < 50; i++) {
-          const confettiPiece = document.createElement('div');
-          confettiPiece.className = 'confetti-piece';
-          confettiPiece.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
-          confettiPiece.style.left = Math.random() * 100 + '%';
-          confettiPiece.style.top = Math.random() * 100 + '%';
-          confettiPiece.style.animationDelay = Math.random() * 5 + 's';
-          confettiPiece.style.animationDuration = Math.random() * 3 + 5 + 's';
-          birthdayConfetti.appendChild(confettiPiece);
-        }
-      }
-      // Функция для проверки, находится ли текущая дата в периоде с 4 по 7 декабря
-      function isBirthdayPeriod() {
-        const today = new Date();
-        const month = today.getMonth() + 1; // Месяцы от 0 до 11
-        const day = today.getDate();
-        return month === 12 && day >= 6 && day <= 6;
-      }
-      // Функция для инициализации поздравительного окна
-      function initBirthdayModal() {
-        const birthdayModal = document.getElementById('birthdayModal');
-        const birthdayClose = document.getElementById('birthdayClose');
-        const wedo20Toggle = document.getElementById('wedo20-toggle');
-        // Создаем конфетти
-        createBirthdayConfetti();
-        // Показываем окно, если текущая дата в периоде с 4 по 9 декабря
-        if (isBirthdayPeriod()) {
-          setTimeout(() => {
-            birthdayModal.classList.add('show');
-          }, 1000); // Задержка в 1 секунду после загрузки страницы
-        }
-        // Закрытие окна по клику на крестик
-        birthdayClose.addEventListener('click', function() {
-          birthdayModal.classList.remove('show');
-        });
-        // Переключение окна по клику на "WeDo 2.0"
-        wedo20Toggle.addEventListener('click', function() {
-          birthdayModal.classList.toggle('show');
-        });
-        // Закрытие окна по клику вне его
-        birthdayModal.addEventListener('click', function(event) {
-          if (event.target === birthdayModal) {
-            birthdayModal.classList.remove('show');
-          }
-        });
-      }
-      window.addEventListener('load', function() {
-        // Инициализация фона в зависимости от времени года
-        updateSeasonBackground();
-        // Обновление фона каждые 5 минут
-        setInterval(updateSeasonBackground, 5 * 60 * 1000);
-        // Инициализация новогодних украшений
-        createSnowflakes();
-        createChristmasLights();
-        createNewYearGarland();
-        createFireworks();
-        createConfetti();
-        // Инициализация украшений ко Дню защитника Отечества
-        createDefenderSalutes();
-        // Инициализация кнопки переключения новогодних украшений
-        initChristmasToggle();
-        // Инициализация кнопки переключения украшений ко Дню защитника Отечества
-        initDefenderToggle();
-        // Инициализация кнопки переключения украшений к 8 марта
-        initMarch8Toggle();
-        // Инициализация поздравительного окна
-        initBirthdayModal();
-        initRobot();
-        // initLuckyCard();
-        initCarsCard();
-        initNewYearCard();
-        initMilitaryCard();
-        initDinoCard();
-        initAnimalsCard(); // Функция теперь пуста, так как всё управляется CSS
-        initStarWarsCard(); // Функция теперь пуста, так как всё управляется CSS
-        initShipsCard();
-        initSpaceCard();
-        initPeopleCard();
-        initMechanismsCard();
-        initMiniModelsCard();
-        initCompetitionCard(); // Функция теперь пуста, так как всё управляется CSS
-        initInsectsCard(); // Функция теперь пуста, так как всё управляется CSS
-        initNoSmartHubCard();
-        initLegoInstructionsCard(); // Инициализация карточки с инструкциями LEGO
-        initBirdsCard(); // Инициализация карточки "Птицы"
-        initPlantsCard(); // Инициализация карточки "Растения"
-        initRobotsCard(); // Инициализация карточки "Роботы"
-        initAirplanesCard(); // Инициализация карточки "Самолёты, вертолёты"
-        initSpecialEquipmentCard(); // Инициализация карточки "Спецтехника"
-        initSportCard(); // Инициализация карточки "Спорт"
-        initTransportCard(); // Инициализация карточки "Транспорт"
-        initWalkingCard(); // Инициализация карточки "Шагающие"
-        initRoboticsWords(); // Инициализация слов "робототехника"
-        // Инициализация часов
-        // updateClock();
-        setInterval(updateClock, 1000);
       });
-    </script>
-    
-    <script>
-      // Конфигурация
-      const ITEMS_PER_PAGE = 24;
-      // Определение базового пути для GitHub Pages
-      const BASE_PATH = window.location.hostname.includes('github.io') ? '/lego/' : '';
-      console.log('BASE_PATH:', BASE_PATH); // Для отладки
-      let currentPage = 1;
-      let filteredModels = [];
-      let allModels = [];
-      let categoryMap = {}; // Словарь: section_id -> {name, color}
-      // Цвета для категорий
-      const CATEGORY_COLORS = [
-      '#E0F7FA', '#E1F5FE', '#E3F2FD', '#E8EAF6', '#EDE7F6',
-      '#F3E5F5', '#FCE4EC', '#FFEBEE', '#FBE9E7', '#FFF3E0',
-      '#FFF8E1', '#F9FBE7', '#F1F8E9', '#E8F5E9', '#E0F2F1',
-      '#E0F7FA', '#E1F5FE', '#E8EAF6', '#F3E5F5', '#FFEBEE',
-      '#FFF3E0', '#F9FBE7', '#F1F8E9', '#E0F2F1', '#FCE4EC',
-      '#FBE9E7', '#FFF8E1', '#E8F5E9', '#E0F7FA', '#E1F5FE'
-      ];
-      // Элементы DOM
-      const searchInput = document.getElementById('modelSearchInput');
-      const searchClearBtn = document.getElementById('searchClearBtn');
-      const searchStats = document.getElementById('searchStats');
-      const categoriesGrid = document.getElementById('categoriesGrid');
-      const modelsGrid = document.getElementById('modelsGrid');
-      const paginationContainer = document.getElementById('pagination');
-      // 1. Загрузка данных из localStorage
-      function loadModels() {
-        try {
-          // Загружаем модели
-          const storedModels = localStorage.getItem('site_cards');
-          if (storedModels) {
-            allModels = JSON.parse(storedModels);
-            console.log(`Загружено моделей: ${allModels.length}`);
-          } else {
-            console.warn('site_cards не найден в localStorage');
-            allModels = [];
+    }
+    // Функция для создания снежинок
+    function createSnowflakes() {
+      const snowfall = document.getElementById('snowfall');
+      const snowflakeSymbols = ['❄', '❅', '❆'];
+      for (let i = 0; i < 50; i++) {
+        const snowflake = document.createElement('div');
+        snowflake.className = 'snowflake';
+        snowflake.textContent = snowflakeSymbols[Math.floor(Math.random() * snowflakeSymbols.length)];
+        snowflake.style.left = Math.random() * 100 + '%';
+        snowflake.style.animationDuration = Math.random() * 3 + 7 + 's';
+        snowflake.style.opacity = Math.random() * 0.6 + 0.4;
+        snowflake.style.fontSize = Math.random() * 10 + 10 + 'px';
+        snowflake.style.animationDelay = Math.random() * 5 + 's';
+        snowfall.appendChild(snowflake);
+      }
+    }
+    // Функция для создания рождественских огней
+    function createChristmasLights() {
+      const christmasLights = document.getElementById('christmas-lights');
+      const lightColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
+      for (let i = 0; i < 30; i++) {
+        const light = document.createElement('div');
+        light.className = 'christmas-light';
+        light.style.backgroundColor = lightColors[Math.floor(Math.random() * lightColors.length)];
+        light.style.animationDelay = Math.random() * 2 + 's';
+        christmasLights.appendChild(light);
+      }
+    }
+    // Функция для создания новогодней гирлянды
+    function createNewYearGarland() {
+      const newYearGarland = document.getElementById('new-year-garland');
+      const bulbColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF'];
+      for (let i = 0; i < 20; i++) {
+        const bulb = document.createElement('div');
+        bulb.className = 'garland-bulb';
+        bulb.style.backgroundColor = bulbColors[Math.floor(Math.random() * bulbColors.length)];
+        bulb.style.animationDelay = Math.random() * 2 + 's';
+        newYearGarland.appendChild(bulb);
+      }
+    }
+    // Функция для создания фейерверков
+    function createFireworks() {
+      const fireworks = document.getElementById('new-year-fireworks');
+      const fireworkColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+      setInterval(() => {
+        const firework = document.createElement('div');
+        firework.className = 'firework';
+        firework.style.left = Math.random() * 100 + '%';
+        firework.style.bottom = '0';
+        firework.style.backgroundColor = fireworkColors[Math.floor(Math.random() * fireworkColors.length)];
+        fireworks.appendChild(firework);
+        setTimeout(() => {
+          const rect = firework.getBoundingClientRect();
+          const x = rect.left + rect.width / 2;
+          const y = rect.top + rect.height / 2;
+          for (let i = 0; i < 30; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'firework-particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.backgroundColor = fireworkColors[Math.floor(Math.random() * fireworkColors.length)];
+            const angle = (Math.PI * 2 * i) / 30;
+            const velocity = 50 + Math.random() * 50;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity;
+            particle.style.setProperty('--tx', `${tx}px`);
+            particle.style.setProperty('--ty', `${ty}px`);
+            fireworks.appendChild(particle);
           }
-          // Загружаем категории
-          const storedSections = localStorage.getItem('site_sections');
-          if (storedSections) {
-            const sections = JSON.parse(storedSections);
-            // Создаём карту категорий с цветами
-            sections.forEach((section, index) => {
-              categoryMap[section.id] = {
-                name: section.name,
-                color: CATEGORY_COLORS[index % CATEGORY_COLORS.length]
-              };
-            });
-            console.log(`Загружено категорий: ${sections.length}`);
-          } else {
-            console.warn('site_sections не найден в localStorage');
+          firework.remove();
+        }, 1000);
+        setTimeout(() => {
+          const particles = fireworks.querySelectorAll('.firework-particle');
+          particles.forEach(particle => particle.remove());
+        }, 2000);
+      }, 3000);
+    }
+    // Функция для создания конфетти
+    function createConfetti() {
+      const confettiColors = ['#FF0000', '#00FF00', '#0000FF', '#FFFF00', '#FF00FF', '#00FFFF'];
+      setInterval(() => {
+        const confetti = document.createElement('div');
+        confetti.className = 'confetti';
+        confetti.style.left = Math.random() * 100 + '%';
+        confetti.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        confetti.style.animationDuration = Math.random() * 3 + 5 + 's';
+        confetti.style.animationDelay = Math.random() * 2 + 's';
+        document.querySelector('.new-year-decorations').appendChild(confetti);
+        setTimeout(() => {
+          confetti.remove();
+        }, 8000);
+      }, 500);
+    }
+    // Функция для создания салютов ко Дню защитника Отечества
+    function createDefenderSalutes() {
+      const defenderDaySalutes = document.getElementById('defenderDaySalutes');
+      const saluteColors = ['#dc3545', '#0d6efd', '#ffc107'];
+      setInterval(() => {
+        const salute = document.createElement('div');
+        salute.className = 'defender-salute';
+        salute.style.backgroundColor = saluteColors[Math.floor(Math.random() * saluteColors.length)];
+        defenderDaySalutes.appendChild(salute);
+        setTimeout(() => {
+          const rect = salute.getBoundingClientRect();
+          const x = rect.left + rect.width / 2;
+          const y = rect.top + rect.height / 2;
+          for (let i = 0; i < 20; i++) {
+            const particle = document.createElement('div');
+            particle.className = 'defender-salute-particle';
+            particle.style.left = x + 'px';
+            particle.style.top = y + 'px';
+            particle.style.backgroundColor = saluteColors[Math.floor(Math.random() * saluteColors.length)];
+            const angle = (Math.PI * 2 * i) / 20;
+            const velocity = 30 + Math.random() * 30;
+            const tx = Math.cos(angle) * velocity;
+            const ty = Math.sin(angle) * velocity;
+            particle.style.setProperty('--tx', `${tx}px`);
+            particle.style.setProperty('--ty', `${ty}px`);
+            defenderDaySalutes.appendChild(particle);
           }
-        } catch (e) {
-          console.error('Ошибка чтения localStorage:', e);
+          salute.remove();
+        }, 2000);
+        setTimeout(() => {
+          const particles = defenderDaySalutes.querySelectorAll('.defender-salute-particle');
+          particles.forEach(particle => particle.remove());
+        }, 3000);
+      }, 4000);
+    }
+    // Функция для инициализации кнопки переключения новогодних украшений
+    function initChristmasToggle() {
+      const christmasToggle = document.getElementById('christmasToggle');
+      const newYearDecorations = document.getElementById('newYearDecorations');
+      christmasToggle.addEventListener('click', function() {
+        if (newYearDecorations.classList.contains('hidden')) {
+          newYearDecorations.classList.remove('hidden');
+          christmasToggle.classList.remove('off');
+          christmasToggle.innerHTML = '<i class="fas fa-tree"></i>';
+        } else {
+          newYearDecorations.classList.add('hidden');
+          christmasToggle.classList.add('off');
+          christmasToggle.innerHTML = '<i class="fas fa-tree"></i>';
+        }
+      });
+    }
+    // Функция для инициализации кнопки переключения украшений ко Дню защитника Отечества
+    function initDefenderToggle() {
+      const defenderToggle = document.getElementById('defenderToggle');
+      const defenderDayDecorations = document.getElementById('defenderDayDecorations');
+      defenderToggle.addEventListener('click', function() {
+        if (defenderDayDecorations.classList.contains('hidden')) {
+          defenderDayDecorations.classList.remove('hidden');
+          defenderToggle.classList.remove('off');
+          defenderToggle.innerHTML = '<i class="fas fa-shield-alt"></i>';
+        } else {
+          defenderDayDecorations.classList.add('hidden');
+          defenderToggle.classList.add('off');
+          defenderToggle.innerHTML = '<i class="fas fa-shield-alt"></i>';
+        }
+      });
+    }
+    // Функция для инициализации кнопки переключения украшений к 8 марта
+    function initMarch8Toggle() {
+      const march8Toggle = document.getElementById('march8Toggle');
+      const march8Decorations = document.getElementById('march8Decorations');
+      march8Toggle.addEventListener('click', function() {
+        if (march8Decorations.classList.contains('hidden')) {
+          march8Decorations.classList.remove('hidden');
+          march8Toggle.classList.remove('off');
+        } else {
+          march8Decorations.classList.add('hidden');
+          march8Toggle.classList.add('off');
+        }
+      });
+    }
+    // Функция для создания конфетти в поздравительном окне
+    function createBirthdayConfetti() {
+      const birthdayConfetti = document.getElementById('birthdayConfetti');
+      const confettiColors = ['#FF6B6B', '#4ECDC4', '#45B7D1', '#FFD166', '#966FD6', '#EE7752'];
+      for (let i = 0; i < 50; i++) {
+        const confettiPiece = document.createElement('div');
+        confettiPiece.className = 'confetti-piece';
+        confettiPiece.style.backgroundColor = confettiColors[Math.floor(Math.random() * confettiColors.length)];
+        confettiPiece.style.left = Math.random() * 100 + '%';
+        confettiPiece.style.top = Math.random() * 100 + '%';
+        confettiPiece.style.animationDelay = Math.random() * 5 + 's';
+        confettiPiece.style.animationDuration = Math.random() * 3 + 5 + 's';
+        birthdayConfetti.appendChild(confettiPiece);
+      }
+    }
+    // Функция для проверки, находится ли текущая дата в периоде с 4 по 7 декабря
+    function isBirthdayPeriod() {
+      const today = new Date();
+      const month = today.getMonth() + 1; // Месяцы от 0 до 11
+      const day = today.getDate();
+      return month === 12 && day >= 6 && day <= 6;
+    }
+    // Функция для инициализации поздравительного окна
+    function initBirthdayModal() {
+      const birthdayModal = document.getElementById('birthdayModal');
+      const birthdayClose = document.getElementById('birthdayClose');
+      const wedo20Toggle = document.getElementById('wedo20-toggle');
+      // Создаем конфетти
+      createBirthdayConfetti();
+      // Показываем окно, если текущая дата в периоде с 4 по 9 декабря
+      if (isBirthdayPeriod()) {
+        setTimeout(() => {
+          birthdayModal.classList.add('show');
+        }, 1000); // Задержка в 1 секунду после загрузки страницы
+      }
+      // Закрытие окна по клику на крестик
+      birthdayClose.addEventListener('click', function() {
+        birthdayModal.classList.remove('show');
+      });
+      // Переключение окна по клику на "WeDo 2.0"
+      wedo20Toggle.addEventListener('click', function() {
+        birthdayModal.classList.toggle('show');
+      });
+      // Закрытие окна по клику вне его
+      birthdayModal.addEventListener('click', function(event) {
+        if (event.target === birthdayModal) {
+          birthdayModal.classList.remove('show');
+        }
+      });
+    }
+    window.addEventListener('load', function() {
+      // Инициализация фона в зависимости от времени года
+      updateSeasonBackground();
+      // Обновление фона каждые 5 минут
+      setInterval(updateSeasonBackground, 5 * 60 * 1000);
+      // Инициализация новогодних украшений
+      createSnowflakes();
+      createChristmasLights();
+      createNewYearGarland();
+      createFireworks();
+      createConfetti();
+      // Инициализация украшений ко Дню защитника Отечества
+      createDefenderSalutes();
+      // Инициализация кнопки переключения новогодних украшений
+      initChristmasToggle();
+      // Инициализация кнопки переключения украшений ко Дню защитника Отечества
+      initDefenderToggle();
+      // Инициализация кнопки переключения украшений к 8 марта
+      initMarch8Toggle();
+      // Инициализация поздравительного окна
+      initBirthdayModal();
+      initRobot();
+      // initLuckyCard();
+      initCarsCard();
+      initNewYearCard();
+      initMilitaryCard();
+      initDinoCard();
+      initAnimalsCard(); // Функция теперь пуста, так как всё управляется CSS
+      initStarWarsCard(); // Функция теперь пуста, так как всё управляется CSS
+      initShipsCard();
+      initSpaceCard();
+      initPeopleCard();
+      initMechanismsCard();
+      initMiniModelsCard();
+      initCompetitionCard(); // Функция теперь пуста, так как всё управляется CSS
+      initInsectsCard(); // Функция теперь пуста, так как всё управляется CSS
+      initNoSmartHubCard();
+      initLegoInstructionsCard(); // Инициализация карточки с инструкциями LEGO
+      initBirdsCard(); // Инициализация карточки "Птицы"
+      initPlantsCard(); // Инициализация карточки "Растения"
+      initRobotsCard(); // Инициализация карточки "Роботы"
+      initAirplanesCard(); // Инициализация карточки "Самолёты, вертолёты"
+      initSpecialEquipmentCard(); // Инициализация карточки "Спецтехника"
+      initSportCard(); // Инициализация карточки "Спорт"
+      initTransportCard(); // Инициализация карточки "Транспорт"
+      initWalkingCard(); // Инициализация карточки "Шагающие"
+      initRoboticsWords(); // Инициализация слов "робототехника"
+      // Инициализация часов
+      // updateClock();
+      setInterval(updateClock, 1000);
+    });
+  </script> -->
+  
+  <!-- <script>
+    // Конфигурация
+    const ITEMS_PER_PAGE = 24;
+    // Определение базового пути для GitHub Pages
+    const BASE_PATH = window.location.hostname.includes('github.io') ? '/lego/' : '';
+    console.log('BASE_PATH:', BASE_PATH); // Для отладки
+    let currentPage = 1;
+    let filteredModels = [];
+    let allModels = [];
+    let categoryMap = {}; // Словарь: section_id -> {name, color}
+    // Цвета для категорий
+    const CATEGORY_COLORS = [
+    '#E0F7FA', '#E1F5FE', '#E3F2FD', '#E8EAF6', '#EDE7F6',
+    '#F3E5F5', '#FCE4EC', '#FFEBEE', '#FBE9E7', '#FFF3E0',
+    '#FFF8E1', '#F9FBE7', '#F1F8E9', '#E8F5E9', '#E0F2F1',
+    '#E0F7FA', '#E1F5FE', '#E8EAF6', '#F3E5F5', '#FFEBEE',
+    '#FFF3E0', '#F9FBE7', '#F1F8E9', '#E0F2F1', '#FCE4EC',
+    '#FBE9E7', '#FFF8E1', '#E8F5E9', '#E0F7FA', '#E1F5FE'
+    ];
+    // Элементы DOM
+    const searchInput = document.getElementById('modelSearchInput');
+    const searchClearBtn = document.getElementById('searchClearBtn');
+    const searchStats = document.getElementById('searchStats');
+    const categoriesGrid = document.getElementById('categoriesGrid');
+    const modelsGrid = document.getElementById('modelsGrid');
+    const paginationContainer = document.getElementById('pagination');
+    // 1. Загрузка данных из localStorage
+    function loadModels() {
+      try {
+        // Загружаем модели
+        const storedModels = localStorage.getItem('site_cards');
+        if (storedModels) {
+          allModels = JSON.parse(storedModels);
+          console.log(`Загружено моделей: ${allModels.length}`);
+        } else {
+          console.warn('site_cards не найден в localStorage');
           allModels = [];
-          categoryMap = {};
         }
-      }
-      // 2. Нормализация текста для поиска (убираем регистр, ё->е)
-      function normalizeText(text) {
-        return text.toLowerCase()
-        .replace(/ё/g, 'е')
-        .replace(/[^a-zа-я0-9\s]/gi, '')
-        .trim();
-      }
-      // 3. Поиск и фильтрация (ТОЛЬКО ПО НАЗВАНИЮ)
-      function performSearch(query) {
-        const normalizedQuery = normalizeText(query);
-        if (!normalizedQuery || normalizedQuery.length < 2) {
-          // Если запрос короткий или пустой - скрываем результаты, показываем категории
-          showCategories();
-          searchStats.textContent = query ? 'Введите минимум 2 символа' : 'Введите запрос для поиска';
-          return;
+        // Загружаем категории
+        const storedSections = localStorage.getItem('site_sections');
+        if (storedSections) {
+          const sections = JSON.parse(storedSections);
+          // Создаём карту категорий с цветами
+          sections.forEach((section, index) => {
+            categoryMap[section.id] = {
+              name: section.name,
+              color: CATEGORY_COLORS[index % CATEGORY_COLORS.length]
+            };
+          });
+          console.log(`Загружено категорий: ${sections.length}`);
+        } else {
+          console.warn('site_sections не найден в localStorage');
         }
-        // ✅ Фильтрация ТОЛЬКО по названию модели (title)
-        filteredModels = allModels.filter(model => {
-          const title = normalizeText(model.title || '');
-          return title.includes(normalizedQuery);
-        });
-        currentPage = 1;
-        renderModels();
-        updateStats();
-        showSearchResults();
+      } catch (e) {
+        console.error('Ошибка чтения localStorage:', e);
+        allModels = [];
+        categoryMap = {};
       }
-      // 4. Переключение видимости
-      function showSearchResults() {
-        categoriesGrid.style.display = 'none';
-        modelsGrid.style.display = 'grid';
-        paginationContainer.style.display = 'flex';
+    }
+    // 2. Нормализация текста для поиска (убираем регистр, ё->е)
+    function normalizeText(text) {
+      return text.toLowerCase()
+      .replace(/ё/g, 'е')
+      .replace(/[^a-zа-я0-9\s]/gi, '')
+      .trim();
+    }
+    // 3. Поиск и фильтрация (ТОЛЬКО ПО НАЗВАНИЮ)
+    function performSearch(query) {
+      const normalizedQuery = normalizeText(query);
+      if (!normalizedQuery || normalizedQuery.length < 2) {
+        // Если запрос короткий или пустой - скрываем результаты, показываем категории
+        showCategories();
+        searchStats.textContent = query ? 'Введите минимум 2 символа' : 'Введите запрос для поиска';
+        return;
       }
-      
-      function showCategories() {
-        categoriesGrid.style.display = 'grid';
-        modelsGrid.style.display = 'none';
-        paginationContainer.style.display = 'none';
-        modelsGrid.innerHTML = '';
-        paginationContainer.innerHTML = '';
-      }
-      // 5. Отрисовка карточек (с пагинацией)
-      function renderModels() {
-        const start = (currentPage - 1) * ITEMS_PER_PAGE;
-        const end = start + ITEMS_PER_PAGE;
-        const pageData = filteredModels.slice(start, end);
-        modelsGrid.innerHTML = '';
-        if (pageData.length === 0) {
-          modelsGrid.innerHTML = `
+      // ✅ Фильтрация ТОЛЬКО по названию модели (title)
+      filteredModels = allModels.filter(model => {
+        const title = normalizeText(model.title || '');
+        return title.includes(normalizedQuery);
+      });
+      currentPage = 1;
+      renderModels();
+      updateStats();
+      showSearchResults();
+    }
+    // 4. Переключение видимости
+    function showSearchResults() {
+      categoriesGrid.style.display = 'none';
+      modelsGrid.style.display = 'grid';
+      paginationContainer.style.display = 'flex';
+    }
+    
+    function showCategories() {
+      categoriesGrid.style.display = 'grid';
+      modelsGrid.style.display = 'none';
+      paginationContainer.style.display = 'none';
+      modelsGrid.innerHTML = '';
+      paginationContainer.innerHTML = '';
+    }
+    // 5. Отрисовка карточек (с пагинацией)
+    function renderModels() {
+      const start = (currentPage - 1) * ITEMS_PER_PAGE;
+      const end = start + ITEMS_PER_PAGE;
+      const pageData = filteredModels.slice(start, end);
+      modelsGrid.innerHTML = '';
+      if (pageData.length === 0) {
+        modelsGrid.innerHTML = `
             <div style="grid-column: 1/-1; text-align: center; padding: 40px; color: #7f8c8d;">
                 <i class="fas fa-search" style="font-size: 3rem; margin-bottom: 15px; opacity: 0.5;"></i>
                 <p style="font-size: 1.2rem;">Ничего не найдено</p>
                 <p>Попробуйте изменить запрос</p>
             </div>
         `;
-          paginationContainer.innerHTML = '';
-          return;
+        paginationContainer.innerHTML = '';
+        return;
+      }
+      pageData.forEach(model => {
+        const card = document.createElement('div');
+        card.className = 'model-card';
+        // ✅ ИСПРАВЛЕНИЕ: Умная обработка путей для картинок
+        let imageUrl = '';
+        if (model.imageUrl) {
+          // Если ссылка абсолютная (начинается с http/https), оставляем как есть
+          if (model.imageUrl.startsWith('http://') || model.imageUrl.startsWith('https://')) {
+            imageUrl = model.imageUrl;
+          } else {
+            // Если относительная, убираем ../ и добавляем BASE_PATH
+            imageUrl = BASE_PATH + model.imageUrl.replace(/^\.\.\//, '');
+          }
         }
-        pageData.forEach(model => {
-          const card = document.createElement('div');
-          card.className = 'model-card';
-          // ✅ ИСПРАВЛЕНИЕ: Умная обработка путей для картинок
-          let imageUrl = '';
-          if (model.imageUrl) {
-            // Если ссылка абсолютная (начинается с http/https), оставляем как есть
-            if (model.imageUrl.startsWith('http://') || model.imageUrl.startsWith('https://')) {
-              imageUrl = model.imageUrl;
-            } else {
-              // Если относительная, убираем ../ и добавляем BASE_PATH
-              imageUrl = BASE_PATH + model.imageUrl.replace(/^\.\.\//, '');
-            }
+        // ✅ ИСПРАВЛЕНИЕ: Умная обработка путей для PDF
+        let pdfPath = '#';
+        if (model.pdf && model.pdf.name) {
+          const rawPdfPath = `../instructions/${model.pdf.name}`;
+          if (rawPdfPath.startsWith('http://') || rawPdfPath.startsWith('https://')) {
+            pdfPath = rawPdfPath;
+          } else {
+            pdfPath = BASE_PATH + rawPdfPath.replace(/^\.\.\//, '');
           }
-          // ✅ ИСПРАВЛЕНИЕ: Умная обработка путей для PDF
-          let pdfPath = '#';
-          if (model.pdf && model.pdf.name) {
-            const rawPdfPath = `../instructions/${model.pdf.name}`;
-            if (rawPdfPath.startsWith('http://') || rawPdfPath.startsWith('https://')) {
-              pdfPath = rawPdfPath;
-            } else {
-              pdfPath = BASE_PATH + rawPdfPath.replace(/^\.\.\//, '');
-            }
-          }
-          // ✅ Проверка кнопки видео (только если есть реальная ссылка)
-          const videoUrl = model.videoUrl ? model.videoUrl.trim() : '';
-          const hasValidVideo = videoUrl && videoUrl !== '#' && videoUrl.length > 1;
-          const videoBtn = hasValidVideo ? `
+        }
+        // ✅ Проверка кнопки видео (только если есть реальная ссылка)
+        const videoUrl = model.videoUrl ? model.videoUrl.trim() : '';
+        const hasValidVideo = videoUrl && videoUrl !== '#' && videoUrl.length > 1;
+        const videoBtn = hasValidVideo ? `
             <a href="${videoUrl}" target="_blank" class="action-btn btn-video">
                 <i class="fas fa-play"></i> Видео
             </a>` : '';
-          // ✅ Получаем информацию о категории
-          const categoryInfo = categoryMap[model.section] || {
-            name: 'Категория',
-            color: '#E0F7FA'
-          };
-          // ✅ Обработка ссылки на категорию
-          let categoryHref = '#';
-          if (model.section) {
-            const rawCatPath = `/teams/${model.section}.htm`;
-            if (rawCatPath.startsWith('http://') || rawCatPath.startsWith('https://')) {
-              categoryHref = rawCatPath;
-            } else {
-              categoryHref = BASE_PATH + rawCatPath;
-            }
+        // ✅ Получаем информацию о категории
+        const categoryInfo = categoryMap[model.section] || {
+          name: 'Категория',
+          color: '#E0F7FA'
+        };
+        // ✅ Обработка ссылки на категорию
+        let categoryHref = '#';
+        if (model.section) {
+          const rawCatPath = `/teams/${model.section}.htm`;
+          if (rawCatPath.startsWith('http://') || rawCatPath.startsWith('https://')) {
+            categoryHref = rawCatPath;
+          } else {
+            categoryHref = BASE_PATH + rawCatPath;
           }
-          const categoryBadge = model.section ? `
+        }
+        const categoryBadge = model.section ? `
             <a href="${categoryHref}" class="model-category" title="Перейти в категорию" 
                style="background-color: ${categoryInfo.color}; border: 1px solid ${categoryInfo.color}80;">
                 <i class="fas fa-folder-open"></i> ${categoryInfo.name}
             </a>
         ` : '';
-          card.innerHTML = `
+        card.innerHTML = `
             <img src="${imageUrl}" alt="${model.title || 'Модель'}" class="model-image" loading="lazy" onerror="this.src='data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 200 150\'><rect fill=\'%23f0f0f0\' width=\'200\' height=\'150\'/><text x=\'50%\' y=\'50%\' dominant-baseline=\'middle\' text-anchor=\'middle\' fill=\'%23999\' font-size=\'14\'>Нет фото</text></svg>'">
             ${categoryBadge}
             <h3 class="model-title">${model.title || 'Без названия'}</h3>
@@ -8025,137 +8251,163 @@
                 </a>
             </div>
         `;
-          modelsGrid.appendChild(card);
+        modelsGrid.appendChild(card);
+      });
+      renderPagination();
+    }
+    // 6. Отрисовка пагинации
+    function renderPagination() {
+      const totalPages = Math.ceil(filteredModels.length / ITEMS_PER_PAGE);
+      paginationContainer.innerHTML = '';
+      if (totalPages <= 1) return;
+      // Кнопка "Назад"
+      const prevBtn = document.createElement('button');
+      prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
+      prevBtn.disabled = currentPage === 1;
+      prevBtn.onclick = () => {
+        currentPage--;renderModels();window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
         });
-        renderPagination();
-      }
-      // 6. Отрисовка пагинации
-      function renderPagination() {
-        const totalPages = Math.ceil(filteredModels.length / ITEMS_PER_PAGE);
-        paginationContainer.innerHTML = '';
-        if (totalPages <= 1) return;
-        // Кнопка "Назад"
-        const prevBtn = document.createElement('button');
-        prevBtn.innerHTML = '<i class="fas fa-chevron-left"></i>';
-        prevBtn.disabled = currentPage === 1;
-        prevBtn.onclick = () => {
-          currentPage--;renderModels();window.scrollTo({
+      };
+      paginationContainer.appendChild(prevBtn);
+      // Логика отображения страниц (1 ... 5 6 7 ... 10)
+      let startPage = Math.max(1, currentPage - 2);
+      let endPage = Math.min(totalPages, currentPage + 2);
+      if (startPage > 1) {
+        const firstBtn = document.createElement('button');
+        firstBtn.textContent = '1';
+        firstBtn.onclick = () => {
+          currentPage = 1;renderModels();window.scrollTo({
             top: 0,
             behavior: 'smooth'
           });
         };
-        paginationContainer.appendChild(prevBtn);
-        // Логика отображения страниц (1 ... 5 6 7 ... 10)
-        let startPage = Math.max(1, currentPage - 2);
-        let endPage = Math.min(totalPages, currentPage + 2);
-        if (startPage > 1) {
-          const firstBtn = document.createElement('button');
-          firstBtn.textContent = '1';
-          firstBtn.onclick = () => {
-            currentPage = 1;renderModels();window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
-          };
-          paginationContainer.appendChild(firstBtn);
-          if (startPage > 2) {
-            const dots = document.createElement('span');
-            dots.textContent = '...';
-            dots.style.padding = '10px';
-            paginationContainer.appendChild(dots);
-          }
+        paginationContainer.appendChild(firstBtn);
+        if (startPage > 2) {
+          const dots = document.createElement('span');
+          dots.textContent = '...';
+          dots.style.padding = '10px';
+          paginationContainer.appendChild(dots);
         }
-        for (let i = startPage; i <= endPage; i++) {
-          const btn = document.createElement('button');
-          btn.textContent = i;
-          btn.className = i === currentPage ? 'active' : '';
-          btn.onclick = () => {
-            currentPage = i;renderModels();window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
-          };
-          paginationContainer.appendChild(btn);
-        }
-        if (endPage < totalPages) {
-          if (endPage < totalPages - 1) {
-            const dots = document.createElement('span');
-            dots.textContent = '...';
-            dots.style.padding = '10px';
-            paginationContainer.appendChild(dots);
-          }
-          const lastBtn = document.createElement('button');
-          lastBtn.textContent = totalPages;
-          lastBtn.onclick = () => {
-            currentPage = totalPages;renderModels();window.scrollTo({
-              top: 0,
-              behavior: 'smooth'
-            });
-          };
-          paginationContainer.appendChild(lastBtn);
-        }
-        // Кнопка "Вперед"
-        const nextBtn = document.createElement('button');
-        nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
-        nextBtn.disabled = currentPage === totalPages;
-        nextBtn.onclick = () => {
-          currentPage++;renderModels();window.scrollTo({
+      }
+      for (let i = startPage; i <= endPage; i++) {
+        const btn = document.createElement('button');
+        btn.textContent = i;
+        btn.className = i === currentPage ? 'active' : '';
+        btn.onclick = () => {
+          currentPage = i;renderModels();window.scrollTo({
             top: 0,
             behavior: 'smooth'
           });
         };
-        paginationContainer.appendChild(nextBtn);
+        paginationContainer.appendChild(btn);
       }
-      // 7. Обновление статистики
-      function updateStats() {
-        searchStats.textContent = `Найдено: ${filteredModels.length} моделей`;
-      }
-      // 8. Обработчики событий
-      searchInput.addEventListener('input', (e) => {
-        const value = e.target.value;
-        performSearch(value);
-        searchClearBtn.classList.toggle('active', value.length > 0);
-      });
-      searchClearBtn.addEventListener('click', () => {
-        searchInput.value = '';
-        searchClearBtn.classList.remove('active');
-        performSearch('');
-        searchInput.focus();
-      });
-      // 9. Инициализация
-      document.addEventListener('DOMContentLoaded', () => {
-        loadModels();
-      });
-    </script>
-    <script>
-      // Блокировка 8 книг - доступ по запросу
-      document.addEventListener('DOMContentLoaded', function() {
-        const restrictedBooks = document.querySelectorAll('.restricted-book');
-        restrictedBooks.forEach(book => {
-          book.style.cursor = 'pointer';
-          book.addEventListener('click', function(e) {
-            e.preventDefault();
-            const title = this.getAttribute('data-title') || 'книге';
-            alert(`📩 Доступ к "${title}" по запросу.`);
+      if (endPage < totalPages) {
+        if (endPage < totalPages - 1) {
+          const dots = document.createElement('span');
+          dots.textContent = '...';
+          dots.style.padding = '10px';
+          paginationContainer.appendChild(dots);
+        }
+        const lastBtn = document.createElement('button');
+        lastBtn.textContent = totalPages;
+        lastBtn.onclick = () => {
+          currentPage = totalPages;renderModels();window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
           });
+        };
+        paginationContainer.appendChild(lastBtn);
+      }
+      // Кнопка "Вперед"
+      const nextBtn = document.createElement('button');
+      nextBtn.innerHTML = '<i class="fas fa-chevron-right"></i>';
+      nextBtn.disabled = currentPage === totalPages;
+      nextBtn.onclick = () => {
+        currentPage++;renderModels();window.scrollTo({
+          top: 0,
+          behavior: 'smooth'
+        });
+      };
+      paginationContainer.appendChild(nextBtn);
+    }
+    // 7. Обновление статистики
+    function updateStats() {
+      searchStats.textContent = `Найдено: ${filteredModels.length} моделей`;
+    }
+    // 8. Обработчики событий
+    searchInput.addEventListener('input', (e) => {
+      const value = e.target.value;
+      performSearch(value);
+      searchClearBtn.classList.toggle('active', value.length > 0);
+    });
+    searchClearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      searchClearBtn.classList.remove('active');
+      performSearch('');
+      searchInput.focus();
+    });
+    // 9. Инициализация
+    document.addEventListener('DOMContentLoaded', () => {
+      loadModels();
+    });
+  </script> -->
+  <script>
+    // Блокировка 8 книг - доступ по запросу
+    document.addEventListener('DOMContentLoaded', function() {
+      const restrictedBooks = document.querySelectorAll('.restricted-book');
+      restrictedBooks.forEach(book => {
+        book.style.cursor = 'pointer';
+        book.addEventListener('click', function(e) {
+          e.preventDefault();
+          const title = this.getAttribute('data-title') || 'книге';
+          alert(`📩 Доступ к "${title}" по запросу.`);
         });
       });
-      document.addEventListener('DOMContentLoaded', function() {
-        const banner = document.getElementById('devBanner');
-        const closeBtn = document.getElementById('devBannerClose');
-        if (banner && closeBtn) {
-          closeBtn.addEventListener('click', function() {
-            banner.classList.add('hide');
-            // Опционально: удалить баннер из DOM после анимации
-            setTimeout(() => {
-              banner.style.display = 'none';
-            }, 300);
-          });
-        }
-      });
-    </script>
-    <script src="uploadCards.js?v=1"></script>
-    <script src="gscript.js"></script>
-  </body>
+    });
+    document.addEventListener('DOMContentLoaded', function() {
+      const banner = document.getElementById('devBanner');
+      const closeBtn = document.getElementById('devBannerClose');
+      if (banner && closeBtn) {
+        closeBtn.addEventListener('click', function() {
+          banner.classList.add('hide');
+          // Опционально: удалить баннер из DOM после анимации
+          setTimeout(() => {
+            banner.style.display = 'none';
+          }, 300);
+        });
+      }
+    });
+  </script>
   
-  </html>
+  
+  <!-- Модальное окно для просмотра изображений -->
+  <div id="imageModal" class="image-modal">
+    <span class="image-modal-close">&times;</span>
+    <img class="image-modal-content" id="modalFullImage">
+    <div class="image-modal-caption" id="imageCaption"></div>
+  </div>
+  <script type="module" src="js/app.js"></script>
+  <!-- <script src="upload.js?v=1"></script> -->
+  <!-- <script src="gscript.js"></script> -->
+<script>
+  // Регистрация Service Worker только для PWA (без офлайн-кеширования)
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(reg => {
+          console.log('✅ PWA Service Worker зарегистрирован');
+          
+          // Проверяем обновления
+          reg.addEventListener('updatefound', () => {
+            console.log('🔄 Обновление PWA');
+          });
+        })
+        .catch(err => console.log('❌ Ошибка регистрации PWA:', err));
+    });
+  }
+</script>
+</body>
+
+</html>

@@ -1,0 +1,30 @@
+{
+  "name": "WeDo 2.0 Инструкции",
+  "short_name": "WeDo 2.0",
+  "description": "Библиотека инструкций и обучающих материалов по робототехнике WeDo 2.0",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#0074D9",
+  "background_color": "#e8eff5",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "images/icon-72x72.png",
+      "sizes": "72x72",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/icon-96x96.png",
+      "sizes": "96x96",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "images/icon-256x256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
